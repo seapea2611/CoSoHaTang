@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Asd.Hrm.Resources.Dtos
 {
-    public class GetResourcesForEditOutput
+    public class GetContractorsForViewDto
     {
-        public CreateOrEditResourcesDto Resources { get; set; }
+        public ContractorsDto Resources { get; set; }
     }
 }

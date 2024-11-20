@@ -168,8 +168,8 @@ namespace Asd.Hrm
             /* ADD YOUR OWN CUSTOM AUTOMAPPER MAPPINGS HERE */
             configuration.CreateMap<CreateOrEditResourcesDto, Asd.Hrm.Resource.Resources>();
             configuration.CreateMap<CreateOrEditResourcesDto, Asd.Hrm.Resource.Resources>().ReverseMap();
-            configuration.CreateMap<Asd.Hrm.Resource.Resources, ResourcesDto>();
-            configuration.CreateMap<Asd.Hrm.Resource.Resources, ResourcesDto>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.Resource.Resources, ContractorsDto>();
+            configuration.CreateMap<Asd.Hrm.Resource.Resources, ContractorsDto>().ReverseMap();
             /*configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>();
             configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>().ReverseMap();
             configuration.CreateMap<BusinessFullAudit, BusinessDto>();
