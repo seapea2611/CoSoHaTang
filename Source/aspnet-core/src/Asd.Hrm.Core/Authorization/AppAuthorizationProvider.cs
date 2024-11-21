@@ -120,7 +120,7 @@ namespace Asd.Hrm.Authorization
             var resources = pages.CreateChildPermission(AppPermissions.Pages_Resources, L("Resources"), multiTenancySides: MultiTenancySides.Host);
             resources.CreateChildPermission(AppPermissions.Pages_Resources_Create, L("CreateNewResources"), multiTenancySides: MultiTenancySides.Host);
             resources.CreateChildPermission(AppPermissions.Pages_Resources_Edit, L("EditResources"), multiTenancySides: MultiTenancySides.Host);
-            resources.CreateChildPermission(AppPermissions.Pages_Resources_Delete, L("DeleteResources"), multiTenancySides: MultiTenancySides.Host)
+            resources.CreateChildPermission(AppPermissions.Pages_Resources_Delete, L("DeleteResources"), multiTenancySides: MultiTenancySides.Host);
 
             var employees = pages.CreateChildPermission(AppPermissions.Pages_Employees, L("Employees"), multiTenancySides: MultiTenancySides.Host);
             employees.CreateChildPermission(AppPermissions.Pages_Employees_Create, L("CreateNewEmployees"), multiTenancySides: MultiTenancySides.Host);

@@ -12,6 +12,7 @@ using Asd.Hrm.MultiTenancy.Accounting;
 using Asd.Hrm.MultiTenancy.Payments;
 using Asd.Hrm.Storage;
 using Asd.Hrm.Resource;
+using Asd.Hrm.Employee;
 
 namespace Asd.Hrm.EntityFrameworkCore
 {
