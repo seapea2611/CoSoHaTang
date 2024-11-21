@@ -3,14 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Asd.Hrm.Resources.Dtos
+namespace Asd.Hrm.Contractors.Dtos
 {
     public class GetAllContractorsInput : PagedAndSortedResultRequestDto
     {
         public string Filter { get; set; }
         public string ContractorNameFilter { get; set; }
         public string PhoneFilter { get; set; }
-        public string EmailFilter { get; set; }
+        public string EmailContractorFilter { get; set; }
         public string SpecializationFilter { get; set; }
     }
 }

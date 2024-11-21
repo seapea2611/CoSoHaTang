@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Asd.Hrm.Resources.Dtos
+namespace Asd.Hrm.Contractors.Dtos
 {
     public class GetContractorsForEditOutput
     {
-        public CreateOrEditContractorsDto Resources { get; set; }
+        public CreateOrEditContractorsDto Contractors { get; set; }
     }
 }

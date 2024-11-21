@@ -12,9 +12,10 @@ using Asd.Hrm.Resources.Dtos;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Asd.Hrm.Contractors
+namespace Asd.Hrm.Resources
+{
     [AbpAuthorize(AppPermissions.Pages_Resources)]
-    public class ContractorsAppService : HrmAppServiceBase, IContractorsAppService
+    public class ResourcesAppService : HrmAppServiceBase, IResourcesAppService
     {
         private readonly IRepository<Asd.Hrm.Resource.Resources> _resourcesRepository;
 
@@ -23,7 +24,7 @@ namespace Asd.Hrm.Contractors
             _resourcesRepository = resourcesRepository;
         }
 
-        public async Task<PagedResultDto<GetContractorsForViewDto>> GetAll(GetAllResourcesInput input)
+        public async Task<PagedResultDto<GetResourcesForViewDto>> GetAll(GetAllResourcesInput input)
         {
             var filteredResources = _resourcesRepository.GetAll()
                         .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.UnitType.Contains(input.Filter) || e.ResourceType.Contains(input.Filter) || e.Supplier.Contains(input.Filter))
@@ -32,9 +33,9 @@ namespace Asd.Hrm.Contractors
                         .WhereIf(!string.IsNullOrWhiteSpace(input.SupplierFilter), e => e.Supplier.ToLower() == input.SupplierFilter.ToLower().Trim());
 
             var query = (from o in filteredResources
-                         select new GetContractorsForViewDto()
+                         select new GetResourcesForViewDto()
                          {
-                             Resources = ObjectMapper.Map<ContractorsDto>(o)
+                             Resources = ObjectMapper.Map<ResourcesDto>(o)
                          });
 
             var totalCount = await query.CountAsync();
@@ -43,17 +44,17 @@ namespace Asd.Hrm.Contractors
                 .PageBy(input)
                 .ToListAsync();
 
-            return new PagedResultDto<GetContractorsForViewDto>(
+            return new PagedResultDto<GetResourcesForViewDto>(
                 totalCount,
                 resources
             );
         }
 
-        public async Task<GetContractorsForViewDto> GetResourcesForView(int id)
+        public async Task<GetResourcesForViewDto> GetResourcesForView(int id)
         {
             var Resources = await _resourcesRepository.GetAsync(id);
 
-            var output = new GetContractorsForViewDto { Resources = ObjectMapper.Map<ContractorsDto>(Resources) };
+            var output = new GetResourcesForViewDto { Resources = ObjectMapper.Map<ResourcesDto>(Resources) };
 
             return output;
         }

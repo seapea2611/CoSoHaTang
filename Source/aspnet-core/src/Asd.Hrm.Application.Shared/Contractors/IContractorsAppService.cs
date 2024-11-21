@@ -1,6 +1,6 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
-using Asd.Hrm.Resources.Dtos;
+using Asd.Hrm.Contractors.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,9 +12,9 @@ namespace Asd.Hrm.Contractors
     {
         Task<PagedResultDto<GetContractorsForViewDto>> GetAll(GetAllContractorsInput input);
 
-        Task<GetContractorsForViewDto> GetResourcesForView(int id);
+        Task<GetContractorsForViewDto> GetContractorsForView(int id);
 
-        Task<GetContractorsForEditOutput> GetResourcesForEdit(EntityDto input);
+        Task<GetContractorsForEditOutput> GetContractorsForEdit(EntityDto input);
 
         Task CreateOrEdit(CreateOrEditContractorsDto input);
 

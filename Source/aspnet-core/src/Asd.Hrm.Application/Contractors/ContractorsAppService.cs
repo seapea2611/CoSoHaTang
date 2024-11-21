@@ -7,34 +7,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Asd.Hrm.Resource;
-using Asd.Hrm.Resources.Dtos;
+using Asd.Hrm.Contractor;
+using Asd.Hrm.Contractors.Dtos;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Asd.Hrm.Contractors
-    [AbpAuthorize(AppPermissions.Pages_Resources)]
+{ 
+    [AbpAuthorize(AppPermissions.Pages_Contractors)]
     public class ContractorsAppService : HrmAppServiceBase, IContractorsAppService
     {
-        private readonly IRepository<Asd.Hrm.Resource.Resources> _resourcesRepository;
+        private readonly IRepository<Asd.Hrm.Contractor.Contractors> _contractorsRepository;
 
-        public ResourcesAppService(IRepository<Asd.Hrm.Resource.Resources> resourcesRepository)
+        public ContractorsAppService(IRepository<Asd.Hrm.Contractor.Contractors> contractorsRepository)
         {
-            _resourcesRepository = resourcesRepository;
+            _contractorsRepository = contractorsRepository;
         }
 
-        public async Task<PagedResultDto<GetContractorsForViewDto>> GetAll(GetAllResourcesInput input)
+        public async Task<PagedResultDto<GetContractorsForViewDto>> GetAll(GetAllContractorsInput input)
         {
-            var filteredResources = _resourcesRepository.GetAll()
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.UnitType.Contains(input.Filter) || e.ResourceType.Contains(input.Filter) || e.Supplier.Contains(input.Filter))
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.UnitTypeFilter), e => e.UnitType.ToLower() == input.UnitTypeFilter.ToLower().Trim())
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.ResourceTypeFilter), e => e.ResourceType.ToLower() == input.ResourceTypeFilter.ToLower().Trim())
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.SupplierFilter), e => e.Supplier.ToLower() == input.SupplierFilter.ToLower().Trim());
+            var filteredContractors = _contractorsRepository.GetAll()
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.ContractorName.Contains(input.Filter) || e.Phone.Contains(input.Filter) || e.EmailContractor.Contains(input.Filter) || e.Specialization.Contains(input.Filter))
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.ContractorNameFilter), e => e.ContractorName.ToLower() == input.ContractorNameFilter.ToLower().Trim())
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.PhoneFilter), e => e.Phone.ToLower() == input.PhoneFilter.ToLower().Trim())
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.EmailContractorFilter), e => e.EmailContractor.ToLower() == input.EmailContractorFilter.ToLower().Trim())
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.SpecializationFilter), e => e.Specialization.ToLower() == input.SpecializationFilter.ToLower().Trim());
 
-            var query = (from o in filteredResources
+            var query = (from o in filteredContractors
                          select new GetContractorsForViewDto()
                          {
-                             Resources = ObjectMapper.Map<ContractorsDto>(o)
+                             Contractors = ObjectMapper.Map<ContractorsDto>(o)
                          });
 
             var totalCount = await query.CountAsync();
@@ -49,34 +51,33 @@ namespace Asd.Hrm.Contractors
             );
         }
 
-        public async Task<GetContractorsForViewDto> GetResourcesForView(int id)
+        public async Task<GetContractorsForViewDto> GetContractorsForView(int id)
         {
-            var Resources = await _resourcesRepository.GetAsync(id);
+            var Contractors = await _contractorsRepository.GetAsync(id);
 
-            var output = new GetContractorsForViewDto { Resources = ObjectMapper.Map<ContractorsDto>(Resources) };
+            var output = new GetContractorsForViewDto { Contractors = ObjectMapper.Map<ContractorsDto>(Contractors) };
 
             return output;
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Resources_Edit)]
-        public async Task<GetResourcesForEditOutput> GetResourcesForEdit(EntityDto input)
+        [AbpAuthorize(AppPermissions.Pages_Contractors_Edit)]
+        public async Task<GetContractorsForEditOutput> GetContractorsForEdit(EntityDto input)
         {
-            var Resources = await _resourcesRepository.FirstOrDefaultAsync(input.Id);
-            var ResourcesDto = new CreateOrEditResourcesDto()
+            var Contractors = await _contractorsRepository.FirstOrDefaultAsync(input.Id);
+            var ContractorsDto = new CreateOrEditContractorsDto()
             {
-                Id = Resources.Id,
-                ResourceID = Resources.ResourceID,
-                ResourceType = Resources.ResourceType,
-                UnitCost = Resources.UnitCost,
-                UnitType = Resources.UnitType,
-                Supplier = Resources.Supplier
+                Id = Contractors.Id,
+                ContractorName = Contractors.ContractorName,
+                Phone = Contractors.Phone,
+                EmailContractor = Contractors.EmailContractor,
+                Specialization = Contractors.Specialization,
             };
 
-            var output = new GetResourcesForEditOutput() { Resources = ResourcesDto };
+            var output = new GetContractorsForEditOutput() { Contractors = ContractorsDto };
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditResourcesDto input)
+        public async Task CreateOrEdit(CreateOrEditContractorsDto input)
         {
             if (input.Id == null)
             {
@@ -88,13 +89,13 @@ namespace Asd.Hrm.Contractors
             }
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Resources_Create)]
-        public async Task Create(CreateOrEditResourcesDto input)
+        [AbpAuthorize(AppPermissions.Pages_Contractors_Create)]
+        public async Task Create(CreateOrEditContractorsDto input)
         {
             try
             {
-                var resources = ObjectMapper.Map<Asd.Hrm.Resource.Resources>(input);
-                await _resourcesRepository.InsertAsync(resources);
+                var contractors = ObjectMapper.Map<Asd.Hrm.Contractor.Contractors>(input);
+                await _contractorsRepository.InsertAsync(contractors);
             }
             catch (Exception ex)
             {
@@ -102,17 +103,17 @@ namespace Asd.Hrm.Contractors
             }
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Resources_Edit)]
-        public async Task Update(CreateOrEditResourcesDto input)
+        [AbpAuthorize(AppPermissions.Pages_Contractors_Edit)]
+        public async Task Update(CreateOrEditContractorsDto input)
         {
-            var resources = await _resourcesRepository.FirstOrDefaultAsync((int)input.Id);
-            ObjectMapper.Map(input, resources);
+            var contractors = await _contractorsRepository.FirstOrDefaultAsync((int)input.Id);
+            ObjectMapper.Map(input, contractors);
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Resources_Delete)]
+        [AbpAuthorize(AppPermissions.Pages_Contractors_Delete)]
         public async Task Delete(EntityDto input)
         {
-            await _resourcesRepository.DeleteAsync(input.Id);
+            await _contractorsRepository.DeleteAsync(input.Id);
         }
     }
 }

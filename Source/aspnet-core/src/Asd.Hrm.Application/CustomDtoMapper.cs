@@ -42,7 +42,9 @@ using Asd.Hrm.Organizations.Dto;
 using Asd.Hrm.Sessions.Dto;
 using Asd.Hrm.WebHooks.Dto;
 using Asd.Hrm.Resources.Dtos;
+using Asd.Hrm.Contractors.Dtos;
 using Asd.Hrm.Resource;
+using Asd.Hrm.Contractors;
 
 namespace Asd.Hrm
 {
@@ -168,8 +170,13 @@ namespace Asd.Hrm
             /* ADD YOUR OWN CUSTOM AUTOMAPPER MAPPINGS HERE */
             configuration.CreateMap<CreateOrEditResourcesDto, Asd.Hrm.Resource.Resources>();
             configuration.CreateMap<CreateOrEditResourcesDto, Asd.Hrm.Resource.Resources>().ReverseMap();
-            configuration.CreateMap<Asd.Hrm.Resource.Resources, ContractorsDto>();
-            configuration.CreateMap<Asd.Hrm.Resource.Resources, ContractorsDto>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.Resource.Resources, ResourcesDto>();
+            configuration.CreateMap<Asd.Hrm.Resource.Resources, ResourcesDto>().ReverseMap();
+
+            configuration.CreateMap<CreateOrEditContractorsDto, Asd.Hrm.Contractor.Contractors>();
+            configuration.CreateMap<CreateOrEditContractorsDto, Asd.Hrm.Contractor.Contractors>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.Contractor.Contractors, ContractorsDto>();
+            configuration.CreateMap<Asd.Hrm.Contractor.Contractors, ContractorsDto>().ReverseMap();
             /*configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>();
             configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>().ReverseMap();
             configuration.CreateMap<BusinessFullAudit, BusinessDto>();

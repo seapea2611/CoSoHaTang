@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Asd.Hrm.Resources.Dtos
+namespace Asd.Hrm.Contractors.Dtos
 {
     public class GetAllForLookupTableInput : PagedAndSortedResultRequestDto
     {

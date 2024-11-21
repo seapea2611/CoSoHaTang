@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Asd.Hrm.Resources.Dtos
+namespace Asd.Hrm.Contractors.Dtos
 {
     public class CreateOrEditContractorsDto : EntityDto<int?>
     {
         public string ContractorName { get; set; }
         public string Phone { get; set; }
-        public string Email { get; set; }
+        public string EmailContractor { get; set; }
         public string Specialization { get; set; }
     }
 }
