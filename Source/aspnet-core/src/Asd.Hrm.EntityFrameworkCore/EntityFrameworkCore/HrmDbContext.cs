@@ -39,6 +39,7 @@ namespace Asd.Hrm.EntityFrameworkCore
 
         public virtual DbSet<Resources> Resources { get; set; }
 
+        public virtual DbSet<Employees> Employees { get; set; }
 
         public HrmDbContext(DbContextOptions<HrmDbContext> options)
             : base(options)
