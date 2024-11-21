@@ -121,6 +121,11 @@ namespace Asd.Hrm.Authorization
             resources.CreateChildPermission(AppPermissions.Pages_Resources_Create, L("CreateNewResources"), multiTenancySides: MultiTenancySides.Host);
             resources.CreateChildPermission(AppPermissions.Pages_Resources_Edit, L("EditResources"), multiTenancySides: MultiTenancySides.Host);
             resources.CreateChildPermission(AppPermissions.Pages_Resources_Delete, L("DeleteResources"), multiTenancySides: MultiTenancySides.Host);
+            
+            var documentTemplates = pages.CreateChildPermission(AppPermissions.Pages_DocumentTemplates, L("DocumentTemplates"), multiTenancySides: MultiTenancySides.Host);
+            documentTemplates.CreateChildPermission(AppPermissions.Pages_DocumentTemplates_Create, L("CreateNewDocumentTemplates"), multiTenancySides: MultiTenancySides.Host);
+            documentTemplates.CreateChildPermission(AppPermissions.Pages_DocumentTemplates_Edit, L("EditDocumentTemplates"), multiTenancySides: MultiTenancySides.Host);
+            documentTemplates.CreateChildPermission(AppPermissions.Pages_DocumentTemplates_Delete, L("DeleteDocumentTemplates"), multiTenancySides: MultiTenancySides.Host);
         }
 
         private static ILocalizableString L(string name)

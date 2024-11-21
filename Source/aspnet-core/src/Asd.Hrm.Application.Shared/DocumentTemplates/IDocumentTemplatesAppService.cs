@@ -12,11 +12,11 @@ namespace Asd.Hrm.DocumentTemplates
     {
         Task<PagedResultDto<GetDocumentTemplatesForViewDto>> GetAll(GetAllDocumentTemplatesInput input);
 
-        Task<GetResourcesForViewDto> GetResourcesForView(int id);
+        Task<GetDocumentTemplatesForViewDto> GetDocumentTemplatesForView(int id);
 
-        Task<GetResourcesForEditOutput> GetResourcesForEdit(EntityDto input);
+        Task<GetDocumentTemplatesForEditOutput> GetDocumentTemplatesForEdit(EntityDto input);
 
-        Task CreateOrEdit(CreateOrEditResourcesDto input);
+        Task CreateOrEdit(CreateOrEditDocumentTemplatesDto input);
 
         Task Delete(EntityDto input);
     }
