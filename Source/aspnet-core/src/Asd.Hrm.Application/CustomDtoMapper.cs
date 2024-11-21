@@ -43,6 +43,8 @@ using Asd.Hrm.Sessions.Dto;
 using Asd.Hrm.WebHooks.Dto;
 using Asd.Hrm.Resources.Dtos;
 using Asd.Hrm.Resource;
+using Asd.Hrm.Employees.Dtos;
+using Asd.Hrm.Employee;
 
 namespace Asd.Hrm
 {
@@ -170,6 +172,12 @@ namespace Asd.Hrm
             configuration.CreateMap<CreateOrEditResourcesDto, Asd.Hrm.Resource.Resources>().ReverseMap();
             configuration.CreateMap<Asd.Hrm.Resource.Resources, ResourcesDto>();
             configuration.CreateMap<Asd.Hrm.Resource.Resources, ResourcesDto>().ReverseMap();
+
+            configuration.CreateMap<CreateOrEditEmployeesDto, Asd.Hrm.Employee.Employees>();
+            configuration.CreateMap<CreateOrEditEmployeesDto, Asd.Hrm.Employee.Employees>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.Employee.Employees, EmployeesDto>();
+            configuration.CreateMap<Asd.Hrm.Employee.Employees, EmployeesDto>().ReverseMap();
+
             /*configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>();
             configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>().ReverseMap();
             configuration.CreateMap<BusinessFullAudit, BusinessDto>();
