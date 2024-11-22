@@ -103,5 +103,11 @@
         public const string Pages_Resources_Create = "Pages.Resources.Create";
         public const string Pages_Resources_Edit = "Pages.Resources.Edit";
         public const string Pages_Resources_Delete = "Pages.Resources.Delete";
+
+        //DocumentTemplates
+        public const string Pages_DocumentTemplates = "Pages.DocumentTemplates";
+        public const string Pages_DocumentTemplates_Create = "Pages.DocumentTemplates.Create";
+        public const string Pages_DocumentTemplates_Edit = "Pages.DocumentTemplates.Edit";
+        public const string Pages_DocumentTemplates_Delete = "Pages.DocumentTemplates.Delete";
     }
 }
