@@ -109,5 +109,11 @@
         public const string Pages_DocumentTemplates_Create = "Pages.DocumentTemplates.Create";
         public const string Pages_DocumentTemplates_Edit = "Pages.DocumentTemplates.Edit";
         public const string Pages_DocumentTemplates_Delete = "Pages.DocumentTemplates.Delete";
+
+        // Contractors
+        public const string Pages_Contractors = "Pages.Contractors";
+        public const string Pages_Contractors_Create = "Pages.Contractors.Create";
+        public const string Pages_Contractors_Edit = "Pages.Contractors.Edit";
+        public const string Pages_Contractors_Delete = "Pages.Contractors.Delete";
     }
 }
