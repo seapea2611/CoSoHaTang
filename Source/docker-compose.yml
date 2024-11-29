@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  web-host:
+    build:
+      context: ./aspnet-core/src/Asd.Hrm.Web.Host
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+  web-mvc:
+    build:
+      context: ./aspnet-core/src/Asd.Hrm.Web.Mvc
+      dockerfile: Dockerfile
+    ports:
+      - "8082:80"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+  web-public:
+    build:
+      context: ./aspnet-core/src/Asd.Hrm.Web.Public
+      dockerfile: Dockerfile
+    ports:
+      - "8083:80"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+  angular:
+    build:
+      context: ./angular
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "123qwe"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+networks:
+  default:
+    driver: overlay
