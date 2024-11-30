@@ -103,5 +103,11 @@
         public const string Pages_Resources_Create = "Pages.Resources.Create";
         public const string Pages_Resources_Edit = "Pages.Resources.Edit";
         public const string Pages_Resources_Delete = "Pages.Resources.Delete";
+
+        // Employees
+        public const string Pages_Employees = "Pages.Employees";
+        public const string Pages_Employees_Create = "Pages.Employees.Create";
+        public const string Pages_Employees_Edit = "Pages.Employees.Edit";
+        public const string Pages_Employees_Delete = "Pages.Employees.Delete";
     }
 }

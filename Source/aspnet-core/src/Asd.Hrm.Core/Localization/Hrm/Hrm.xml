@@ -1147,5 +1147,15 @@
 	  <text name="Supplier">Supplier</text>
 
 	  <!-- End Resources-->
+
+	  <!--Start Employees-->
+	  <text name="Employees">Employees</text>
+	  <text name="EditEmployees">Edit Employees</text>
+	  <text name="CreateNewEmployees">Create Employees</text>
+	  <text name="MsgConfirmDeleteEmployees">Do you want to delete this Employees?</text>
+	  <text name="EmployeeID">Employee ID</text>
+	  <text name="Phone">Phone</text>
+
+	  <!-- End Employees-->
   </texts>
 </localizationDictionary>
