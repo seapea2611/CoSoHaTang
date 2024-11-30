@@ -132,6 +132,11 @@ namespace Asd.Hrm.Authorization
             contractors.CreateChildPermission(AppPermissions.Pages_Contractors_Create, L("CreateContractors"), multiTenancySides: MultiTenancySides.Host);
             contractors.CreateChildPermission(AppPermissions.Pages_Contractors_Edit, L("EditContractors"), multiTenancySides: MultiTenancySides.Host);
             contractors.CreateChildPermission(AppPermissions.Pages_Contractors_Delete, L("DeleteContractors"), multiTenancySides: MultiTenancySides.Host);
+
+            var employees = pages.CreateChildPermission(AppPermissions.Pages_Employees, L("Employees"), multiTenancySides: MultiTenancySides.Host);
+            employees.CreateChildPermission(AppPermissions.Pages_Employees_Create, L("CreateNewEmployees"), multiTenancySides: MultiTenancySides.Host);
+            employees.CreateChildPermission(AppPermissions.Pages_Employees_Edit, L("EditEmployees"), multiTenancySides: MultiTenancySides.Host);
+            employees.CreateChildPermission(AppPermissions.Pages_Employees_Delete, L("DeleteEmployees"), multiTenancySides: MultiTenancySides.Host);
         }
 
         private static ILocalizableString L(string name)

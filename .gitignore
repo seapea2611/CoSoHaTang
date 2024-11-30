@@ -18,3 +18,6 @@ aspnet-core/src/Asd.TTS.Web.Host/healthchecksdb
 aspnet-core/src/Asd.TTS.Web.Public/healthchecksdb
 aspnet-core/src/Asd.TTS.Web.Mvc/healthchecksdb
 *.pfx
+
+/Source/aspnet-core/src/Asd.Hrm.Web.Mvc/appsettings.json
+/Source/aspnet-core/src/Asd.Hrm.Web.Host/appsettings.json

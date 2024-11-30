@@ -16,7 +16,6 @@ import Swal from "sweetalert2";
 
 @Component({
     templateUrl: './resources.component.html',
-    encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()],
     styleUrls:['./resources.component.css']
 })
@@ -31,6 +30,7 @@ export class ResourcesComponent extends AppComponentBase {
     ResourceTypeFilter = '';
     UnitTypeFilter = '';
     SupplierFilter = '';
+    data: any;
 
     constructor(
         injector: Injector,
@@ -40,10 +40,8 @@ export class ResourcesComponent extends AppComponentBase {
     }
 
     getResources(event?: LazyLoadEvent) {
-        if (this.primengTableHelper.shouldResetPaging(event)) {
-            this.paginator.changePage(0);
-            return;
-        }
+        debugger;
+
 
         this.primengTableHelper.showLoadingIndicator();
 
@@ -54,10 +52,11 @@ export class ResourcesComponent extends AppComponentBase {
             '',
             this.UnitTypeFilter,
             this.SupplierFilter,
-            this.primengTableHelper.getSorting(this.dataTable),
-            this.primengTableHelper.getSkipCount(this.paginator, event),
-            this.primengTableHelper.getMaxResultCount(this.paginator, event)
+            '',
+            0,
+            10
         ).subscribe(result => {
+            console.log(result);
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();

@@ -2,6 +2,7 @@
 import { RouterModule } from '@angular/router';
 import {ResourcesComponent} from './resources/resources.component';
 
+
 @NgModule({
     imports: [
         RouterModule.forChild([

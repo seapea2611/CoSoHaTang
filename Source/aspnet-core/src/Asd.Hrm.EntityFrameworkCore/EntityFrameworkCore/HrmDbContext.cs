@@ -14,6 +14,7 @@ using Asd.Hrm.Storage;
 using Asd.Hrm.Resource;
 using Asd.Hrm.DocumentTemplates;
 using Asd.Hrm.Contractor;
+using Asd.Hrm.Employee;
 
 namespace Asd.Hrm.EntityFrameworkCore
 {
@@ -44,6 +45,7 @@ namespace Asd.Hrm.EntityFrameworkCore
 
 
         public virtual DbSet<Contractors> Contractors { get; set; }
+        public virtual DbSet<Employees> Employees { get; set; }
 
         public HrmDbContext(DbContextOptions<HrmDbContext> options)
             : base(options)
