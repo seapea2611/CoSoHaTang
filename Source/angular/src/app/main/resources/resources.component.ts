@@ -38,10 +38,12 @@ export class ResourcesComponent extends AppComponentBase {
     ) {
         super(injector);
     }
+    
+    ngOnInit(): void {
+        this.getResources();
+    }
 
     getResources(event?: LazyLoadEvent) {
-        debugger;
-
 
         this.primengTableHelper.showLoadingIndicator();
 

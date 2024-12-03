@@ -5,15 +5,19 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text m--font-accent">
-                            {{l("Resources")}}
+                            {{l('Resources')}}
                         </h3>
                     </div>
                 </div>
                 <div class="m-portlet__head-wrapper m-portlet__head-caption">
-                    <div class="col-md-6">
-                        <input class="form-control form-control-sm m-input m-input--air m-input--pill" [(ngModel)]="filterText" name="filtertext" [placeholder]="l('Resources')" type="text" (keyup.enter)="getResources()">
+
+                    <div class="col-md-6 search-filter">
+                        <div class="filter-left">
+                            <input class="form-control form-control-sm m-input m-input--air m-input--pill" [(ngModel)]="filterText" name="filtertext" [placeholder]="l('Resources')" type="text" (keyup.enter)="getResources()">
+                        </div>
                     </div>
-                    <div class="col-md-6" style="padding-left:0px;">
+
+                    <div class="col-md-6 pl-0">
                         <a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" (click)="getResources()">
                             <i class="fa flaticon-search"></i>
                         </a>
@@ -22,7 +26,6 @@
                         </a>
                     </div>
                 </div>
-
                 <div class="m-portlet__head-tools">
                     <ul class="m-portlet__nav">
                         <li class="m-portlet__nav-item" *ngIf="isGranted('Pages.Resources.Create')">
@@ -33,11 +36,6 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="m-portlet__nav-item">
-                            <a href="javascript:;" m-portlet-tool="fullscreen" class="m-portlet__nav-link btn btn-outline-accent m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air">
-                                <i class="la la-expand"></i>
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -45,81 +43,7 @@
 
             <div class="m-portlet__body">
                 <div class="row align-items-center">
-                    <!--<Primeng-Datatable-Start>-->
-                    <!-- <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable (onLazyLoad)="getResources($event)" [value]="primengTableHelper.records" rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true" [scrollable]="true" ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
-                            [resizableColumns]="primengTableHelper.resizableColumns">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th style="width: 55px" pSortableColumn="resources.resourceID" class="text-center">
-                                        {{l('ResourceID')}}
-                                        <p-sortIcon field="resources.resourceID"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 100px" pSortableColumn="resources.resourceType" class="text-center">
-                                        {{l('ResourceType')}}
-                                        <p-sortIcon field="resources.resourceType"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 150px" pSortableColumn="resources.unitCost" class="text-center">
-                                        {{l('UnitCost')}}
-                                        <p-sortIcon field="resources.unitCost"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 100px" pSortableColumn="resources.unitType" class="text-center">
-                                        {{l('UnitType')}}
-                                        <p-sortIcon field="resources.unitType"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 100px" pSortableColumn="resources.supplier" class="text-center">
-                                        {{l('Supplier')}}
-                                        <p-sortIcon field="resources.supplier"></p-sortIcon>
-                                    </th>
-                                    <th style="width: 80px" [hidden]="!isGrantedAny('Pages.Resources.Edit', 'Pages.Resources.Delete')" class="text-center">{{l('Actions')}}</th>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
-
-                                    <td style="width:55px" class="text-center">
-                                        <span class="ui-column-title"> {{l('ResourceID')}}</span> {{record.resources.resourceID}}
-                                    </td>
-                                    <td style="width:100px" class="text-center">
-                                        <span class="ui-column-title"> {{l('ResourceType')}}</span> {{record.resources.resourceType}}
-                                    </td>
-                                    <td style="width:150px">
-                                        <span class="ui-column-title"> {{l('UnitCost')}}</span> {{record.resources.unitCost}}
-                                    </td>
-                                    <td style="width:100px">
-                                        <span class="ui-column-title"> {{l('UnitType')}}</span> {{record.resources.unitType}}
-                                    </td>
-                                    <td style="width:100px">
-                                        <span class="ui-column-title"> {{l('Supplier')}}</span> {{record.resources.supplier}}
-                                    </td>
-
-                                    <td style="width: 80px" class="text-center" [hidden]="!isGrantedAny('Pages.Resources.Edit', 'Pages.Resources.Delete')">
-                                        <a (click)="createOrEditResourcesModal.show(record.resources.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Resources.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
-                                            <i class="la la-edit"></i>
-                                        </a>
-
-                                        <a (click)="deleteResources(record.resources)" href="javascript:;" *ngIf="permission.isGranted('Pages.Resources.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
-                                            <i class="la la-trash"></i>
-                                        </a>
-                                    </td>
-
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                            {{l('NoData')}}
-                        </div>
-                        <div class="primeng-paging-container">
-                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator (onPageChange)="getResources($event)" [totalRecords]="primengTableHelper.totalRecordsCount" [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-                            </p-paginator>
-                            <span class="total-records-count">
-                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
-                            </span>
-                        </div>
-                    </div> -->
-                    <!--<Primeng-Datatable-End>-->
-
-
+                    
                         <div class="table-responsive table-scroll-horizontal-custom table-not-scroll">
                             <table class="table  table-bordered table-custom">
                                 <thead class="thead-2">
@@ -140,7 +64,7 @@
                                             {{  i + 1 }}
                                         </td>
                                         <td class="text-center">
-                                            {{item.resources.id}}
+                                            {{item.resources.resourceID}}
                                         </td>
                                         <td class="text-center ">
                                             {{item.resources.resourceType}}
@@ -162,27 +86,7 @@
                                             <a (click)="deleteResources(item.resources.resources)" href="javascript:;" *ngIf="permission.isGranted('Pages.Resources.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
                                                 <i class="la la-trash"></i>
                                             </a>
-                                        </td>
-                                        <!--
-                                    <td class="text-right">
-                                        <input [ngAutonumeric]="numberformat" matInput (change)="changePhiDang(item)"
-                                            name="{{'phidang'+i}}" [(ngModel)]="item.phiDang" placeholder="Phí đăng"
-                                            [readOnly]="!validateEnableTrangThai(item.trangThaiXuLy)"
-                                            class="form-control text-right" />
-                                    </td> -->
-                                        
-                                        <!-- <ng-template #template>
-                                            <ul nz-menu nzInDropDown nzClickHide="false"
-                                                *ngIf="validateEnableTrangThai(item.trangThaiXuLy)">
-                                                <li nz-menu-item (click)="addNhanSu(item)"
-                                                    *ngIf="isGranted('Pages.DanhSachMaTin.CapNhatGanNhanSu')"><i
-                                                        class="flaticon-users-1"></i>
-                                                    Thêm nhân sự tham gia</li>
-                                                <li nz-menu-item (click)="deleteNhanSu(item)"
-                                                    *ngIf="isGranted('Pages.DanhSachMaTin.XoaNhanSuThamGia')"><i
-                                                        class="flaticon-circle color-red"></i> Xóa nhân sự tham gia</li>                                              
-                                            </ul>
-                                        </ng-template> -->
+                                        </td>                                    
                                     </tr>
                                 </tbody>
                             </table>                   
