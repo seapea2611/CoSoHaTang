@@ -121,12 +121,22 @@ namespace Asd.Hrm.Authorization
             resources.CreateChildPermission(AppPermissions.Pages_Resources_Create, L("CreateNewResources"), multiTenancySides: MultiTenancySides.Host);
             resources.CreateChildPermission(AppPermissions.Pages_Resources_Edit, L("EditResources"), multiTenancySides: MultiTenancySides.Host);
             resources.CreateChildPermission(AppPermissions.Pages_Resources_Delete, L("DeleteResources"), multiTenancySides: MultiTenancySides.Host);
+            
+            var documentTemplates = pages.CreateChildPermission(AppPermissions.Pages_DocumentTemplates, L("DocumentTemplates"), multiTenancySides: MultiTenancySides.Host);
+            documentTemplates.CreateChildPermission(AppPermissions.Pages_DocumentTemplates_Create, L("CreateNewDocumentTemplates"), multiTenancySides: MultiTenancySides.Host);
+            documentTemplates.CreateChildPermission(AppPermissions.Pages_DocumentTemplates_Edit, L("EditDocumentTemplates"), multiTenancySides: MultiTenancySides.Host);
+            documentTemplates.CreateChildPermission(AppPermissions.Pages_DocumentTemplates_Delete, L("DeleteDocumentTemplates"), multiTenancySides: MultiTenancySides.Host);
 
             // Contractors
             var contractors = pages.CreateChildPermission(AppPermissions.Pages_Contractors, L("Contractors"), multiTenancySides: MultiTenancySides.Host);
             contractors.CreateChildPermission(AppPermissions.Pages_Contractors_Create, L("CreateContractors"), multiTenancySides: MultiTenancySides.Host);
             contractors.CreateChildPermission(AppPermissions.Pages_Contractors_Edit, L("EditContractors"), multiTenancySides: MultiTenancySides.Host);
             contractors.CreateChildPermission(AppPermissions.Pages_Contractors_Delete, L("DeleteContractors"), multiTenancySides: MultiTenancySides.Host);
+
+            var employees = pages.CreateChildPermission(AppPermissions.Pages_Employees, L("Employees"), multiTenancySides: MultiTenancySides.Host);
+            employees.CreateChildPermission(AppPermissions.Pages_Employees_Create, L("CreateNewEmployees"), multiTenancySides: MultiTenancySides.Host);
+            employees.CreateChildPermission(AppPermissions.Pages_Employees_Edit, L("EditEmployees"), multiTenancySides: MultiTenancySides.Host);
+            employees.CreateChildPermission(AppPermissions.Pages_Employees_Delete, L("DeleteEmployees"), multiTenancySides: MultiTenancySides.Host);
         }
 
         private static ILocalizableString L(string name)

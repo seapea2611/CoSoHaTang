@@ -44,7 +44,11 @@ using Asd.Hrm.WebHooks.Dto;
 using Asd.Hrm.Resources.Dtos;
 using Asd.Hrm.Contractors.Dtos;
 using Asd.Hrm.Resource;
+using Asd.Hrm.DocumentTemplates.Dtos;
+using Asd.Hrm.DocumentTemplates;
 using Asd.Hrm.Contractors;
+using Asd.Hrm.Employees.Dtos;
+using Asd.Hrm.Employee;
 
 namespace Asd.Hrm
 {
@@ -173,10 +177,21 @@ namespace Asd.Hrm
             configuration.CreateMap<Asd.Hrm.Resource.Resources, ResourcesDto>();
             configuration.CreateMap<Asd.Hrm.Resource.Resources, ResourcesDto>().ReverseMap();
 
+            configuration.CreateMap<CreateOrEditDocumentTemplatesDto, Asd.Hrm.DocumentTemplates.DocumentTemplates>();
+            configuration.CreateMap<CreateOrEditDocumentTemplatesDto, Asd.Hrm.DocumentTemplates.DocumentTemplates>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.DocumentTemplates.DocumentTemplates, DocumentTemplatesDto>();
+            configuration.CreateMap<Asd.Hrm.DocumentTemplates.DocumentTemplates, DocumentTemplatesDto>().ReverseMap();
+
             configuration.CreateMap<CreateOrEditContractorsDto, Asd.Hrm.Contractor.Contractors>();
             configuration.CreateMap<CreateOrEditContractorsDto, Asd.Hrm.Contractor.Contractors>().ReverseMap();
             configuration.CreateMap<Asd.Hrm.Contractor.Contractors, ContractorsDto>();
             configuration.CreateMap<Asd.Hrm.Contractor.Contractors, ContractorsDto>().ReverseMap();
+
+            configuration.CreateMap<CreateOrEditEmployeesDto, Asd.Hrm.Employee.Employees>();
+            configuration.CreateMap<CreateOrEditEmployeesDto, Asd.Hrm.Employee.Employees>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.Employee.Employees, EmployeesDto>();
+            configuration.CreateMap<Asd.Hrm.Employee.Employees, EmployeesDto>().ReverseMap();
+
             /*configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>();
             configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>().ReverseMap();
             configuration.CreateMap<BusinessFullAudit, BusinessDto>();
