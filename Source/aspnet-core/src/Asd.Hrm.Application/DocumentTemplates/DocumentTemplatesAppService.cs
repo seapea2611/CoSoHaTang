@@ -77,7 +77,7 @@ namespace Asd.Hrm.DocumentTemplates
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditDocumentTemplatesDto input)
+        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditDocumentTemplatesDto input)
         {
             if (input.Id == null)
             {
@@ -90,7 +90,7 @@ namespace Asd.Hrm.DocumentTemplates
         }
 
         [AbpAuthorize(AppPermissions.Pages_DocumentTemplates_Create)]
-        public async Task Create(CreateOrEditDocumentTemplatesDto input)
+        public async System.Threading.Tasks.Task Create(CreateOrEditDocumentTemplatesDto input)
         {
             try
             {
@@ -104,14 +104,14 @@ namespace Asd.Hrm.DocumentTemplates
         }
 
         [AbpAuthorize(AppPermissions.Pages_DocumentTemplates_Edit)]
-        public async Task Update(CreateOrEditDocumentTemplatesDto input)
+        public async System.Threading.Tasks.Task Update(CreateOrEditDocumentTemplatesDto input)
         {
             var documentTemplates = await _documentTemplatesRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, documentTemplates);
         }
 
         [AbpAuthorize(AppPermissions.Pages_DocumentTemplates_Delete)]
-        public async Task Delete(EntityDto input)
+        public async System.Threading.Tasks.Task Delete(EntityDto input)
         {
             await _documentTemplatesRepository.DeleteAsync(input.Id);
         }

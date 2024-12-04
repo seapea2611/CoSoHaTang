@@ -77,7 +77,7 @@ namespace Asd.Hrm.Contractors
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditContractorsDto input)
+        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditContractorsDto input)
         {
             if (input.Id == null)
             {
@@ -90,7 +90,7 @@ namespace Asd.Hrm.Contractors
         }
 
         [AbpAuthorize(AppPermissions.Pages_Contractors_Create)]
-        public async Task Create(CreateOrEditContractorsDto input)
+        public async System.Threading.Tasks.Task Create(CreateOrEditContractorsDto input)
         {
             try
             {
@@ -104,14 +104,14 @@ namespace Asd.Hrm.Contractors
         }
 
         [AbpAuthorize(AppPermissions.Pages_Contractors_Edit)]
-        public async Task Update(CreateOrEditContractorsDto input)
+        public async System.Threading.Tasks.Task Update(CreateOrEditContractorsDto input)
         {
             var contractors = await _contractorsRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, contractors);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Contractors_Delete)]
-        public async Task Delete(EntityDto input)
+        public async System.Threading.Tasks.Task Delete(EntityDto input)
         {
             await _contractorsRepository.DeleteAsync(input.Id);
         }

@@ -76,7 +76,7 @@ namespace Asd.Hrm.Employees
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditEmployeesDto input)
+        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditEmployeesDto input)
         {
             if (input.Id == null)
             {
@@ -89,7 +89,7 @@ namespace Asd.Hrm.Employees
         }
 
         [AbpAuthorize(AppPermissions.Pages_Employees_Create)]
-        public async Task Create(CreateOrEditEmployeesDto input)
+        public async System.Threading.Tasks.Task Create(CreateOrEditEmployeesDto input)
         {
             try
             {
@@ -103,14 +103,14 @@ namespace Asd.Hrm.Employees
         }
 
         [AbpAuthorize(AppPermissions.Pages_Employees_Edit)]
-        public async Task Update(CreateOrEditEmployeesDto input)
+        public async System.Threading.Tasks.Task Update(CreateOrEditEmployeesDto input)
         {
             var employees = await _employeesRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, employees);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Employees_Delete)]
-        public async Task Delete(EntityDto input)
+        public async System.Threading.Tasks.Task Delete(EntityDto input)
         {
             await _employeesRepository.DeleteAsync(input.Id);
         }

@@ -127,5 +127,11 @@
         public const string Pages_Projects_Create = "Pages.Projects.Create";
         public const string Pages_Projects_Edit = "Pages.Projects.Edit";
         public const string Pages_Projects_Delete = "Pages.Projects.Delete";
+
+        // Tasks
+        public const string Pages_Tasks = "Pages.Tasks";
+        public const string Pages_Tasks_Create = "Pages.Tasks.Create";
+        public const string Pages_Tasks_Edit = "Pages.Tasks.Edit";
+        public const string Pages_Tasks_Delete = "Pages.Tasks.Delete";
     }
 }

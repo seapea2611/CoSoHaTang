@@ -14,6 +14,7 @@ using Asd.Hrm.Projects.Dtos;
 
 namespace Asd.Hrm.Project
 {
+    [AbpAuthorize(AppPermissions.Pages_Projects)]
     public class ProjectsAppService : HrmAppServiceBase, IProjectsAppService
     {
         private readonly IRepository<Projects> _projectsRepository;
@@ -77,7 +78,7 @@ namespace Asd.Hrm.Project
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditProjectsDto input)
+        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditProjectsDto input)
         {
             if (input.Id == null)
             {
@@ -90,7 +91,7 @@ namespace Asd.Hrm.Project
         }
 
         [AbpAuthorize(AppPermissions.Pages_Projects_Create)]
-        public async Task Create(CreateOrEditProjectsDto input)
+        public async System.Threading.Tasks.Task Create(CreateOrEditProjectsDto input)
         {
             try
             {
@@ -104,14 +105,14 @@ namespace Asd.Hrm.Project
         }
 
         [AbpAuthorize(AppPermissions.Pages_Projects_Edit)]
-        public async Task Update(CreateOrEditProjectsDto input)
+        public async System.Threading.Tasks.Task Update(CreateOrEditProjectsDto input)
         {
             var projects = await _projectsRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, projects);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Projects_Delete)]
-        public async Task Delete(EntityDto input)
+        public async System.Threading.Tasks.Task Delete(EntityDto input)
         {
             await _projectsRepository.DeleteAsync(input.Id);
         }
