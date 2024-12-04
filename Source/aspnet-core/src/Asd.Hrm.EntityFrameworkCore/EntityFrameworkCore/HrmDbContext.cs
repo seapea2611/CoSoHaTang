@@ -12,7 +12,10 @@ using Asd.Hrm.MultiTenancy.Accounting;
 using Asd.Hrm.MultiTenancy.Payments;
 using Asd.Hrm.Storage;
 using Asd.Hrm.Resource;
+using Asd.Hrm.DocumentTemplates;
+using Asd.Hrm.Contractor;
 using Asd.Hrm.Employee;
+using Asd.Hrm.Project;
 
 namespace Asd.Hrm.EntityFrameworkCore
 {
@@ -39,8 +42,14 @@ namespace Asd.Hrm.EntityFrameworkCore
         public virtual DbSet<UserDelegation> UserDelegations { get; set; }
 
         public virtual DbSet<Resources> Resources { get; set; }
+        public virtual DbSet<Projects> Projects { get; set; }
 
+        public virtual DbSet<Asd.Hrm.DocumentTemplates.DocumentTemplates> DocumentTemplates { get; set; }
+
+
+        public virtual DbSet<Contractors> Contractors { get; set; }
         public virtual DbSet<Employees> Employees { get; set; }
+        public virtual DbSet<Asd.Hrm.Tasks.Tasks> Tasks { get; set; }
 
         public HrmDbContext(DbContextOptions<HrmDbContext> options)
             : base(options)

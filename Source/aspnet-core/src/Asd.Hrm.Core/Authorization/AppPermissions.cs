@@ -104,10 +104,34 @@
         public const string Pages_Resources_Edit = "Pages.Resources.Edit";
         public const string Pages_Resources_Delete = "Pages.Resources.Delete";
 
+        //DocumentTemplates
+        public const string Pages_DocumentTemplates = "Pages.DocumentTemplates";
+        public const string Pages_DocumentTemplates_Create = "Pages.DocumentTemplates.Create";
+        public const string Pages_DocumentTemplates_Edit = "Pages.DocumentTemplates.Edit";
+        public const string Pages_DocumentTemplates_Delete = "Pages.DocumentTemplates.Delete";
+
+        // Contractors
+        public const string Pages_Contractors = "Pages.Contractors";
+        public const string Pages_Contractors_Create = "Pages.Contractors.Create";
+        public const string Pages_Contractors_Edit = "Pages.Contractors.Edit";
+        public const string Pages_Contractors_Delete = "Pages.Contractors.Delete";
+
         // Employees
         public const string Pages_Employees = "Pages.Employees";
         public const string Pages_Employees_Create = "Pages.Employees.Create";
         public const string Pages_Employees_Edit = "Pages.Employees.Edit";
         public const string Pages_Employees_Delete = "Pages.Employees.Delete";
+
+        // Projects
+        public const string Pages_Projects = "Pages.Projects";
+        public const string Pages_Projects_Create = "Pages.Projects.Create";
+        public const string Pages_Projects_Edit = "Pages.Projects.Edit";
+        public const string Pages_Projects_Delete = "Pages.Projects.Delete";
+
+        // Tasks
+        public const string Pages_Tasks = "Pages.Tasks";
+        public const string Pages_Tasks_Create = "Pages.Tasks.Create";
+        public const string Pages_Tasks_Edit = "Pages.Tasks.Edit";
+        public const string Pages_Tasks_Delete = "Pages.Tasks.Delete";
     }
 }
