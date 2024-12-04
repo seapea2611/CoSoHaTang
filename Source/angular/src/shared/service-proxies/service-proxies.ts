@@ -10411,6 +10411,414 @@ export class ProfileServiceProxy {
 }
 
 @Injectable()
+export class ProjectsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param projectNameFilter (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filter: string | undefined, projectNameFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetProjectsForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Projects/GetAll?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (projectNameFilter === null)
+            throw new Error("The parameter 'projectNameFilter' cannot be null.");
+        else if (projectNameFilter !== undefined)
+            url_ += "ProjectNameFilter=" + encodeURIComponent("" + projectNameFilter) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetProjectsForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetProjectsForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfGetProjectsForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetProjectsForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetProjectsForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getProjectsForView(id: number | undefined): Observable<GetProjectsForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Projects/GetProjectsForView?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProjectsForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProjectsForView(<any>response_);
+                } catch (e) {
+                    return <Observable<GetProjectsForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetProjectsForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProjectsForView(response: HttpResponseBase): Observable<GetProjectsForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetProjectsForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetProjectsForViewDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getProjectsForEdit(id: number | undefined): Observable<GetProjectsForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Projects/GetProjectsForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetProjectsForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetProjectsForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetProjectsForEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetProjectsForEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetProjectsForEdit(response: HttpResponseBase): Observable<GetProjectsForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetProjectsForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetProjectsForEditOutput>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditProjectsDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Projects/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateOrEditProjectsDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Projects/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    update(body: CreateOrEditProjectsDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Projects/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Projects/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
 export class ResourcesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -17631,6 +18039,74 @@ export interface ICreateOrEditEmployeesDto {
     id: number | undefined;
 }
 
+export class CreateOrEditProjectsDto implements ICreateOrEditProjectsDto {
+    projectID!: string | undefined;
+    projectName!: string | undefined;
+    purpose!: string | undefined;
+    startDate!: DateTime;
+    estimatedEndDate!: DateTime;
+    budget!: number;
+    responsibleEmployeeID!: number;
+    progress!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditProjectsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.projectID = _data["projectID"];
+            this.projectName = _data["projectName"];
+            this.purpose = _data["purpose"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : <any>undefined;
+            this.estimatedEndDate = _data["estimatedEndDate"] ? DateTime.fromISO(_data["estimatedEndDate"].toString()) : <any>undefined;
+            this.budget = _data["budget"];
+            this.responsibleEmployeeID = _data["responsibleEmployeeID"];
+            this.progress = _data["progress"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditProjectsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditProjectsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["projectID"] = this.projectID;
+        data["projectName"] = this.projectName;
+        data["purpose"] = this.purpose;
+        data["startDate"] = this.startDate ? this.startDate.toString() : <any>undefined;
+        data["estimatedEndDate"] = this.estimatedEndDate ? this.estimatedEndDate.toString() : <any>undefined;
+        data["budget"] = this.budget;
+        data["responsibleEmployeeID"] = this.responsibleEmployeeID;
+        data["progress"] = this.progress;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditProjectsDto {
+    projectID: string | undefined;
+    projectName: string | undefined;
+    purpose: string | undefined;
+    startDate: DateTime;
+    estimatedEndDate: DateTime;
+    budget: number;
+    responsibleEmployeeID: number;
+    progress: string | undefined;
+    id: number | undefined;
+}
+
 export class CreateOrEditResourcesDto implements ICreateOrEditResourcesDto {
     resourceID!: number;
     resourceType!: string | undefined;
@@ -21868,6 +22344,78 @@ export interface IGetProfitShareOutput {
     profitShares: number[] | undefined;
 }
 
+export class GetProjectsForEditOutput implements IGetProjectsForEditOutput {
+    projects!: CreateOrEditProjectsDto;
+
+    constructor(data?: IGetProjectsForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.projects = _data["projects"] ? CreateOrEditProjectsDto.fromJS(_data["projects"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetProjectsForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetProjectsForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["projects"] = this.projects ? this.projects.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetProjectsForEditOutput {
+    projects: CreateOrEditProjectsDto;
+}
+
+export class GetProjectsForViewDto implements IGetProjectsForViewDto {
+    projects!: ProjectsDto;
+
+    constructor(data?: IGetProjectsForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.projects = _data["projects"] ? ProjectsDto.fromJS(_data["projects"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetProjectsForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetProjectsForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["projects"] = this.projects ? this.projects.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetProjectsForViewDto {
+    projects: ProjectsDto;
+}
+
 export class GetRecentTenantsOutput implements IGetRecentTenantsOutput {
     recentTenantsDayCount!: number;
     maxRecentTenantsShownCount!: number;
@@ -25579,6 +26127,54 @@ export interface IPagedResultDtoOfGetEmployeesForViewDto {
     items: GetEmployeesForViewDto[] | undefined;
 }
 
+export class PagedResultDtoOfGetProjectsForViewDto implements IPagedResultDtoOfGetProjectsForViewDto {
+    totalCount!: number;
+    items!: GetProjectsForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetProjectsForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetProjectsForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetProjectsForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetProjectsForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetProjectsForViewDto {
+    totalCount: number;
+    items: GetProjectsForViewDto[] | undefined;
+}
+
 export class PagedResultDtoOfGetResourcesForViewDto implements IPagedResultDtoOfGetResourcesForViewDto {
     totalCount!: number;
     items!: GetResourcesForViewDto[] | undefined;
@@ -26288,6 +26884,74 @@ export interface IPayPalConfigurationDto {
     clientId: string | undefined;
     demoUsername: string | undefined;
     demoPassword: string | undefined;
+}
+
+export class ProjectsDto implements IProjectsDto {
+    projectID!: string | undefined;
+    projectName!: string | undefined;
+    purpose!: string | undefined;
+    startDate!: DateTime;
+    estimatedEndDate!: DateTime;
+    budget!: number;
+    responsibleEmployeeID!: number;
+    progress!: string | undefined;
+    id!: number;
+
+    constructor(data?: IProjectsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.projectID = _data["projectID"];
+            this.projectName = _data["projectName"];
+            this.purpose = _data["purpose"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : <any>undefined;
+            this.estimatedEndDate = _data["estimatedEndDate"] ? DateTime.fromISO(_data["estimatedEndDate"].toString()) : <any>undefined;
+            this.budget = _data["budget"];
+            this.responsibleEmployeeID = _data["responsibleEmployeeID"];
+            this.progress = _data["progress"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProjectsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProjectsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["projectID"] = this.projectID;
+        data["projectName"] = this.projectName;
+        data["purpose"] = this.purpose;
+        data["startDate"] = this.startDate ? this.startDate.toString() : <any>undefined;
+        data["estimatedEndDate"] = this.estimatedEndDate ? this.estimatedEndDate.toString() : <any>undefined;
+        data["budget"] = this.budget;
+        data["responsibleEmployeeID"] = this.responsibleEmployeeID;
+        data["progress"] = this.progress;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProjectsDto {
+    projectID: string | undefined;
+    projectName: string | undefined;
+    purpose: string | undefined;
+    startDate: DateTime;
+    estimatedEndDate: DateTime;
+    budget: number;
+    responsibleEmployeeID: number;
+    progress: string | undefined;
+    id: number;
 }
 
 export class RecentTenant implements IRecentTenant {
