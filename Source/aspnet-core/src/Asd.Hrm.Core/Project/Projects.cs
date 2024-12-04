@@ -11,7 +11,7 @@ namespace Asd.Hrm.Project
     [Table("Projects")]
     public class Projects : Entity
     {
-        public virtual int ProjectID { set; get; }
+        public virtual string ProjectID { set; get; }
         public virtual string ProjectName { set; get;}
         public virtual string Purpose { set; get;}
         public virtual DateTime StartDate { set; get; }

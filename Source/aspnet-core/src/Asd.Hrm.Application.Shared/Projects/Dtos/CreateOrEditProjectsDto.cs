@@ -7,7 +7,7 @@ namespace Asd.Hrm.Projects.Dtos
 {
     public class CreateOrEditProjectsDto : EntityDto<int?>
     {
-        public virtual int ProjectID { set; get; }
+        public virtual string ProjectID { set; get; }
         public virtual string ProjectName { set; get; }
         public virtual string Purpose { set; get; }
         public virtual DateTime StartDate { set; get; }

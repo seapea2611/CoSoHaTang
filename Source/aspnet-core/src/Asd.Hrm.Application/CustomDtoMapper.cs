@@ -49,6 +49,7 @@ using Asd.Hrm.DocumentTemplates;
 using Asd.Hrm.Contractors;
 using Asd.Hrm.Employees.Dtos;
 using Asd.Hrm.Employee;
+using Asd.Hrm.Projects.Dtos;
 
 namespace Asd.Hrm
 {
@@ -192,10 +193,10 @@ namespace Asd.Hrm
             configuration.CreateMap<Asd.Hrm.Employee.Employees, EmployeesDto>();
             configuration.CreateMap<Asd.Hrm.Employee.Employees, EmployeesDto>().ReverseMap();
 
-            /*configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>();
-            configuration.CreateMap<CreateOrEditResourcesDto, ResourcesFullAudit>().ReverseMap();
-            configuration.CreateMap<BusinessFullAudit, BusinessDto>();
-            configuration.CreateMap<BusinessFullAudit, BusinessDto>().ReverseMap();*/
+            configuration.CreateMap<CreateOrEditProjectsDto, Asd.Hrm.Project.Projects>();
+            configuration.CreateMap<CreateOrEditProjectsDto, Asd.Hrm.Project.Projects>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.Project.Projects, ProjectsDto>();
+            configuration.CreateMap<Asd.Hrm.Project.Projects, ProjectsDto>().ReverseMap();
         }
     }
 }

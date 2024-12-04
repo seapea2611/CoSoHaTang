@@ -121,5 +121,11 @@
         public const string Pages_Employees_Create = "Pages.Employees.Create";
         public const string Pages_Employees_Edit = "Pages.Employees.Edit";
         public const string Pages_Employees_Delete = "Pages.Employees.Delete";
+
+        // Projects
+        public const string Pages_Projects = "Pages.Projects";
+        public const string Pages_Projects_Create = "Pages.Projects.Create";
+        public const string Pages_Projects_Edit = "Pages.Projects.Edit";
+        public const string Pages_Projects_Delete = "Pages.Projects.Delete";
     }
 }

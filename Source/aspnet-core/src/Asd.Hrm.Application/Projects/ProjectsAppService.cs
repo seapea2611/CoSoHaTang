@@ -2,15 +2,15 @@
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Asd.Hrm.Authorization;
-using Asd.Hrm.Projects;
-using Asd.Hrm.Projects.Dtos;
-using Asd.Hrm.Resources.Dtos;
-using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abp.Linq.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Asd.Hrm.Projects;
+using Asd.Hrm.Projects.Dtos;
 
 namespace Asd.Hrm.Project
 {
@@ -25,13 +25,11 @@ namespace Asd.Hrm.Project
 
         public async Task<PagedResultDto<GetProjectsForViewDto>> GetAll(GetAllProjectsInput input)
         {
-            var filteredProjects = _projectsRepository.GetAll()
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.UnitType.Contains(input.Filter) || e.ResourceType.Contains(input.Filter) || e.Supplier.Contains(input.Filter))
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.UnitTypeFilter), e => e.UnitType.ToLower() == input.UnitTypeFilter.ToLower().Trim())
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.ResourceTypeFilter), e => e.ResourceType.ToLower() == input.ResourceTypeFilter.ToLower().Trim())
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.SupplierFilter), e => e.Supplier.ToLower() == input.SupplierFilter.ToLower().Trim());
+            var filteredResources = _projectsRepository.GetAll()
+                                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.ProjectName.Contains(input.Filter))
+                                        .WhereIf(!string.IsNullOrWhiteSpace(input.ProjectNameFilter), e => e.ProjectName.ToLower() == input.ProjectNameFilter.ToLower().Trim());
 
-            var query = (from o in filteredProjects
+            var query = (from o in filteredResources
                          select new GetProjectsForViewDto()
                          {
                              Projects = ObjectMapper.Map<ProjectsDto>(o)
@@ -39,44 +37,47 @@ namespace Asd.Hrm.Project
 
             var totalCount = await query.CountAsync();
 
-            var projects = await query
+            var resources = await query
                 .PageBy(input)
                 .ToListAsync();
 
             return new PagedResultDto<GetProjectsForViewDto>(
                 totalCount,
-                projects
+                resources
             );
         }
 
-        public async Task<GetResourcesForViewDto> GetResourcesForView(int id)
+        public async Task<GetProjectsForViewDto> GetProjectsForView(int id)
         {
-            var Resources = await _resourcesRepository.GetAsync(id);
+            var Projects = await _projectsRepository.GetAsync(id);
 
-            var output = new GetResourcesForViewDto { Resources = ObjectMapper.Map<ResourcesDto>(Resources) };
+            var output = new GetProjectsForViewDto { Projects = ObjectMapper.Map<ProjectsDto>(Projects) };
 
             return output;
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Resources_Edit)]
-        public async Task<GetResourcesForEditOutput> GetResourcesForEdit(EntityDto input)
+        [AbpAuthorize(AppPermissions.Pages_Projects_Edit)]
+        public async Task<GetProjectsForEditOutput> GetProjectsForEdit(EntityDto input)
         {
-            var Resources = await _resourcesRepository.FirstOrDefaultAsync(input.Id);
-            var ResourcesDto = new CreateOrEditResourcesDto()
+            var Projects = await _projectsRepository.FirstOrDefaultAsync(input.Id);
+            var ProjectsDto = new CreateOrEditProjectsDto()
             {
-                Id = Resources.Id,
-                ResourceID = Resources.ResourceID,
-                ResourceType = Resources.ResourceType,
-                UnitCost = Resources.UnitCost,
-                UnitType = Resources.UnitType,
-                Supplier = Resources.Supplier
+                Id = Projects.Id,
+                ProjectID = Projects.ProjectID,
+                ProjectName = Projects.ProjectName,
+                Purpose = Projects.Purpose,
+                StartDate = Projects.StartDate,
+                EstimatedEndDate = Projects.EstimatedEndDate,
+                Budget = Projects.Budget,
+                ResponsibleEmployeeID = Projects.ResponsibleEmployeeID,
+                Progress = Projects.Progress
             };
 
-            var output = new GetResourcesForEditOutput() { Resources = ResourcesDto };
+            var output = new GetProjectsForEditOutput() { Projects = ProjectsDto };
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditResourcesDto input)
+        public async Task CreateOrEdit(CreateOrEditProjectsDto input)
         {
             if (input.Id == null)
             {
@@ -88,13 +89,13 @@ namespace Asd.Hrm.Project
             }
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Resources_Create)]
-        public async Task Create(CreateOrEditResourcesDto input)
+        [AbpAuthorize(AppPermissions.Pages_Projects_Create)]
+        public async Task Create(CreateOrEditProjectsDto input)
         {
             try
             {
-                var resources = ObjectMapper.Map<Asd.Hrm.Resource.Resources>(input);
-                await _resourcesRepository.InsertAsync(resources);
+                var projects = ObjectMapper.Map<Projects>(input);
+                await _projectsRepository.InsertAsync(projects);
             }
             catch (Exception ex)
             {
@@ -102,17 +103,17 @@ namespace Asd.Hrm.Project
             }
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Resources_Edit)]
-        public async Task Update(CreateOrEditResourcesDto input)
+        [AbpAuthorize(AppPermissions.Pages_Projects_Edit)]
+        public async Task Update(CreateOrEditProjectsDto input)
         {
-            var resources = await _resourcesRepository.FirstOrDefaultAsync((int)input.Id);
-            ObjectMapper.Map(input, resources);
+            var projects = await _projectsRepository.FirstOrDefaultAsync((int)input.Id);
+            ObjectMapper.Map(input, projects);
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Resources_Delete)]
+        [AbpAuthorize(AppPermissions.Pages_Projects_Delete)]
         public async Task Delete(EntityDto input)
         {
-            await _resourcesRepository.DeleteAsync(input.Id);
+            await _projectsRepository.DeleteAsync(input.Id);
         }
     }
 }

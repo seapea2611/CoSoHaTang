@@ -15,6 +15,7 @@ using Asd.Hrm.Resource;
 using Asd.Hrm.DocumentTemplates;
 using Asd.Hrm.Contractor;
 using Asd.Hrm.Employee;
+using Asd.Hrm.Project;
 
 namespace Asd.Hrm.EntityFrameworkCore
 {
@@ -41,6 +42,8 @@ namespace Asd.Hrm.EntityFrameworkCore
         public virtual DbSet<UserDelegation> UserDelegations { get; set; }
 
         public virtual DbSet<Resources> Resources { get; set; }
+        public virtual DbSet<Projects> Projects { get; set; }
+
         public virtual DbSet<Asd.Hrm.DocumentTemplates.DocumentTemplates> DocumentTemplates { get; set; }
 
 
