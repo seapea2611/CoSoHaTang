@@ -21,3 +21,4 @@ aspnet-core/src/Asd.TTS.Web.Mvc/healthchecksdb
 
 /Source/aspnet-core/src/Asd.Hrm.Web.Mvc/appsettings.json
 /Source/aspnet-core/src/Asd.Hrm.Web.Host/appsettings.json
+/Source/angular/node_modules/
