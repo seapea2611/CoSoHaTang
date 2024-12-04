@@ -11,6 +11,7 @@ using Asd.Hrm.Resource;
 using Asd.Hrm.Resources.Dtos;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Twilio.TwiML.Voice;
 
 namespace Asd.Hrm.Resources
 {
@@ -77,7 +78,7 @@ namespace Asd.Hrm.Resources
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditResourcesDto input)
+        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditResourcesDto input)
         {
             if (input.Id == null)
             {
@@ -90,7 +91,7 @@ namespace Asd.Hrm.Resources
         }
 
         [AbpAuthorize(AppPermissions.Pages_Resources_Create)]
-        public async Task Create(CreateOrEditResourcesDto input)
+        public async System.Threading.Tasks.Task Create(CreateOrEditResourcesDto input)
         {
             try
             {
@@ -104,14 +105,14 @@ namespace Asd.Hrm.Resources
         }
 
         [AbpAuthorize(AppPermissions.Pages_Resources_Edit)]
-        public async Task Update(CreateOrEditResourcesDto input)
+        public async System.Threading.Tasks.Task Update(CreateOrEditResourcesDto input)
         {
             var resources = await _resourcesRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, resources);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Resources_Delete)]
-        public async Task Delete(EntityDto input)
+        public async System.Threading.Tasks.Task Delete(EntityDto input)
         {
             await _resourcesRepository.DeleteAsync(input.Id);
         }
