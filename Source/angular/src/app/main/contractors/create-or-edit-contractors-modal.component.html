@@ -1,0 +1,45 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #contractorsForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="contractors.id"><b>{{l("EditContractors")}}</b></span>
+                        <span *ngIf="!contractors.id"><b>{{l("CreateNewContractors")}}</b></span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="contractorName">{{l("ContractorName")}}</label>
+                        <textarea [placeholder]="l('ContractorName')" name="contractorName" id="contractorName" class="form-control" [(ngModel)]="contractors.contractorName"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">{{l("Phone")}}</label>
+                        <textarea [placeholder]="l('Phone')" name="Phone" id="Phone" class="form-control" [(ngModel)]="contractors.phone"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailContractor">{{l("EmailContractor")}}</label>
+                        <textarea [placeholder]="l('EmailContractor')" name="emailContractor" id="emailContractor" class="form-control" [(ngModel)]="contractors.emailContractor"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="specialization">{{l("Specialization")}}</label>
+                        <textarea [placeholder]="l('Specialization')" name="specialization" id="specialization" class="form-control" [(ngModel)]="contractors.specialization"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!contractorsForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

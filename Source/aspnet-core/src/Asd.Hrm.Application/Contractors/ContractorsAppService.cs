@@ -41,13 +41,13 @@ namespace Asd.Hrm.Contractors
 
             var totalCount = await query.CountAsync();
 
-            var resources = await query
+            var contractors = await query
                 .PageBy(input)
                 .ToListAsync();
 
             return new PagedResultDto<GetContractorsForViewDto>(
                 totalCount,
-                resources
+                contractors
             );
         }
 

@@ -1,0 +1,28 @@
+.primeng-datatable-container .ui-table td {
+    border: 1px solid #e9ecef !important;
+}
+
+.primeng-datatable-container table tbody tr:nth-child(even) {
+    background-color: #f9f9f9 !important;
+}
+
+.primeng-datatable-container .ui-table th {
+    border: 1px solid #e9ecef !important;
+}
+
+.primeng-datatable-container table thead tr th {
+    background-color: #f8f9fa !important;
+}
+
+.primeng-datatable-container .ui-table table tbody tr td:last-child {
+    border-right: 1px solid #e9ecef !important;
+}
+
+.modal-body>.form-control>label {
+    font-weight: 400 !important;
+}
+
+.form-control.m-input--pill.form-control-sm {
+    height: calc(2.3rem + 2px) !important;
+    border-color: rgb(204, 204, 204) !important;
+}
