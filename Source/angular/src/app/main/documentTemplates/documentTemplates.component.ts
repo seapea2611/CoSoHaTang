@@ -65,6 +65,7 @@ export class DocumentTemplatesComponent extends AppComponentBase {
     }
 
     reloadPage(): void {
+        console.log(`The value of paginator on reloadPage() is ${this.paginator}`)
         this.paginator.changePage(this.paginator.getPage());
     }
 
@@ -82,6 +83,7 @@ export class DocumentTemplatesComponent extends AppComponentBase {
             cancelButtonText: this.l('No')
         }).then(result => {
             if (result.value) {
+                console.log(`the deleted data is: ${JSON.stringify(documentTemplates)}`)
                 this._documentTemplatesServiceProxy.delete(documentTemplates.id)
                     .subscribe(() => {
                             this.reloadPage();

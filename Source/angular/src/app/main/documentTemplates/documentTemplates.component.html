@@ -62,19 +62,19 @@
                                             {{  i + 1 }}
                                         </td>
                                         <td class="text-center">
-                                            {{item.documentTemplates.TemplateName}}
+                                            {{item.documentTemplates.templateName}}
                                         </td>
                                         <td class="text-center ">
-                                            {{item.documentTemplates.AttachedFileLink}}
+                                            {{item.documentTemplates.attachedFileLink}}
                                         </td>
                                         <td class="text-center ">
-                                            {{ item.documentTemplates.AttachedFileName }}
+                                            {{ item.documentTemplates.attachedFileName }}
                                         </td>
                                         <td style="width: 80px" class="text-center" [hidden]="!isGrantedAny('Pages.DocumentTemplates.Edit', 'Pages.DocumentTemplates.Delete')">
                                             <a (click)="createOrEditDocumentTemplatesModal.show(item.documentTemplates.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
                                                 <i class="la la-edit"></i>
                                             </a>
-                                            <a (click)="deleteDocumentTemplates(item.documentTemplates.documentTemplates)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
+                                            <a (click)="deleteDocumentTemplates(item.documentTemplates)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
                                                 <i class="la la-trash"></i>
                                             </a>
                                         </td>                                    
