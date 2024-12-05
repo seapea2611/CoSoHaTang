@@ -1,6 +1,7 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {ResourcesComponent} from './resources/resources.component';
+import {ProjectsComponent} from './projects/projects.component'
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import {ResourcesComponent} from './resources/resources.component';
                         data: { permission: 'Pages.Tenant.Dashboard' }
                     },
                     { path: 'resources/resources', component: ResourcesComponent, data: { permission: 'Pages.Resources' }  },
+                    { path: 'projects/projects', component: ProjectsComponent, data: { permission: 'Pages.Projects' }  },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: 'dashboard' }
                 ]

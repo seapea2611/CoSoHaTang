@@ -114,5 +114,12 @@ namespace Asd.Hrm.Employees
         {
             await _employeesRepository.DeleteAsync(input.Id);
         }
+
+        public async Task<string> GetEmployeeName(int id)
+        {
+            var Employees = await _employeesRepository.GetAsync(id);
+
+            return Employees.FullName;
+        }
     }
 }

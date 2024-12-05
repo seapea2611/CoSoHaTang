@@ -7,5 +7,6 @@ namespace Asd.Hrm.Projects.Dtos
     public class GetProjectsForViewDto
     {
         public ProjectsDto Projects { get; set; }
+        public string EmployeeName { set; get; }
     }
 }

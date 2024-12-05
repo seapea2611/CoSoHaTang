@@ -14,17 +14,16 @@
                     <div class="col-md-6 search-filter">
                         <div class="filter-left">
                             <input class="form-control form-control-sm m-input m-input--air m-input--pill" [(ngModel)]="filterText" name="filtertext" [placeholder]="l('Resources')" type="text" (keyup.enter)="getResources()">
+                            <a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" (click)="getResources()">
+                                <i class="fa flaticon-search"></i>
+                            </a>
+                            <a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill" (click)="clearFilter()">
+                                <i class="fa flaticon-refresh"></i>
+                            </a>
                         </div>
                     </div>
 
-                    <div class="col-md-6 pl-0">
-                        <a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" (click)="getResources()">
-                            <i class="fa flaticon-search"></i>
-                        </a>
-                        <a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill" (click)="clearFilter()">
-                            <i class="fa flaticon-refresh"></i>
-                        </a>
-                    </div>
+                    
                 </div>
                 <div class="m-portlet__head-tools">
                     <ul class="m-portlet__nav">

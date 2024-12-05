@@ -1,0 +1,95 @@
+import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ProjectsServiceProxy, ProjectsDto} from '@shared/service-proxies/service-proxies';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateOrEditProjectsModalComponent } from './create-or-edit-projects-modal.component';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+//import { Table } from 'primeng/components/table/table';
+import { Table } from 'primeng/table';
+//import { Paginator } from 'primeng/components/paginator/paginator';
+import { Paginator } from 'primeng/paginator';
+//import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
+import { LazyLoadEvent } from 'primeng/api';
+import { FileDownloadService } from '@shared/utils/file-download.service';
+import Swal from "sweetalert2";
+
+@Component({
+    templateUrl: './projects.component.html',
+    animations: [appModuleAnimation()],
+    styleUrls:['./projects.component.css']
+})
+export class ProjectsComponent extends AppComponentBase {
+
+    @ViewChild('createOrEditProjectsModal') createOrEditProjectsModal: CreateOrEditProjectsModalComponent;
+    @ViewChild('dataTable') dataTable: Table;
+    @ViewChild('paginator') paginator: Paginator;
+
+    advancedFiltersAreShown = false;
+    filterText = '';
+    ProjectNameFilter = '';
+    UnitTypeFilter = '';
+    SupplierFilter = '';
+    data: any;
+
+    constructor(
+        injector: Injector,
+        private _projectsServiceProxy: ProjectsServiceProxy,
+    ) {
+        super(injector);
+    }
+    
+    ngOnInit(): void {
+        this.getProjects();
+    }
+
+    getProjects(event?: LazyLoadEvent) {
+
+        this.primengTableHelper.showLoadingIndicator();
+
+        this._projectsServiceProxy.getAll(        
+            this.filterText,
+            this.ProjectNameFilter,
+            '',
+            0,
+            10
+        ).subscribe(result => {
+            console.log(result);
+            this.primengTableHelper.totalRecordsCount = result.totalCount;
+            this.primengTableHelper.records = result.items;
+            this.primengTableHelper.hideLoadingIndicator();
+        });
+    }
+
+    reloadPage(): void {
+        this.paginator.changePage(this.paginator.getPage());
+    }
+
+    createProjects(): void {
+        this.createOrEditProjectsModal.show();
+    }
+
+    deleteProjects(projects: ProjectsDto): void {
+        Swal.fire({
+            title: this.l('MsgConfirmDeleteProjects'),
+            text: '',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: this.l('Yes'),
+            cancelButtonText: this.l('No')
+        }).then(result => {
+            if (result.value) {
+                this._projectsServiceProxy.delete(projects.id)
+                    .subscribe(() => {
+                            this.reloadPage();
+                            this.notify.success(this.l('SuccessfullyDeleted'));
+                    });
+            }
+        });
+    }
+
+    clearFilter() {
+        this.filterText = '';
+        this.getProjects();
+    }
+}

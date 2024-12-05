@@ -19,5 +19,7 @@ namespace Asd.Hrm.Employees
         Task CreateOrEdit(CreateOrEditEmployeesDto input);
 
         Task Delete(EntityDto input);
+
+        Task<string> GetEmployeeName(int employeeId);
     }
 }

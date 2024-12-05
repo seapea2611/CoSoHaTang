@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Asd.Hrm.Tasks
 {
+    [AbpAuthorize(AppPermissions.Pages_Tasks)]
     public class TasksAppService : HrmAppServiceBase, ITasksAppService
     {
         private readonly IRepository<Tasks> _tasksRepository;
