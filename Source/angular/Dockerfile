@@ -1,32 +1,30 @@
-# Use Node.js as the base image for building the app
-FROM node:14 AS build
+# Use an official Node.js image as a base
+FROM node:14
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json for dependency installation
-COPY package.json yarn.lock ./
+# Install global dependencies: yarn and gulp
+RUN rm -f /usr/local/bin/yarn /usr/local/bin/yarnpkg && npm install -g yarn gulp
 
-# Install dependencies
-RUN yarn install --frozen-lockfile
+# Copy package files to install dependencies
+COPY ./package.json ./yarn.lock ./
 
-# Copy the entire Angular project into the container
+# Install project dependencies using yarn
+RUN yarn
+
+# Copy the rest of the application files to the container
 COPY . .
 
-# Build the Angular app for production
-RUN yarn run publish
+# Build the Angular application using gulp
+RUN gulp build
 
-# Use Nginx as the base image for serving the app
-FROM nginx:alpine AS production
+# Use Nginx to serve the built Angular application
+FROM nginx:alpine
+COPY --from=0 /app/dist /usr/share/nginx/html
 
-# Copy built Angular app from the build stage
-COPY --from=build /app/dist /usr/share/nginx/html
+# Expose the port Angular will use
+EXPOSE 4200
 
-# Copy Nginx configuration (optional)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose the port Nginx will use
-EXPOSE 80
-
-# Start Nginx
+# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
