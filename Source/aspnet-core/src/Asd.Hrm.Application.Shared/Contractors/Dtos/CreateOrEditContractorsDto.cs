@@ -9,7 +9,7 @@ namespace Asd.Hrm.Contractors.Dtos
     {
         public string ContractorName { get; set; }
         public string Phone { get; set; }
-        public string EmailContractor { get; set; }
+        public string Email { get; set; }
         public string Specialization { get; set; }
     }
 }

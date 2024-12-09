@@ -27,10 +27,10 @@ namespace Asd.Hrm.Contractors
         public async Task<PagedResultDto<GetContractorsForViewDto>> GetAll(GetAllContractorsInput input)
         {
             var filteredContractors = _contractorsRepository.GetAll()
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.ContractorName.Contains(input.Filter) || e.Phone.Contains(input.Filter) || e.EmailContractor.Contains(input.Filter) || e.Specialization.Contains(input.Filter))
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.ContractorName.Contains(input.Filter) || e.Phone.Contains(input.Filter) || e.Email.Contains(input.Filter) || e.Specialization.Contains(input.Filter))
                         .WhereIf(!string.IsNullOrWhiteSpace(input.ContractorNameFilter), e => e.ContractorName.ToLower() == input.ContractorNameFilter.ToLower().Trim())
                         .WhereIf(!string.IsNullOrWhiteSpace(input.PhoneFilter), e => e.Phone.ToLower() == input.PhoneFilter.ToLower().Trim())
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.EmailContractorFilter), e => e.EmailContractor.ToLower() == input.EmailContractorFilter.ToLower().Trim())
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.EmailFilter), e => e.Email.ToLower() == input.EmailFilter.ToLower().Trim())
                         .WhereIf(!string.IsNullOrWhiteSpace(input.SpecializationFilter), e => e.Specialization.ToLower() == input.SpecializationFilter.ToLower().Trim());
 
             var query = (from o in filteredContractors
@@ -41,13 +41,13 @@ namespace Asd.Hrm.Contractors
 
             var totalCount = await query.CountAsync();
 
-            var resources = await query
+            var contractors = await query
                 .PageBy(input)
                 .ToListAsync();
 
             return new PagedResultDto<GetContractorsForViewDto>(
                 totalCount,
-                resources
+                contractors
             );
         }
 
@@ -69,7 +69,7 @@ namespace Asd.Hrm.Contractors
                 Id = Contractors.Id,
                 ContractorName = Contractors.ContractorName,
                 Phone = Contractors.Phone,
-                EmailContractor = Contractors.EmailContractor,
+                Email = Contractors.Email,
                 Specialization = Contractors.Specialization,
             };
 
