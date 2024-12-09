@@ -23,7 +23,7 @@ namespace Asd.Hrm.EntityFrameworkCore.Repositories
 
         //add your common methods for all repositories
     }
-    public DbCommand CreateCommand(string commandText, CommandType commandType, params SqlParameter[] parameters)
+    /*public DbCommand CreateCommand(string commandText, CommandType commandType, params SqlParameter[] parameters)
     {
         var command = Context.Database.GetDbConnection().CreateCommand();
 
@@ -48,7 +48,7 @@ namespace Asd.Hrm.EntityFrameworkCore.Repositories
         {
             connection.Open();
         }
-    }
+    }*/
     /// <summary>
     /// Base class for custom repositories of the application.
     /// This is a shortcut of <see cref="HrmRepositoryBase{TEntity,TPrimaryKey}"/> for <see cref="int"/> primary key.
