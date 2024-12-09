@@ -61,9 +61,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="responsibleEmployeeID">Responsible Employee ID(<span class="color-red">*</span>)</label>
-                        <input type="number" id="responsibleEmployeeID" class="form-control" [(ngModel)]="projects.responsibleEmployeeID" name="responsibleEmployeeID" #responsibleEmployeeID="ngModel" minlength="0" maxlength="100" />
-                        <validation-messages [formCtrl]="responsibleEmployeeID"></validation-messages>
+                        <label for="fullName">Responsible Employee (<span class="color-red">*</span>)</label>
+                        <select id="fullName" class="form-control" [(ngModel)]="employees.fullName" name="fullName" #fullName="ngModel" required>
+                            <option *ngFor="let employee of listEmployeeName" [value]="employee.fullName">{{ employee.name }}</option>
+                        </select>
+                        <validation-messages [formCtrl]="fullName"></validation-messages>
                     </div>
 
                     <div class="form-group">

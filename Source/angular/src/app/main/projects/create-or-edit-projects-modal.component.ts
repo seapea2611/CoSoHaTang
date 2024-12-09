@@ -3,7 +3,9 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import {
     ProjectsServiceProxy,
-    CreateOrEditProjectsDto
+    CreateOrEditProjectsDto,
+    EmployeesServiceProxy,
+    EmployeesDto
 } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {Subject} from "@node_modules/rxjs";
@@ -23,21 +25,25 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
     saving = false;
 
     projects: CreateOrEditProjectsDto = new CreateOrEditProjectsDto();
+    employees: EmployeesDto = new EmployeesDto();
+
     listUnit = [];
     seletedUnits = [];
     appUnitInput = new Subject<string>();
     datarenge: Date[] = [moment().startOf('day').toDate(), moment().endOf('day').toDate()];
+    listEmployeeName = [];
 
 
     constructor(
         injector: Injector,
-        private _projectsServiceProxy: ProjectsServiceProxy
+        private _projectsServiceProxy: ProjectsServiceProxy,
+        private _employeeServiceProxy: EmployeesServiceProxy
     ) {
         super(injector);
     }
 
     ngOnInit() {
-       
+       this.suggestEmployee();
       }
 
 
@@ -94,5 +100,10 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
 
     copyObject(data: any) {
         return JSON.parse(JSON.stringify(data));
+    }
+    suggestEmployee() {
+        this._employeeServiceProxy.getAll('', '', '', '', '', '', 0, 100).subscribe(result => {
+            this.listEmployeeName = result.items;
+        });
     }
 }
