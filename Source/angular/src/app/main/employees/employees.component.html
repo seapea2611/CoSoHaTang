@@ -10,7 +10,6 @@
                     </div>
                 </div>
                 <div class="m-portlet__head-wrapper m-portlet__head-caption">
-
                     <div class="col-md-6 search-filter">
                         <div class="filter-left">
                             <input class="form-control form-control-sm m-input m-input--air m-input--pill"
@@ -19,14 +18,14 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 pl-0">
+                    <div class="col-md-6 pl-0 d-flex justify-content-end">
                         <a href="javascript:;"
-                            class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air"
+                            class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air mx-1"
                             (click)="getEmployees()">
                             <i class="fa flaticon-search"></i>
                         </a>
                         <a href="javascript:;"
-                            class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill"
+                            class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill mx-1"
                             (click)="clearFilter()">
                             <i class="fa flaticon-refresh"></i>
                         </a>
@@ -47,12 +46,10 @@
                 </div>
             </div>
 
-
             <div class="m-portlet__body">
                 <div class="row align-items-center">
-
                     <div class="table-responsive table-scroll-horizontal-custom table-not-scroll">
-                        <table class="table  table-bordered table-custom">
+                        <table class="table table-bordered table-custom">
                             <thead class="thead-2">
                                 <tr>
                                     <th style="min-width: 50px;" class="text-center">STT</th>
@@ -67,35 +64,23 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of primengTableHelper.records; let i = index">
-
-                                    <td class="text-center">
-                                        {{ i + 1 }}
-                                    </td>
-                                    <td class="text-center">
-                                        {{item.employees.employeeID}}
-                                    </td>
-                                    <td class="text-center ">
-                                        {{item.employees.fullName}}
-                                    </td>
-                                    <td class="text-center ">
-                                        {{ item.employees.phone}}
-                                    </td>
-                                    <td style="width: 300px;">
-                                        {{ item.employees.role}}
-                                    </td>
+                                    <td class="text-center">{{ i + 1 }}</td>
+                                    <td class="text-center">{{ item.employees.employeeID }}</td>
+                                    <td class="text-center">{{ item.employees.fullName }}</td>
+                                    <td class="text-center">{{ item.employees.phone }}</td>
+                                    <td style="width: 300px;">{{ item.employees.role }}</td>
                                     <td style="width: 80px" class="text-center"
                                         [hidden]="!isGrantedAny('Pages.Employees.Edit', 'Pages.Employees.Delete')">
                                         <a (click)="createOrEditEmployeesModal.show(item.employees.id)"
                                             href="javascript:;" *ngIf="permission.isGranted('Pages.Employees.Edit')"
                                             class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill"
-                                            title=" Cập nhật">
+                                            title="Cập nhật">
                                             <i class="la la-edit"></i>
                                         </a>
-
                                         <a (click)="deleteEmployees(item.employees.employees)" href="javascript:;"
                                             *ngIf="permission.isGranted('Pages.Employees.Delete')"
                                             class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill"
-                                            title=" Xóa">
+                                            title="Xóa">
                                             <i class="la la-trash"></i>
                                         </a>
                                     </td>
@@ -103,12 +88,10 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
     <createOrEditEmployeesModal #createOrEditEmployeesModal (modalSave)="getEmployees()"></createOrEditEmployeesModal>
-
 </div>

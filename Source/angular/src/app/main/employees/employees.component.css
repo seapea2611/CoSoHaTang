@@ -1,3 +1,4 @@
+/* PrimeNG DataTable Styles (Keep these as they are generally good) */
 .primeng-datatable-container .ui-table td {
     border: 1px solid #e9ecef !important;
 }
@@ -18,6 +19,7 @@
     border-right: 1px solid #e9ecef !important;
 }
 
+/* Modal Styles (These seem fine as well) */
 .modal-body>.form-control>label {
     font-weight: 400 !important;
 }
@@ -25,4 +27,185 @@
 .form-control.m-input--pill.form-control-sm {
     height: calc(2.3rem + 2px) !important;
     border-color: rgb(204, 204, 204) !important;
+}
+
+/* General Table Styles (Good, minor adjustments for consistency) */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #ddd;
+    text-align: center;
+    padding: 8px 12px;
+    /* Add padding to table headers */
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    vertical-align: middle;
+    /* Vertically center content in table cells */
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* --- Button and Icon Alignment Fixes --- */
+.table tbody td .btn {
+    /* Use flexbox for better button alignment within table cells */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    /* Add some margin around buttons */
+}
+
+.m-btn--icon-only {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    /* Ensure consistent button sizes */
+    line-height: 1;
+    /* Adjust line-height to center icons vertically */
+}
+
+.m-btn--icon-only i {
+    font-size: 18px;
+    margin: 0;
+    /* Remove any default margin on the icon */
+}
+
+/* Portlet Link Styles (These are fine) */
+.m-portlet__nav-link {
+    display: flex;
+    align-items: center;
+}
+
+.m-portlet__nav-link i {
+    margin: 0 auto;
+}
+
+/* Header and Button Spacing */
+.m-portlet__head {
+    margin-bottom: 20px;
+    /* Adjust spacing below the header */
+    padding-left: 20px;
+    /* Add left padding to the header container */
+}
+
+.m-portlet__head-caption {
+    width: 100%;
+    /* Ensure the caption takes full width for proper alignment */
+}
+
+/* Target the container holding the search, reload, and create elements */
+.m-portlet__head-wrapper {
+    display: flex;
+    /* Enable flexbox */
+    align-items: center;
+    /* Vertically align items to the center */
+    justify-content: space-between;
+    /* Distribute space between the search area and buttons */
+    width: 100%;
+    /* Ensure the container takes up the full width */
+    gap: 10px;
+    /* Consistent spacing between search filter and buttons */
+}
+
+/* Search Filter Container */
+.m-portlet__head-wrapper .search-filter {
+    display: flex;
+    /* Enable flexbox for the search input and button */
+    align-items: center;
+    /* Center vertically */
+    flex-grow: 1;
+    /* Allow the search filter to take up available space */
+    margin-right: 0;
+}
+
+/* Search Input */
+.m-portlet__head-wrapper .search-filter input {
+    width: 100%;
+    /* Make the input wider */
+    min-width: 250px;
+    /* Ensure a minimum width for the search input */
+    margin-right: 5px;
+}
+
+/* Search and Refresh Buttons */
+.m-portlet__head-wrapper .search-filter .m-btn--icon-only {
+    margin-left: 0;
+    /* Remove negative margin */
+    z-index: 1;
+    /* Ensure buttons are above the input field */
+}
+
+/* Refresh Button Container */
+.m-portlet__head-wrapper .col-md-6.pl-0 {
+    display: flex;
+    /* Enable flexbox to control button positions */
+    align-items: center;
+    /* Center vertically */
+    justify-content: flex-end;
+    /* Align buttons to the right */
+    gap: 5px;
+    /* Space between buttons */
+}
+
+/* Refresh Button Icon Centering */
+.m-portlet__head-wrapper .m-btn--icon-only.m-btn--pill i.flaticon-refresh {
+    line-height: 30px;
+    /* Adjust line-height to vertically center the icon */
+}
+
+/* BtnCreate Button */
+.m-portlet__nav-link.btn-accent {
+    background-color: #28a745;
+    /* Example: A more pleasant green */
+    border-color: #28a745;
+    width: auto;
+    /* Let the button width adjust to its content */
+    padding: 0.65rem 1.2rem;
+    /* Adjust padding for a less bulky look */
+}
+
+.m-portlet__nav-link.btn-accent i {
+    font-size: 1.1em;
+    /* Slightly smaller icon */
+    margin-right: 5px;
+    /* Add some space between icon and text */
+}
+
+.m-portlet__head-tools {
+    margin-top: 0;
+}
+
+/* Adjust icon-only button padding to ensure consistent sizing*/
+.m-portlet__head-wrapper .m-btn.m-btn--icon-only {
+    padding: 0;
+    /* Remove padding that might interfere with alignment */
+}
+
+/* Search Input */
+.search-filter input {
+    min-width: 200px;
+    /* Example: Set a minimum width */
+}
+
+/* Table Header Padding */
+.table thead th {
+    padding: 12px 15px;
+    /* Adjust padding as needed */
 }
