@@ -16,6 +16,9 @@ RUN yarn
 # Copy the rest of the application files to the container
 COPY . .
 
+# Rename gulpfile_dun.js to gulpfile.js temporarily for the build
+RUN mv gulpfile_dun.js gulpfile.js
+
 # Build the Angular application using gulp
 RUN gulp build
 
