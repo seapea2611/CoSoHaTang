@@ -59,6 +59,7 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
             this.projects = new CreateOrEditProjectsDto();
             this.projects.id = projectsId;
             this.active = true;
+            this.suggestEmployee();
             this.modal.show();
         } else {
             this._projectsServiceProxy.getProjectsForView(projectsId).subscribe(result => {
@@ -66,6 +67,7 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
                 this.datarenge[0] = this.projects.startDate.toJSDate();
                 this.datarenge[1] = this.projects.estimatedEndDate.toJSDate();
                 this.active = true;
+                this.suggestEmployee();
                 this.modal.show();
             });
         }

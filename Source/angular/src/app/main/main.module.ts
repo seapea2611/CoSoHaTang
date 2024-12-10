@@ -18,9 +18,9 @@ import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module'
 
 import {ResourcesComponent} from './resources/resources.component';
 import {CreateOrEditResourcesModalComponent} from './resources/create-or-edit-resources-modal.component';
-import { ResourcesServiceProxy, ResourcesDto, ProjectsServiceProxy} from '@shared/service-proxies/service-proxies';
-import { ContractorsComponent } from './contractors/contractors.component';
-import { CreateOrEditContractorsModalComponent } from './contractors/create-or-edit-contractors-modal.component';
+import { ResourcesServiceProxy, ResourcesDto, ProjectsServiceProxy, EmployeesServiceProxy} from '@shared/service-proxies/service-proxies';
+//import { ContractorsComponent } from './contractors/contractors.component';
+//import { CreateOrEditContractorsModalComponent } from './contractors/create-or-edit-contractors-modal.component';
 import { ContractorsServiceProxy, ContractorsDto } from '@shared/service-proxies/service-proxies';  import { ProjectsComponent } from './projects/projects.component';
 import {CreateOrEditProjectsModalComponent} from './projects/create-or-edit-projects-modal.component';
 
@@ -46,9 +46,9 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         ResourcesComponent,
         CreateOrEditResourcesModalComponent,
         ProjectsComponent,
-        CreateOrEditProjectsModalComponent,
-        ContractorsComponent,
-        CreateOrEditContractorsModalComponent
+        CreateOrEditProjectsModalComponent
+        // ContractorsComponent,
+        // CreateOrEditContractorsModalComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
@@ -56,7 +56,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale },
         ResourcesServiceProxy,
         ProjectsServiceProxy,
-        ContractorsServiceProxy
+        ContractorsServiceProxy,
+        EmployeesServiceProxy
     ]
 })
 export class MainModule { }
