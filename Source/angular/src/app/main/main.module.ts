@@ -16,9 +16,13 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module';
 
-import {ResourcesComponent} from './resources/resources.component';
-import {CreateOrEditResourcesModalComponent} from './resources/create-or-edit-resources-modal.component';
-import { ResourcesServiceProxy, ResourcesDto} from '@shared/service-proxies/service-proxies';
+import { ResourcesComponent } from './resources/resources.component';
+import { CreateOrEditResourcesModalComponent } from './resources/create-or-edit-resources-modal.component';
+import { ResourcesServiceProxy, ResourcesDto } from '@shared/service-proxies/service-proxies';
+
+import { EmployeesComponent } from './employees/employees.component';
+import { CreateOrEditEmployeesModalComponent } from './employees/create-or-edit-employees-modal.component';
+import { EmployeesServiceProxy, EmployeesDto } from '@shared/service-proxies/service-proxies';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -40,13 +44,16 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
     ],
     declarations: [
         ResourcesComponent,
-        CreateOrEditResourcesModalComponent
+        CreateOrEditResourcesModalComponent,
+        EmployeesComponent,
+        CreateOrEditEmployeesModalComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
         { provide: BsDaterangepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDaterangepickerConfig },
         { provide: BsLocaleService, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerLocale },
-        ResourcesServiceProxy
+        ResourcesServiceProxy,
+        EmployeesServiceProxy
     ]
 })
 export class MainModule { }

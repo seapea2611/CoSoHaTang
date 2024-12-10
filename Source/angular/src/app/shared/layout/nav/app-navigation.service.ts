@@ -1,9 +1,9 @@
-﻿import {PermissionCheckerService} from 'abp-ng2-module';
-import {AppSessionService} from '@shared/common/session/app-session.service';
+﻿import { PermissionCheckerService } from 'abp-ng2-module';
+import { AppSessionService } from '@shared/common/session/app-session.service';
 
-import {Injectable} from '@angular/core';
-import {AppMenu} from './app-menu';
-import {AppMenuItem} from './app-menu-item';
+import { Injectable } from '@angular/core';
+import { AppMenu } from './app-menu';
+import { AppMenuItem } from './app-menu-item';
 
 @Injectable()
 export class AppNavigationService {
@@ -20,6 +20,7 @@ export class AppNavigationService {
             new AppMenuItem('Dashboard', 'Pages.Administration.Host.Dashboard', 'flaticon-line-graph', '/app/admin/hostDashboard'),
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
             new AppMenuItem('Resources', 'Pages.Resources', 'flaticon-tabs', '/app/main/resources/resources'),
+            new AppMenuItem('Employees', 'Pages.Employees', 'flaticon-tabs', '/app/main/employees/employees'),
             new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [], [
