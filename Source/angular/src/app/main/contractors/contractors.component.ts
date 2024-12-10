@@ -29,7 +29,7 @@ export class ContractorsComponent extends AppComponentBase {
     filterText = '';
     ContractorNameFilter = '';
     PhoneFilter = '';
-    EmailContractorFilter = '';
+    EmailFilter = '';
     SpecializationFilter = ''
     data: any;
 
@@ -52,7 +52,7 @@ export class ContractorsComponent extends AppComponentBase {
             this.filterText,
             this.ContractorNameFilter,
             this.PhoneFilter,
-            this.EmailContractorFilter,
+            this.EmailFilter,
             this.SpecializationFilter,
             '',
             0,
