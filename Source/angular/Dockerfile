@@ -27,6 +27,7 @@ FROM nginx:alpine
 COPY --from=0 /app/dist /usr/share/nginx/html
 
 # Expose the port Angular will use
+EXPOSE 80
 EXPOSE 4200
 
 # Start nginx

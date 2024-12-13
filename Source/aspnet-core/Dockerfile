@@ -20,7 +20,6 @@ RUN dotnet publish src/Asd.Hrm.Web.Host/Asd.Hrm.Web.Host.csproj -c Release -o /a
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 EXPOSE 80
-EXPOSE 443
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Asd.Hrm.Web.Host.dll"]
