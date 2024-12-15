@@ -1,0 +1,86 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #projectsForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="projects.id"><b>{{l("EditProjects")}}</b></span>
+                        <span *ngIf="!projects.id"><b>{{l("CreateNewProjects")}}</b></span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="projectID">Project ID (<span class="color-red">*</span>)</label>
+                        <input type="number" id="ProjectID" class="form-control" [(ngModel)]="projects.projectID" name="Name" #projectID="ngModel" minlength="0" maxlength="100" required/>
+                        <validation-messages [formCtrl]="projectID"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectName">Project Name</label>
+                        <textarea [placeholder]="l('ProjectName')" name="projectName" id="projectName" class="form-control" [(ngModel)]="projects.projectName"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="purpose">Purpose</label>
+                        <textarea [placeholder]="l('Purpose')" name="purpose" id="purpose" class="form-control" [(ngModel)]="projects.purpose"></textarea>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label for="startDate">Start Date (<span class="color-red">*</span>)</label>
+                        <input type="datetime" id="startDate" class="form-control" [(ngModel)]="projects.startDate" name="startDate" #startDate="ngModel" required />
+                        <validation-messages [formCtrl]="startDate"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimatedEndDate">Estimated End Date (<span class="color-red">*</span>)</label>
+                        <input type="text" id="estimatedEndDate" class="form-control" [(ngModel)]="projects.estimatedEndDate" name="estimatedEndDate" #estimatedEndDate="ngModel" bsDaterangepicker required />
+                        <validation-messages [formCtrl]="estimatedEndDate"></validation-messages>
+                    </div> -->
+
+                    <div class="form-group">
+                        <label for="startDate">{{l('estimatedEndDate')}}</label>
+                        <input id="startDate"
+                                    type="text"
+                                    #SampleDatePicker="ngModel"
+                                    name="startDate"
+                                    class="form-control"
+                                    [(ngModel)]="datarenge"
+                                    [placeholder]="l('estimatedEndDate')"
+                                    bsDaterangepicker required>
+                        <validation-messages [formCtrl]="SampleDatePicker"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Budget (<span class="color-red">*</span>)</label>
+                        <input type="number" id="Budget" class="form-control" [(ngModel)]="projects.budget" name="budget" #budget="ngModel" minlength="0" maxlength="100" />
+                        <validation-messages [formCtrl]="budget"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">Responsible Employee (<span class="color-red">*</span>)</label>
+                        <select id="fullName" class="form-control" [(ngModel)]="nhanvien.fullName" name="fullName" #fullName="ngModel" required>
+                            <option *ngFor="let employee of listEmployeeName" [value]="employee.employees.fullName">{{ employee.employees.fullName}}</option>
+                        </select>
+                        <validation-messages [formCtrl]="fullName"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="progress">Progress</label>
+                        <textarea [placeholder]="l('Progress')" name="progress" id="progress" class="form-control" [(ngModel)]="projects.progress"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!projectsForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

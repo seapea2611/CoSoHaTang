@@ -27,10 +27,10 @@ namespace Asd.Hrm.Contractors
         public async Task<PagedResultDto<GetContractorsForViewDto>> GetAll(GetAllContractorsInput input)
         {
             var filteredContractors = _contractorsRepository.GetAll()
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.ContractorName.Contains(input.Filter) || e.Phone.Contains(input.Filter) || e.EmailContractor.Contains(input.Filter) || e.Specialization.Contains(input.Filter))
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.ContractorName.Contains(input.Filter) || e.Phone.Contains(input.Filter) || e.Email.Contains(input.Filter) || e.Specialization.Contains(input.Filter))
                         .WhereIf(!string.IsNullOrWhiteSpace(input.ContractorNameFilter), e => e.ContractorName.ToLower() == input.ContractorNameFilter.ToLower().Trim())
                         .WhereIf(!string.IsNullOrWhiteSpace(input.PhoneFilter), e => e.Phone.ToLower() == input.PhoneFilter.ToLower().Trim())
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.EmailContractorFilter), e => e.EmailContractor.ToLower() == input.EmailContractorFilter.ToLower().Trim())
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.EmailFilter), e => e.Email.ToLower() == input.EmailFilter.ToLower().Trim())
                         .WhereIf(!string.IsNullOrWhiteSpace(input.SpecializationFilter), e => e.Specialization.ToLower() == input.SpecializationFilter.ToLower().Trim());
 
             var query = (from o in filteredContractors
@@ -41,13 +41,13 @@ namespace Asd.Hrm.Contractors
 
             var totalCount = await query.CountAsync();
 
-            var resources = await query
+            var contractors = await query
                 .PageBy(input)
                 .ToListAsync();
 
             return new PagedResultDto<GetContractorsForViewDto>(
                 totalCount,
-                resources
+                contractors
             );
         }
 
@@ -69,7 +69,7 @@ namespace Asd.Hrm.Contractors
                 Id = Contractors.Id,
                 ContractorName = Contractors.ContractorName,
                 Phone = Contractors.Phone,
-                EmailContractor = Contractors.EmailContractor,
+                Email = Contractors.Email,
                 Specialization = Contractors.Specialization,
             };
 
@@ -77,7 +77,7 @@ namespace Asd.Hrm.Contractors
             return output;
         }
 
-        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditContractorsDto input)
+        public async Task CreateOrEdit(CreateOrEditContractorsDto input)
         {
             if (input.Id == null)
             {
@@ -90,7 +90,7 @@ namespace Asd.Hrm.Contractors
         }
 
         [AbpAuthorize(AppPermissions.Pages_Contractors_Create)]
-        public async System.Threading.Tasks.Task Create(CreateOrEditContractorsDto input)
+        public async Task Create(CreateOrEditContractorsDto input)
         {
             try
             {
@@ -104,14 +104,14 @@ namespace Asd.Hrm.Contractors
         }
 
         [AbpAuthorize(AppPermissions.Pages_Contractors_Edit)]
-        public async System.Threading.Tasks.Task Update(CreateOrEditContractorsDto input)
+        public async Task Update(CreateOrEditContractorsDto input)
         {
             var contractors = await _contractorsRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, contractors);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Contractors_Delete)]
-        public async System.Threading.Tasks.Task Delete(EntityDto input)
+        public async Task Delete(EntityDto input)
         {
             await _contractorsRepository.DeleteAsync(input.Id);
         }

@@ -10,7 +10,7 @@ namespace Asd.Hrm.Contractors.Dtos
         public string Filter { get; set; }
         public string ContractorNameFilter { get; set; }
         public string PhoneFilter { get; set; }
-        public string EmailContractorFilter { get; set; }
+        public string EmailFilter { get; set; }
         public string SpecializationFilter { get; set; }
     }
 }

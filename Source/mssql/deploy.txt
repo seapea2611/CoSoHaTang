@@ -1,0 +1,16 @@
+docker run -d --name asdhrm-db \
+  -e "ACCEPT_EULA=Y" \
+  -e "SA_PASSWORD=123qwe@A" \
+  -p 1433:1433 \
+  -v asdhrm-db:/var/opt/mssql \
+  -v $(pwd)/HrmDb.bak:/var/opt/mssql/backups/HrmDb.bak \
+  custom-mssql
+
+docker exec -it asdhrm-db /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "123qwe@A" -Q "
+RESTORE DATABASE HrmDb FROM DISK = '/var/opt/mssql/backups/HrmDb.bak'
+WITH MOVE 'HrmDb' TO '/var/opt/mssql/data/HrmDb.mdf',
+MOVE 'HrmDb_log' TO '/var/opt/mssql/data/HrmDb_log.ldf';"
+
+docker exec -it asdhrm-db /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "123qwe@A" -Q "SELECT name FROM sys.databases;"
+
+docker exec -it asdhrm-db /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "123qwe@A" -d HrmDb -Q "SELECT TOP 10 * FROM Employees;"
