@@ -5945,15 +5945,15 @@ export class EmployeesServiceProxy {
     }
 
     /**
-     * @param id (optional) 
+     * @param name (optional) 
      * @return Success
      */
-    getEmployeeName(id: number | undefined): Observable<string> {
-        let url_ = this.baseUrl + "/api/services/app/Employees/GetEmployeeName?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+    getEmployeeId(name: string | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/Employees/GetEmployeeId?";
+        if (name === null)
+            throw new Error("The parameter 'name' cannot be null.");
+        else if (name !== undefined)
+            url_ += "name=" + encodeURIComponent("" + name) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -5965,20 +5965,20 @@ export class EmployeesServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetEmployeeName(response_);
+            return this.processGetEmployeeId(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetEmployeeName(<any>response_);
+                    return this.processGetEmployeeId(<any>response_);
                 } catch (e) {
-                    return <Observable<string>><any>_observableThrow(e);
+                    return <Observable<number>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<string>><any>_observableThrow(response_);
+                return <Observable<number>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetEmployeeName(response: HttpResponseBase): Observable<string> {
+    protected processGetEmployeeId(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -5997,7 +5997,7 @@ export class EmployeesServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<string>(<any>null);
+        return _observableOf<number>(<any>null);
     }
 }
 

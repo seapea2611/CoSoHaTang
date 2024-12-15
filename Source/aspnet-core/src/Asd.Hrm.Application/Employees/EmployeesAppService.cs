@@ -11,6 +11,8 @@ using Asd.Hrm.Employees;
 using Asd.Hrm.Employees.Dtos;
 using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using Asd.Hrm.Employees.Repository;
 
 namespace Asd.Hrm.Employees
 {
@@ -18,10 +20,12 @@ namespace Asd.Hrm.Employees
     public class EmployeesAppService : HrmAppServiceBase, IEmployeesAppService
     {
         private readonly IRepository<Asd.Hrm.Employee.Employees> _employeesRepository;
+        private readonly IEmployeeRepository _nhanvienRepository;
 
-        public EmployeesAppService(IRepository<Asd.Hrm.Employee.Employees> employeesRepository)
+        public EmployeesAppService(IRepository<Asd.Hrm.Employee.Employees> employeesRepository, IEmployeeRepository nhanvienRepository)
         {
             _employeesRepository = employeesRepository;
+            _nhanvienRepository = nhanvienRepository;
         }
 
         public async Task<PagedResultDto<GetEmployeesForViewDto>> GetAll(GetAllEmployeesInput input)
@@ -115,11 +119,18 @@ namespace Asd.Hrm.Employees
             await _employeesRepository.DeleteAsync(input.Id);
         }
 
-        public async Task<string> GetEmployeeName(int id)
+        public async Task<int> GetEmployeeId(string name)
         {
-            var Employees = await _employeesRepository.GetAsync(id);
-
-            return Employees.FullName;
+            /*var data = await _nhanvienRepository.GetEmployeeId(name);
+            return data;*/
+            var filteredEmployees = _employeesRepository.GetAll();
+            var employeeIdQuery = from employee in filteredEmployees 
+                                  where employee.FullName == name 
+                                  select employee.Id;
+            int employeeId = employeeIdQuery.FirstOrDefault();
+            if (employeeId == null)
+                return 0;
+            return employeeId;
         }
     }
 }
