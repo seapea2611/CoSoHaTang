@@ -1,0 +1,3 @@
+docker exec -it asdhrm-db /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "123qwe@A" -Q "SELECT name FROM sys.databases;"
+
+docker exec -it asdhrm-db /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "123qwe@A" -d HrmDb -Q "SELECT TOP 10 * FROM Employees;"

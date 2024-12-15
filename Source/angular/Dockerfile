@@ -16,11 +16,14 @@ RUN yarn
 # Copy the rest of the application files to the container
 COPY . .
 
-# Rename gulpfile.js.bak to gulpfile.js temporarily for the build
-RUN mv gulpfile.js.bak gulpfile.js
+# Set default environment to production
+ENV environment=docker
 
 # Build the Angular application using gulp
-RUN gulp build
+# RUN gulp build
+
+# Build the Angular application using gulp with the specified environment
+RUN gulp build --env=$environment
 
 # Use Nginx to serve the built Angular application
 FROM nginx:alpine
