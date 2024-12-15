@@ -132,5 +132,17 @@ namespace Asd.Hrm.Employees
                 return 0;
             return employeeId;
         }
+
+        public async Task<string> GetEmployeeName(int id)
+        {
+            /*var data = await _nhanvienRepository.GetEmployeeId(name);
+            return data;*/
+            var filteredEmployees = _employeesRepository.GetAll();
+            var employeeIdQuery = from employee in filteredEmployees
+                                  where employee.Id == id
+                                  select employee.FullName;
+            string employeeName = employeeIdQuery.FirstOrDefault();
+            return employeeName;
+        }
     }
 }

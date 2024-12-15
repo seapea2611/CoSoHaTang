@@ -117,5 +117,26 @@ namespace Asd.Hrm.Project
         {
             await _projectsRepository.DeleteAsync(input.Id);
         }
+
+        public async Task<int> GetProjectId(string name)
+        {
+
+            var filteredProjects = _projectsRepository.GetAll();
+            var projectIdQuery = from project in filteredProjects
+                                  where project.ProjectName == name
+                                  select project.Id;
+            int projectId = projectIdQuery.FirstOrDefault();
+            return projectId;
+        }
+
+        public async Task<string> GetProjectName(int id)
+        {
+            var filteredProjects = _projectsRepository.GetAll();
+            var projectIdQuery = from employee in filteredProjects
+                                 where employee.Id == id
+                                  select employee.ProjectName;
+            string projectName = projectIdQuery.FirstOrDefault();
+            return projectName;
+        }
     }
 }

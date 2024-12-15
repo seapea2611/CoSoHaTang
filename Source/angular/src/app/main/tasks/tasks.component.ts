@@ -1,9 +1,9 @@
 import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ProjectsServiceProxy, ProjectsDto, EmployeesServiceProxy} from '@shared/service-proxies/service-proxies';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TasksServiceProxy, TasksDto, ProjectsServiceProxy, EmployeesServiceProxy} from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
-import { CreateOrEditProjectsModalComponent } from './create-or-edit-projects-modal.component';
+import { CreateOrEditTasksModalComponent } from './create-or-edit-tasks-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 //import { Table } from 'primeng/components/table/table';
 import { Table } from 'primeng/table';
@@ -15,27 +15,32 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 import Swal from "sweetalert2";
 
 @Component({
-    templateUrl: './projects.component.html',
+    templateUrl: './tasks.component.html',
     animations: [appModuleAnimation()],
-    styleUrls:['./projects.component.css']
+    styleUrls:['./tasks.component.css']
 })
-export class ProjectsComponent extends AppComponentBase {
+export class TasksComponent extends AppComponentBase {
 
-    @ViewChild('createOrEditProjectsModal') createOrEditProjectsModal: CreateOrEditProjectsModalComponent;
+    @ViewChild('createOrEditTasksModal') createOrEditTasksModal: CreateOrEditTasksModalComponent;
     @ViewChild('dataTable') dataTable: Table;
     @ViewChild('paginator') paginator: Paginator;
 
     advancedFiltersAreShown = false;
     filterText = '';
-    ProjectNameFilter = '';
+    ResourceTypeFilter = '';
     UnitTypeFilter = '';
     SupplierFilter = '';
     data: any;
+    projectId: number = 0;
+    projects: any[] = [];
    employees: any[] = [];
-
+   tenDuAn: string = '';
 
     constructor(
+        private router: Router,
+        private route: ActivatedRoute,
         injector: Injector,
+        private _tasksServiceProxy: TasksServiceProxy,
         private _projectsServiceProxy: ProjectsServiceProxy,
         private _employeesServiceProxy: EmployeesServiceProxy,
     ) {
@@ -43,21 +48,20 @@ export class ProjectsComponent extends AppComponentBase {
     }
     
     ngOnInit(): void {
-        this.getProjects();
+        this.route.params.subscribe(params => {
+          this.projectId = +params['id']; // Retrieve the projectId from the route parameters
+        });
+        this.loadProjects();
         this.loadEmployees();
-    }
+        this.getTasks();
+        this.tenDuAn = this.getProjectName(this.projectId);
+      }
 
-    getProjects(event?: LazyLoadEvent) {
+    getTasks(event?: LazyLoadEvent) {
 
         this.primengTableHelper.showLoadingIndicator();
 
-        this._projectsServiceProxy.getAll(        
-            this.filterText,
-            this.ProjectNameFilter,
-            '',
-            0,
-            10
-        ).subscribe(result => {
+        this._tasksServiceProxy.getTasksForView(this.projectId).subscribe(result => {
             console.log(result);
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
@@ -69,13 +73,13 @@ export class ProjectsComponent extends AppComponentBase {
         this.paginator.changePage(this.paginator.getPage());
     }
 
-    createProjects(): void {
-        this.createOrEditProjectsModal.show();
+    createTasks(): void {
+        this.createOrEditTasksModal.show(null,this.projectId);
     }
 
-    deleteProjects(projects: ProjectsDto): void {
+    deleteTasks(tasks: TasksDto): void {
         Swal.fire({
-            title: this.l('MsgConfirmDeleteProjects'),
+            title: this.l('MsgConfirmDeleteTasks'),
             text: '',
             icon: 'warning',
             showCancelButton: true,
@@ -83,31 +87,46 @@ export class ProjectsComponent extends AppComponentBase {
             cancelButtonText: this.l('No')
         }).then(result => {
             if (result.value) {
-                this._projectsServiceProxy.delete(projects.id)
+                this._tasksServiceProxy.delete(tasks.id)
                     .subscribe(() => {
-                            this.reloadPage();
                             this.notify.success(this.l('SuccessfullyDeleted'));
+                            console.log('Deleted');
+                            this.reloadPage();
+                            console.log('Reloaded');
                     });
             }
         });
-    }
+        this.reloadPage();
 
-    clearFilter() {
-        this.filterText = '';
-        this.getProjects();
     }
-
-    loadEmployees() {
+    loadProjects() {
+        this._projectsServiceProxy.getAll('', '', '', 0, 1000).subscribe(result => {
+          console.log(result);
+          console.log(result.items);
+          this.projects = result.items;
+        });
+      }
+    
+      loadEmployees() {
         this._employeesServiceProxy.getAll('', '', '', '', '', '', 0, 1000).subscribe(result => {
           console.log(result);
           console.log(result.items);
           this.employees = result.items;
         });
       }
-
-    getEmployeeName(employeeId: number): string {
+    
+      getProjectName(projectId: number): string {
+        const project = this.projects.find(p => p.projects.id == projectId);
+        return project.projects.projectName;
+      }
+    
+      getEmployeeName(employeeId: number): string {
         const employee = this.employees.find(e => e.employees.id == employeeId);
         return employee.employees.fullName;
       }
-    
+
+    clearFilter() {
+        this.filterText = '';
+        this.getTasks();
+    }
 }

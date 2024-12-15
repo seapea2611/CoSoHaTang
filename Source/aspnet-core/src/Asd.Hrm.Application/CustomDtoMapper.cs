@@ -50,7 +50,7 @@ using Asd.Hrm.Contractors;
 using Asd.Hrm.Employees.Dtos;
 using Asd.Hrm.Employee;
 using Asd.Hrm.Projects.Dtos;
-using Asd.Hrm.Tasks.Dtos;
+using Asd.Hrm.Job.Dtos;
 
 namespace Asd.Hrm
 {
@@ -199,10 +199,10 @@ namespace Asd.Hrm
             configuration.CreateMap<Asd.Hrm.Project.Projects, ProjectsDto>();
             configuration.CreateMap<Asd.Hrm.Project.Projects, ProjectsDto>().ReverseMap();
 
-            configuration.CreateMap<CreateOrEditTasksDto, Asd.Hrm.Tasks.Tasks>();
-            configuration.CreateMap<CreateOrEditTasksDto, Asd.Hrm.Tasks.Tasks>().ReverseMap();
-            configuration.CreateMap<Asd.Hrm.Tasks.Tasks, TasksDto>();
-            configuration.CreateMap<Asd.Hrm.Tasks.Tasks, TasksDto>().ReverseMap();
+            configuration.CreateMap<CreateOrEditTasksDto, Asd.Hrm.Job.Tasks>();
+            configuration.CreateMap<CreateOrEditTasksDto, Asd.Hrm.Job.Tasks>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.Job.Tasks, TasksDto>();
+            configuration.CreateMap<Asd.Hrm.Job.Tasks, TasksDto>().ReverseMap();
         }
     }
 }

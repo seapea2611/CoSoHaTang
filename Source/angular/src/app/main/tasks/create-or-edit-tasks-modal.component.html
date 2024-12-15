@@ -1,0 +1,73 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #tasksForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="tasks.id"><b>{{l("EditTasks")}}</b></span>
+                        <span *ngIf="!tasks.id"><b>{{l("CreateNewTasks")}}</b></span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="taskDescription">Task Desciption</label>
+                        <textarea [placeholder]="l('TaskDescription')" name="taskDescription" id="taskDescription" class="form-control" [(ngModel)]="tasks.taskDescription"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimatedBudget">Estimated Budget(<span class="color-red">*</span>)</label>
+                        <input type="number" id="estimatedBudget" class="form-control" [(ngModel)]="tasks.estimatedBudget" name="Name" #estimatedBudget="ngModel" minlength="0" maxlength="100" required/>
+                        <validation-messages [formCtrl]="estimatedBudget"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estimatedBudget">Actual Budget(<span class="color-red">*</span>)</label>
+                        <input type="number" id="estimatedBudget" class="form-control" [(ngModel)]="tasks.actualBudget" name="Name" #estimatedBudget="ngModel" minlength="0" maxlength="100" required/>
+                        <validation-messages [formCtrl]="estimatedBudget"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="startDate">Start Date - End Date</label>
+                        <input id="startDate"
+                                    type="text"
+                                    #SampleDatePicker="ngModel"
+                                    name="startDate"
+                                    class="form-control"
+                                    [(ngModel)]="datarenge"
+                                    [placeholder]="l('endDate')"
+                                    bsDaterangepicker required>
+                        <validation-messages [formCtrl]="SampleDatePicker"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stage">Stage</label>
+                        <textarea [placeholder]="l('Stage')" name="stage" id="stage" class="form-control" [(ngModel)]="tasks.stage"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <textarea [placeholder]="l('Status')" name="status" id="status" class="form-control" [(ngModel)]="tasks.status"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">Manager Employee (<span class="color-red">*</span>)</label>
+                        <select id="fullName" class="form-control" [(ngModel)]="nhanvien.fullName" name="fullName" #fullName="ngModel" required>
+                            <option *ngFor="let employee of listEmployeeName" [value]="employee.employees.fullName">{{ employee.employees.fullName}}</option>
+                        </select>
+                        <validation-messages [formCtrl]="fullName"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!tasksForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

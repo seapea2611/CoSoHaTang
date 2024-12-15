@@ -2,10 +2,12 @@ import {Component, ViewChild, Injector, Output, EventEmitter, OnInit} from '@ang
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import {
-    ProjectsServiceProxy,
-    CreateOrEditProjectsDto,
+    TasksServiceProxy,
+    CreateOrEditTasksDto,
     EmployeesServiceProxy,
-    EmployeesDto
+    EmployeesDto,
+    ProjectsDto,
+    ProjectsServiceProxy
 } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {Subject} from "@node_modules/rxjs";
@@ -13,10 +15,10 @@ import {debounceTime, distinctUntilChanged} from "@node_modules/rxjs/operators";
 import * as moment from 'moment';
 
 @Component({
-    selector: 'createOrEditProjectsModal',
-    templateUrl: './create-or-edit-projects-modal.component.html'
+    selector: 'createOrEditTasksModal',
+    templateUrl: './create-or-edit-tasks-modal.component.html'
 })
-export class CreateOrEditProjectsModalComponent extends AppComponentBase implements  OnInit{
+export class CreateOrEditTasksModalComponent extends AppComponentBase implements  OnInit{
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
@@ -24,8 +26,9 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
     active = false;
     saving = false;
 
-    projects: CreateOrEditProjectsDto = new CreateOrEditProjectsDto();
+    tasks: CreateOrEditTasksDto = new CreateOrEditTasksDto();
     nhanvien: EmployeesDto = new EmployeesDto();
+    duan: ProjectsDto = new ProjectsDto();
 
     listUnit = [];
     seletedUnits = [];
@@ -33,12 +36,15 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
     datarenge: Date[] = [moment().startOf('day').toDate(), moment().endOf('day').toDate()];
     listEmployeeName: any [] = [];
     listEmployee: any [] = [];
+    listProject: any [] = [];
+    listProjectName: any [] = [];
 
 
     constructor(
         injector: Injector,
-        private _projectsServiceProxy: ProjectsServiceProxy,
+        private _tasksServiceProxy: TasksServiceProxy,
         private _employeeServiceProxy: EmployeesServiceProxy,
+        private _projectsServiceProxy: ProjectsServiceProxy,
     ) {
         super(injector);
     }
@@ -46,30 +52,34 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
     ngOnInit() {
        this.suggestEmployee();
        this.loadEmployees();
+       this.loadProjects();
       }
 
 
     get isCreateScreen() {
-        return !this.projects.id;
+        return !this.tasks.id;
     }
 
-    show(projectsId?: number): void {
+    show(tasksId?: number, projectId?: number): void {
+        this.duan.id = projectId;
         if(this.listUnit && this.listUnit.length == 0) {
             this.appUnitInput.next('');
         }
-        if (!projectsId) {
-            this.projects = new CreateOrEditProjectsDto();
-            this.projects.id = projectsId;
+        if (!tasksId) {
+            this.tasks = new CreateOrEditTasksDto();
+            this.tasks.id = tasksId;
             this.active = true;
             this.suggestEmployee();
+            
             this.modal.show();
         } else {
-            this._projectsServiceProxy.getProjectsForView(projectsId).subscribe(result => {
-                this.projects = result.projects;
-                this.datarenge[0] = this.projects.startDate.toJSDate();
-                this.datarenge[1] = this.projects.estimatedEndDate.toJSDate();
+            this._tasksServiceProxy.getTasksForEdit(tasksId).subscribe(result => {
+                this.tasks = result.tasks;
+                this.datarenge[0] = this.tasks.startDate.toJSDate();
+                this.datarenge[1] = this.tasks.endDate.toJSDate();
                 this.active = true;
                 this.suggestEmployee();
+                this.duan.projectName = this.getProjectName(tasksId);
                 this.modal.show();
             });
         }
@@ -78,7 +88,7 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
     save(): void {
         this.saving = true;
 
-        this._projectsServiceProxy.createOrEdit(this.prepareData())
+        this._tasksServiceProxy.createOrEdit(this.prepareData())
          .pipe(finalize(() => { this.saving = false;}))
          .subscribe(() => {
             this.notify.info(this.l('SavedSuccessfully'));
@@ -87,11 +97,15 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
          });
     }
 
-    prepareData(): CreateOrEditProjectsDto {
-        this.projects.startDate = this.datarenge[0] ? moment(this.datarenge[0]).toDate() as any : undefined;
-        this.projects.estimatedEndDate = this.datarenge[1] ? moment(this.datarenge[1]).toDate() as any : undefined;
-        this.projects.responsibleEmployeeID = this.getEmployeeId(this.nhanvien.fullName);
-        const result = this.copyObject(this.projects) as CreateOrEditProjectsDto;
+    prepareData(): CreateOrEditTasksDto {
+        this.tasks.startDate = this.datarenge[0] ? moment(this.datarenge[0]).toDate() as any : undefined;
+        this.tasks.endDate = this.datarenge[1] ? moment(this.datarenge[1]).toDate() as any : undefined;
+        this.tasks.managerEmployeeID = this.getEmployeeId(this.nhanvien.fullName);
+        if(this.tasks.projectID == null) {
+            this.tasks.projectID = this.duan.id;
+        }
+        const result = this.copyObject(this.tasks) as CreateOrEditTasksDto;
+        
         return result;
     }
 
@@ -107,11 +121,9 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
     }
     suggestEmployee() {
         this._employeeServiceProxy.getAll('', '', '', '', '', '', 0, 100).subscribe(result => {
-            console.log(result);
             this.listEmployeeName = result.items;
         });
     }
-
     loadEmployees() {
         this._employeeServiceProxy.getAll('', '', '', '', '', '', 0, 1000).subscribe(result => {
           console.log(result);
@@ -124,4 +136,21 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
         const employee = this.listEmployee.find(e => e.employees.fullName == employeeName);
         return employee.employees.id;
       }
+
+    loadProjects() {
+        this._projectsServiceProxy.getAll('', '', '', 0, 1000).subscribe(result => {
+          console.log(result);
+          console.log(result.items);
+          this.listProject = result.items;
+        });
+      }
+      getProjectId(projectName: string): number {
+        const project = this.listProject.find(p => p.projects.projectName == projectName);
+        return project.projects.id;
+      }
+      getProjectName(projectId: number): string {
+        const project = this.listProject.find(p => p.projects.id == projectId);
+        return project.projects.projectName;
+      }
 }
+

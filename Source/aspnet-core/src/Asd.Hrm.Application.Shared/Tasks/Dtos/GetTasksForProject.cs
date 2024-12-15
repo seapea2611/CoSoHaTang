@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Asd.Hrm.Job.Dtos
 {
-    public class GetTasksForEditOutput
+    public class GetTasksForProject
     {
-        public CreateOrEditTasksDto Tasks { get; set;}
+        
+
     }
 }

@@ -1,18 +1,18 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
-using Asd.Hrm.Tasks.Dtos;
+using Asd.Hrm.Job.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Asd.Hrm.Tasks
+namespace Asd.Hrm.Job
 {
     public interface ITasksAppService : IApplicationService
     {
         Task<PagedResultDto<GetTasksForViewDto>> GetAll(GetAllTasksInput input);
 
-        Task<GetTasksForViewDto> GetTasksForView(int id);
+        Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId);
 
         Task<GetTasksForEditOutput> GetTasksForEdit(EntityDto input);
 

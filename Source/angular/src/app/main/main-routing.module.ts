@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import {ResourcesComponent} from './resources/resources.component';
 //import {ContractorsComponent} from './contractors/contractors.component';
 import {ProjectsComponent} from './projects/projects.component'
+import { TasksComponent } from './tasks/tasks.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import {ProjectsComponent} from './projects/projects.component'
                     { path: 'resources/resources', component: ResourcesComponent, data: { permission: 'Pages.Resources' }  },
                     // { path: 'contractors/contractors', component: ContractorsComponent, data: { permission: 'Pages.Contractors' } },
                     { path: 'projects/projects', component: ProjectsComponent, data: { permission: 'Pages.Projects' }  },
+                    { path: 'projects/projects/:id', component: TasksComponent, data: { permission: 'Pages.Tasks' } },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: 'dashboard' }
                 ]

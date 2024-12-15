@@ -49,7 +49,7 @@ namespace Asd.Hrm.EntityFrameworkCore
 
         public virtual DbSet<Contractors> Contractors { get; set; }
         public virtual DbSet<Employees> Employees { get; set; }
-        public virtual DbSet<Asd.Hrm.Tasks.Tasks> Tasks { get; set; }
+        public virtual DbSet<Asd.Hrm.Job.Tasks> Tasks { get; set; }
 
         public HrmDbContext(DbContextOptions<HrmDbContext> options)
             : base(options)

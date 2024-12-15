@@ -5,7 +5,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text m--font-accent">
-                            {{l('Projects')}}
+                            Project Details
                         </h3>
                     </div>
                 </div>
@@ -13,8 +13,8 @@
 
                     <div class="col-md-6 search-filter">
                         <div class="filter-left">
-                            <input class="form-control form-control-sm m-input m-input--air m-input--pill" [(ngModel)]="filterText" name="filtertext" [placeholder]="l('Projects')" type="text" (keyup.enter)="getProjects()">
-                            <a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" (click)="getProjects()">
+                            <input class="form-control form-control-sm m-input m-input--air m-input--pill" [(ngModel)]="filterText" name="filtertext" [placeholder]="l('Tasks')" type="text" (keyup.enter)="getTasks()">
+                            <a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" (click)="getTasks()">
                                 <i class="fa flaticon-search"></i>
                             </a>
                             <a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill" (click)="clearFilter()">
@@ -27,8 +27,8 @@
                 </div>
                 <div class="m-portlet__head-tools">
                     <ul class="m-portlet__nav">
-                        <li class="m-portlet__nav-item" *ngIf="isGranted('Pages.Projects.Create')">
-                            <a href="javascript:;" (click)="createProjects()" class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--pill">
+                        <li class="m-portlet__nav-item" *ngIf="isGranted('Pages.Tasks.Create')">
+                            <a href="javascript:;" (click)="createTasks()" class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--pill">
                                 <span>
                                     <i class="flaticon-add-circular-button"></i>
                                     <span>{{l('BtnCreate')}}</span>
@@ -48,16 +48,16 @@
                                 <thead class="thead-2">
                                     <tr>
                                         <th style="min-width: 50px;" class="text-center">STT</th>
-                                        <th style="min-width: 75px;" class="text-center">Project ID</th>
-                                        <th style="min-width: 150px;" class="text-center">Project Name</th>
-                                        <th style="min-width: 70px;" class="text-center">Purpose</th>
+                                        <th style="min-width: 75px;" class="text-center">Task Desciption</th>
+                                        <th style="min-width: 150px;" class="text-center">Estimaated Budget</th>
+                                        <th style="min-width: 70px;" class="text-center">Actual Budget</th>
                                         <th style="min-width: 100px;" class="text-center">Start Date</th>
-                                        <th style="min-width: 100px;" class="text-center">Estimated End Date</th>
-                                        <th style="min-width: 100px;" class="text-center">Budget</th>
-                                        <th style="min-width: 150px;" class="text-center">Responsible Employee Name</th>
-                                        <th style="min-width: 100px;" class="text-center">Progress</th>
-                                       
-                                        <th style="width: 80px" [hidden]="!isGrantedAny('Pages.Projects.Edit', 'Pages.Projects.Delete')" class="text-center">{{l('Actions')}}</th>
+                                        <th style="min-width: 100px;" class="text-center">End Date</th>
+                                        <th style="min-width: 100px;" class="text-center">Project Name</th>
+                                        <th style="min-width: 150px;" class="text-center">Stage</th>
+                                        <th style="min-width: 100px;" class="text-center">Status</th>
+                                        <th style="min-width: 100px;" class="text-center">Managed Employee</th>                                 
+                                        <th style="width: 80px" [hidden]="!isGrantedAny('Pages.Tasks.Edit', 'Pages.Tasks.Delete')" class="text-center">{{l('Actions')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -67,39 +67,38 @@
                                             {{  i + 1 }}
                                         </td>
                                         <td class="text-center">
-                                            {{item.projects.projectID}}
+                                            {{item.tasks.taskDescription}}
+                                        </td>
+                                        <td class="text-center ">                                            
+                                            {{item.tasks.estimatedBudget}}
                                         </td>
                                         <td class="text-center ">
-                                            <a
-                                                    href="javascript:;"
-                                                    [routerLink]="['/app/main/projects/projects/', item.projects.id]"
-                                                    routerLinkActive="active">{{item.projects.projectName}}
-                                                </a>
+                                            {{ item.tasks.actualBudget }}
                                         </td>
                                         <td class="text-center ">
-                                            {{ item.projects.purpose }}
-                                        </td>
-                                        <td class="text-center ">
-                                            {{ item.projects.startDate | date: 'dd/MM/yyyy' }}
+                                            {{ item.tasks.startDate | date: 'dd/MM/yyyy' }}
                                         </td>
                                         <td>
-                                            {{item.projects.estimatedEndDate | date: 'dd/MM/yyyy'}}
+                                            {{item.tasks.endDate | date: 'dd/MM/yyyy'}}
                                         </td>
                                         <td>
-                                            {{item.projects.budget}}
+                                            {{getProjectName(item.tasks.projectID)}}
                                         </td>
                                         <td>
-                                            {{getEmployeeName(item.projects.responsibleEmployeeID)}}
+                                            {{item.tasks.stage}}
                                         </td>
                                         <td>
-                                            {{item.projects.progress}}
+                                            {{item.tasks.status}}
                                         </td>
-                                        <td style="width: 80px" class="text-center" [hidden]="!isGrantedAny('Pages.Projects.Edit', 'Pages.Projects.Delete')">
-                                            <a (click)="createOrEditProjectsModal.show(item.projects.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Projects.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
+                                        <td>
+                                            {{getEmployeeName(item.tasks.managerEmployeeID)}}
+                                        </td>
+                                        <td style="width: 80px" class="text-center" [hidden]="!isGrantedAny('Pages.Tasks.Edit', 'Pages.Tasks.Delete')">
+                                            <a (click)="createOrEditTasksModal.show(item.tasks.id, item.tasks.projectID)" href="javascript:;" *ngIf="permission.isGranted('Pages.Tasks.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
                                                 <i class="la la-edit"></i>
                                             </a>
     
-                                            <a (click)="deleteProjects(item.projects)" href="javascript:;" *ngIf="permission.isGranted('Pages.Projects.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
+                                            <a (click)="deleteTasks(item.tasks)" href="javascript:;" *ngIf="permission.isGranted('Pages.Tasks.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
                                                 <i class="la la-trash"></i>
                                             </a>
                                         </td>                                    
@@ -113,6 +112,6 @@
         </div>
     </div>
 
-    <createOrEditProjectsModal #createOrEditProjectsModal (modalSave)="getProjects()"></createOrEditProjectsModal>
+    <createOrEditTasksModal #createOrEditTasksModal (modalSave)="getTasks()"></createOrEditTasksModal>
 
 </div>

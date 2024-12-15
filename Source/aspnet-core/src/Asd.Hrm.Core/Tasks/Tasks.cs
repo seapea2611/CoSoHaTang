@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Asd.Hrm.Tasks
+namespace Asd.Hrm.Job
 {
     [Table("Tasks")]
     public class Tasks : Entity

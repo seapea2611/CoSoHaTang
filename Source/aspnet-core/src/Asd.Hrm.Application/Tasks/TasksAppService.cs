@@ -3,8 +3,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Asd.Hrm.Authorization;
-using Asd.Hrm.Project;
-using Asd.Hrm.Tasks.Dtos;
+using Asd.Hrm.Job.Dtos;
 using Microsoft.EntityFrameworkCore;
 using NPOI.SS.Formula.Functions;
 using System;
@@ -12,8 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace Asd.Hrm.Tasks
+namespace Asd.Hrm.Job
 {
     [AbpAuthorize(AppPermissions.Pages_Tasks)]
     public class TasksAppService : HrmAppServiceBase, ITasksAppService
@@ -47,14 +47,30 @@ namespace Asd.Hrm.Tasks
             );
         }
 
-        public async Task<GetTasksForViewDto> GetTasksForView(int id)
+        public async Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId)
         {
-            var tasks = await _tasksRepository.GetAsync(id);
+            
+            var filteredTasks = _tasksRepository.GetAll()
+                                                .Where(task => task.ProjectID == projectId);
+            GetAllTasksInput input = new GetAllTasksInput();
+            var query = (from o in filteredTasks
+                         select new GetTasksForViewDto()
+                         {
+                             Tasks = ObjectMapper.Map<TasksDto>(o)
+                         });
 
-            var output = new GetTasksForViewDto { Tasks = ObjectMapper.Map<TasksDto>(tasks) };
+            var totalCount = await query.CountAsync();
 
-            return output;
+            var resources = await query
+                .PageBy(input)
+                .ToListAsync();
+
+            return new PagedResultDto<GetTasksForViewDto>(
+                totalCount,
+                resources
+            );
         }
+
 
         [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
         public async Task<GetTasksForEditOutput> GetTasksForEdit(EntityDto input)
@@ -105,14 +121,14 @@ namespace Asd.Hrm.Tasks
         }
 
         [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
-        public async System.Threading.Tasks.Task Update(CreateOrEditTasksDto input)
+        public async Task Update(CreateOrEditTasksDto input)
         {
             var Tasks = await _tasksRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, Tasks);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Tasks_Delete)]
-        public async System.Threading.Tasks.Task Delete(EntityDto input)
+        public async Task Delete(EntityDto input)
         {
             await _tasksRepository.DeleteAsync(input.Id);
         }

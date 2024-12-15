@@ -1,12 +1,12 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
-using Asd.Hrm.Tasks.TaskResource.Dtos;
+using Asd.Hrm.Job.TaskResource.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Asd.Hrm.Tasks.TaskResource
+namespace Asd.Hrm.Job.TaskResource
 {
     public interface ITaskResourcesAppService : IApplicationService
     {
