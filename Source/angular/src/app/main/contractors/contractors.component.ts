@@ -25,6 +25,7 @@
 //     @ViewChild('dataTable') dataTable: Table;
 //     @ViewChild('paginator') paginator: Paginator;
 
+
 //     advancedFiltersAreShown = false;
 //     filterText = '';
 //     ContractorNameFilter = '';
@@ -32,6 +33,15 @@
 //     EmailContractorFilter = '';
 //     SpecializationFilter = ''
 //     data: any;
+
+    advancedFiltersAreShown = false;
+    filterText = '';
+    ContractorNameFilter = '';
+    PhoneFilter = '';
+    EmailFilter = '';
+    SpecializationFilter = ''
+    data: any;
+
 
 //     constructor(
 //         injector: Injector,
@@ -48,22 +58,24 @@
 
 //         this.primengTableHelper.showLoadingIndicator();
 
-//         this._contractorsServiceProxy.getAll(        
-//             this.filterText,
-//             this.ContractorNameFilter,
-//             this.PhoneFilter,
-//             this.EmailContractorFilter,
-//             this.SpecializationFilter,
-//             '',
-//             0,
-//             10
-//         ).subscribe(result => {
-//             console.log(result);
-//             this.primengTableHelper.totalRecordsCount = result.totalCount;
-//             this.primengTableHelper.records = result.items;
-//             this.primengTableHelper.hideLoadingIndicator();
-//         });
-//     }
+
+        this._contractorsServiceProxy.getAll(        
+            this.filterText,
+            this.ContractorNameFilter,
+            this.PhoneFilter,
+            this.EmailFilter,
+            this.SpecializationFilter,
+            '',
+            0,
+            10
+        ).subscribe(result => {
+            console.log(result);
+            this.primengTableHelper.totalRecordsCount = result.totalCount;
+            this.primengTableHelper.records = result.items;
+            this.primengTableHelper.hideLoadingIndicator();
+        });
+    }
+
 
 //     reloadPage(): void {
 //         this.paginator.changePage(this.paginator.getPage());
