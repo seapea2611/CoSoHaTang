@@ -95,10 +95,10 @@
                                         </td>
                                         <td class="text-center cell-bg" style="width: 80px" [hidden]="!isGrantedAny('Pages.Resources.Edit', 'Pages.Resources.Delete')">
                                             <div style="display: inline-flex; align-items: center; justify-content: center;">
-                                                <a (click)="createOrEditResourcesModal.show(item.Resources.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Resources.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
+                                                <a (click)="createOrEditResourcesModal.show(item.resources.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Resources.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
                                                     <i class="la la-edit"></i>
                                                 </a>
-                                                <a (click)="deleteResources(item.resources.resources)" href="javascript:;" *ngIf="permission.isGranted('Pages.Resources.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
+                                                <a (click)="deleteResources(item.resources)" href="javascript:;" *ngIf="permission.isGranted('Pages.Resources.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
                                                     <i class="la la-trash"></i>
                                                 </a>
                                             </div>
