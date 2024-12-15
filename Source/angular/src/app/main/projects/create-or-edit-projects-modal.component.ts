@@ -25,25 +25,27 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
     saving = false;
 
     projects: CreateOrEditProjectsDto = new CreateOrEditProjectsDto();
-    employees: EmployeesDto = new EmployeesDto();
+    nhanvien: EmployeesDto = new EmployeesDto();
 
     listUnit = [];
     seletedUnits = [];
     appUnitInput = new Subject<string>();
     datarenge: Date[] = [moment().startOf('day').toDate(), moment().endOf('day').toDate()];
-    listEmployeeName = [];
+    listEmployeeName: any [] = [];
+    listEmployee: any [] = [];
 
 
     constructor(
         injector: Injector,
         private _projectsServiceProxy: ProjectsServiceProxy,
-        private _employeeServiceProxy: EmployeesServiceProxy
+        private _employeeServiceProxy: EmployeesServiceProxy,
     ) {
         super(injector);
     }
 
     ngOnInit() {
        this.suggestEmployee();
+       this.loadEmployees();
       }
 
 
@@ -88,8 +90,8 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
     prepareData(): CreateOrEditProjectsDto {
         this.projects.startDate = this.datarenge[0] ? moment(this.datarenge[0]).toDate() as any : undefined;
         this.projects.estimatedEndDate = this.datarenge[1] ? moment(this.datarenge[1]).toDate() as any : undefined;
+        this.projects.responsibleEmployeeID = this.getEmployeeId(this.nhanvien.fullName);
         const result = this.copyObject(this.projects) as CreateOrEditProjectsDto;
-        
         return result;
     }
 
@@ -105,7 +107,21 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
     }
     suggestEmployee() {
         this._employeeServiceProxy.getAll('', '', '', '', '', '', 0, 100).subscribe(result => {
+            console.log(result);
             this.listEmployeeName = result.items;
         });
     }
+
+    loadEmployees() {
+        this._employeeServiceProxy.getAll('', '', '', '', '', '', 0, 1000).subscribe(result => {
+          console.log(result);
+          console.log(result.items);
+          this.listEmployee = result.items;
+        });
+      }
+
+    getEmployeeId(employeeName: string): number {
+        const employee = this.listEmployee.find(e => e.employees.fullName == employeeName);
+        return employee.employees.id;
+      }
 }

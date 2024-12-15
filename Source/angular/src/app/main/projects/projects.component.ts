@@ -1,6 +1,6 @@
 import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProjectsServiceProxy, ProjectsDto} from '@shared/service-proxies/service-proxies';
+import { ProjectsServiceProxy, ProjectsDto, EmployeesServiceProxy} from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditProjectsModalComponent } from './create-or-edit-projects-modal.component';
@@ -31,16 +31,20 @@ export class ProjectsComponent extends AppComponentBase {
     UnitTypeFilter = '';
     SupplierFilter = '';
     data: any;
+   employees: any[] = [];
+
 
     constructor(
         injector: Injector,
         private _projectsServiceProxy: ProjectsServiceProxy,
+        private _employeesServiceProxy: EmployeesServiceProxy,
     ) {
         super(injector);
     }
     
     ngOnInit(): void {
         this.getProjects();
+        this.loadEmployees();
     }
 
     getProjects(event?: LazyLoadEvent) {
@@ -92,4 +96,18 @@ export class ProjectsComponent extends AppComponentBase {
         this.filterText = '';
         this.getProjects();
     }
+
+    loadEmployees() {
+        this._employeesServiceProxy.getAll('', '', '', '', '', '', 0, 1000).subscribe(result => {
+          console.log(result);
+          console.log(result.items);
+          this.employees = result.items;
+        });
+      }
+
+    getEmployeeName(employeeId: number): string {
+        const employee = this.employees.find(e => e.employees.id == employeeId);
+        return employee.employees.fullName;
+      }
+    
 }

@@ -70,7 +70,11 @@
                                             {{item.projects.projectID}}
                                         </td>
                                         <td class="text-center ">
-                                            {{item.projects.projectName}}
+                                            <a
+                                                    href="javascript:;"
+                                                    [routerLink]="['/app/main/projects/projects/', item.projects.id]"
+                                                    routerLinkActive="active">{{item.projects.projectName}}
+                                                </a>
                                         </td>
                                         <td class="text-center ">
                                             {{ item.projects.purpose }}
@@ -85,7 +89,7 @@
                                             {{item.projects.budget}}
                                         </td>
                                         <td>
-                                            {{item.projects.responsibleEmployeeID}}
+                                            {{getEmployeeName(item.projects.responsibleEmployeeID)}}
                                         </td>
                                         <td>
                                             {{item.projects.progress}}
@@ -95,7 +99,7 @@
                                                 <i class="la la-edit"></i>
                                             </a>
     
-                                            <a (click)="deleteProjects(item.projects.projects)" href="javascript:;" *ngIf="permission.isGranted('Pages.Projects.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
+                                            <a (click)="deleteProjects(item.projects)" href="javascript:;" *ngIf="permission.isGranted('Pages.Projects.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
                                                 <i class="la la-trash"></i>
                                             </a>
                                         </td>                                    
