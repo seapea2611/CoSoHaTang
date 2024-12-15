@@ -5,7 +5,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text m--font-accent">
-                            {{l('Resources')}}
+                            {{l('Contractors')}}
                         </h3>
                     </div>
                 </div>
@@ -17,14 +17,14 @@
                                 class="form-control form-control-sm m-input m-input--air m-input--pill" 
                                 [(ngModel)]="filterText" 
                                 name="filtertext" 
-                                [placeholder]="l('Resources')" 
+                                [placeholder]="l('Contractors')" 
                                 type="text" 
-                                (keyup.enter)="getResources()"
+                                (keyup.enter)="getContractors()"
                             >
                             <a 
                                 href="javascript:;" 
                                 class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" 
-                                (click)="getResources()"
+                                (click)="getContractors()"
                             >
                                 <i class="fa flaticon-search"></i>
                             </a>
@@ -43,13 +43,13 @@
                 </div>
 
                 <div class="m-portlet__head-tools">
-                    <div *ngIf="isGranted('Pages.Resources.Create')">
+                    <div *ngIf="isGranted('Pages.Contractors.Create')">
                         <a href="javascript:;" 
-                           (click)="createResources()" 
+                           (click)="createContractors()" 
                            class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--pill green-button">
                             <span>
                                 <i class="flaticon-add-circular-button"></i>
-                                <span>{{l('Add new resources')}}</span>
+                                <span>{{l('Add new contractor')}}</span>
                             </span>
                         </a>
                     </div>
@@ -57,20 +57,20 @@
                 
             </div>
 
+
             <div class="m-portlet__body">
                 <div class="row align-items-center">
                     
                         <div class="table-responsive table-scroll-horizontal-custom table-not-scroll">
-                            <table class="table  table-bordered table-custom table-with-bg">
+                            <table class="table table-bordered table-custom table-with-bg">
                                 <thead class="thead-2">
                                     <tr>
                                         <th style="min-width: 50px;" class="text-center">STT</th>
-                                        <th style="min-width: 75px;" class="text-center">{{l('ResourceID')}}</th>
-                                        <th style="min-width: 100px;" class="text-center">{{l('ResourceType')}}</th>
-                                        <th style="min-width: 100px;" class="text-center">{{l('UnitCost')}}</th>
-                                        <th style="min-width: 100px;" class="text-center">{{l('UnitType')}}</th>
-                                        <th style="min-width: 260px;" class="text-center">{{l('Supplier')}}</th> 
-                                        <th style="width: 80px" [hidden]="!isGrantedAny('Pages.Resources.Edit', 'Pages.Resources.Delete')" class="text-center">{{l('Actions')}}</th>
+                                        <th style="min-width: 75px;" class="text-center">{{l('ContractorName')}}</th>
+                                        <th style="min-width: 100px;" class="text-center">{{l('Phone')}}</th>
+                                        <th style="min-width: 100px;" class="text-center">{{l('Email')}}</th>
+                                        <th style="min-width: 100px;" class="text-center">{{l('Specialization')}}</th>
+                                        <th style="width: 80px" [hidden]="!isGrantedAny('Pages.Contractors.Edit', 'Pages.Contractors.Delete')" class="text-center">{{l('Actions')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,33 +79,30 @@
                                             {{  i + 1 }}
                                         </td>
                                         <td class="text-center cell-bg">
-                                            {{item.resources.resourceID}}
+                                            {{item.contractors.contractorName}}
                                         </td>
                                         <td class="text-center cell-bg">
-                                            {{item.resources.resourceType}}
+                                            {{item.contractors.phone}}
                                         </td>
                                         <td class="text-center cell-bg">
-                                            {{ item.resources.unitCost }}
+                                            {{ item.contractors.email}}
                                         </td>
-                                        <td class= "cell-bg" style="width: 300px;">
-                                            {{ item.resources.unitType }}
+                                        <td class="cell-bg" style="width: 300px;">
+                                            {{ item.contractors.specialization }}
                                         </td>
-                                        <td class="cell-bg">
-                                            {{item.resources.supplier}}
-                                        </td>
-                                        <td class="text-center cell-bg" style="width: 80px" [hidden]="!isGrantedAny('Pages.Resources.Edit', 'Pages.Resources.Delete')">
+                                        <td class="text-center cell-bg" style="width: 80px" [hidden]="!isGrantedAny('Pages.Contractors.Edit', 'Pages.Contractors.Delete')">
                                             <div style="display: inline-flex; align-items: center; justify-content: center;">
-                                                <a (click)="createOrEditResourcesModal.show(item.resources.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Resources.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
+                                                <a (click)="createOrEditContractorsModal.show(item.contractors.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Contractors.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
                                                     <i class="la la-edit"></i>
                                                 </a>
-                                                <a (click)="deleteResources(item.resources)" href="javascript:;" *ngIf="permission.isGranted('Pages.Resources.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
+                                                <a (click)="deleteContractors(item.contractors)" href="javascript:;" *ngIf="permission.isGranted('Pages.Contractors.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
                                                     <i class="la la-trash"></i>
                                                 </a>
                                             </div>
-                                        </td>                                 
+                                        </td>
                                     </tr>
                                 </tbody>
-                            </table>                   
+                            </table>            
                         </div>
 
                 </div>
@@ -113,6 +110,6 @@
         </div>
     </div>
 
-    <createOrEditResourcesModal #createOrEditResourcesModal (modalSave)="getResources()"></createOrEditResourcesModal>
+    <createOrEditContractorsModal #createOrEditContractorsModal (modalSave)="getContractors()"></createOrEditContractorsModal>
 
-</div>
+</div> 

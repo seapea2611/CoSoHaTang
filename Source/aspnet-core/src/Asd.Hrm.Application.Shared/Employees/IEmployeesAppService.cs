@@ -3,6 +3,7 @@ using Abp.Application.Services.Dto;
 using Asd.Hrm.Employees.Dtos;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,5 +20,7 @@ namespace Asd.Hrm.Employees
         Task CreateOrEdit(CreateOrEditEmployeesDto input);
 
         Task Delete(EntityDto input);
+        Task<int> GetEmployeeId(string name);
+
     }
 }
