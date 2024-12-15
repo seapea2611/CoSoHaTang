@@ -12,7 +12,7 @@ namespace Asd.Hrm.Tasks
     {
         Task<PagedResultDto<GetTasksForViewDto>> GetAll(GetAllTasksInput input);
 
-        Task<GetTasksForViewDto> GetTasksForView(int id);
+        Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId);
 
         Task<GetTasksForEditOutput> GetTasksForEdit(EntityDto input);
 
