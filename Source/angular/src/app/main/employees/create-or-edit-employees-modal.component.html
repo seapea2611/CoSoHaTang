@@ -1,0 +1,56 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #employeeForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="employees.id"><b>{{l("EditEmployees")}}</b></span>
+                        <span *ngIf="!employees.id"><b>{{l("CreateNewEmployees")}}</b></span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="employeeID">{{ l("EmployeeID") }} (<span class="color-red">*</span>)</label>
+                        <input type="text" id="employeeID" class="form-control" [(ngModel)]="employees.employeeID"
+                            name="employeeID" #employeeID="ngModel" required maxlength="50" />
+                        <validation-messages [formCtrl]="employeeID"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">{{ l("FullName") }} (<span class="color-red">*</span>)</label>
+                        <input type="text" id="fullName" class="form-control" [(ngModel)]="employees.fullName"
+                            name="fullName" #fullName="ngModel" required maxlength="255" />
+                        <validation-messages [formCtrl]="fullName"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">{{ l("Phone") }}</label>
+                        <input type="text" id="phone" class="form-control" [(ngModel)]="employees.phone" name="phone"
+                            #phone="ngModel" maxlength="20" />
+                        <validation-messages [formCtrl]="phone"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">{{ l("Role") }}</label>
+                        <textarea [placeholder]="l('Role')" name="role" id="role" class="form-control"
+                            [(ngModel)]="employees.role" maxlength="50"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!employeeForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

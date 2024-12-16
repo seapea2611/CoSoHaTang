@@ -46,8 +46,7 @@ namespace Asd.Hrm.Job
                 resources
             );
         }
-
-        public async Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId)
+    public async Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId)
         {
             
             var filteredTasks = _tasksRepository.GetAll()
