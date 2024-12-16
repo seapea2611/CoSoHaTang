@@ -19,23 +19,4 @@ COPY . .
 # Copy angular.docker.json to angular.json for the Docker build
 COPY ./angular.docker.json ./angular.json
 
-# Set default environment to docker
-ENV environment=docker
-
-# Build the Angular application using gulp
-RUN gulp build --env=$environment
-
-# Use Nginx to serve the built Angular application
-FROM nginx:alpine
-
-# Copy the custom Nginx configuration file
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-COPY --from=0 /app/dist /usr/share/nginx/html
-
-# Expose the port Angular will use
-EXPOSE 80
 EXPOSE 4200
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]

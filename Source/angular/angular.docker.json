@@ -135,27 +135,15 @@
               ]
             }
           },
-            "production": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.docker.ts"
-                }
-              ]
-            }
-          },
           "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "abp-zero-template:build"
+            "browserTarget": "abp-zero-template:build",
+            "host": "0.0.0.0",
+            "disableHostCheck": true,
+            "poll": 2000
           },
           "configurations": {
             "hmr": {
