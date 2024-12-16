@@ -1,8 +1,4 @@
 docker run -d --name asdhrm-frontend \
-  -v ${PWD}:/app \
-  -v /app/node_modules \
   --network asdhrm \
-  --network-alias frontend \
   -p 4200:4200 \
-  asdhrm-frontend \
-  bash -c "cd /app && ng serve --port 4200 --host 0.0.0.0 --disable-host-check --poll 2000"
+  asdhrm-frontend
