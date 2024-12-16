@@ -16,17 +16,21 @@ RUN yarn
 # Copy the rest of the application files to the container
 COPY . .
 
-# Set default environment to production
+# Copy angular.docker.json to angular.json for the Docker build
+COPY ./angular.docker.json ./angular.json
+
+# Set default environment to docker
 ENV environment=docker
 
 # Build the Angular application using gulp
-# RUN gulp build
-
-# Build the Angular application using gulp with the specified environment
 RUN gulp build --env=$environment
 
 # Use Nginx to serve the built Angular application
 FROM nginx:alpine
+
+# Copy the custom Nginx configuration file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 COPY --from=0 /app/dist /usr/share/nginx/html
 
 # Expose the port Angular will use

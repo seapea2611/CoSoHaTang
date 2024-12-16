@@ -1,0 +1,6 @@
+docker run -d --name asdhrm-frontend \
+  --network asdhrm \
+  --network-alias frontend \
+  -p 8082:80 \
+  -p 4200:4200 \
+  asdhrm-frontend
