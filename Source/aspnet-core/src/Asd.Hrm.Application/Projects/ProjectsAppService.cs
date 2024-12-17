@@ -12,6 +12,7 @@ using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Asd.Hrm.Projects;
 using Asd.Hrm.Projects.Dtos;
+using Asd.Hrm.Job;
 
 namespace Asd.Hrm.Project
 {
@@ -19,6 +20,7 @@ namespace Asd.Hrm.Project
     public class ProjectsAppService : HrmAppServiceBase, IProjectsAppService
     {
         private readonly IRepository<Projects> _projectsRepository;
+
 
         public ProjectsAppService(IRepository<Projects> projectsRepository)
         {

@@ -19,5 +19,6 @@ namespace Asd.Hrm.Job
         Task CreateOrEdit(CreateOrEditTasksDto input);
 
         Task Delete(EntityDto input);
+        Task UpdateProjectProgress(int projectId);
     }
 }

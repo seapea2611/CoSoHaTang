@@ -38,7 +38,8 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
     listEmployee: any [] = [];
     listProject: any [] = [];
     listProjectName: any [] = [];
-
+    listStage: any = [{text: "Chuẩn bị dự án"}, {text: "Thi công"}, {text: "Nghiệm thu bàn giao"}];
+    listStatus: any = [{text: "Đã xong"}, {text: "Đang thực hiện"}];
 
     constructor(
         injector: Injector,
@@ -69,8 +70,7 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
             this.tasks = new CreateOrEditTasksDto();
             this.tasks.id = tasksId;
             this.active = true;
-            this.suggestEmployee();
-            
+            this.suggestEmployee();        
             this.modal.show();
         } else {
             this._tasksServiceProxy.getTasksForEdit(tasksId).subscribe(result => {
@@ -79,7 +79,6 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
                 this.datarenge[1] = this.tasks.endDate.toJSDate();
                 this.active = true;
                 this.suggestEmployee();
-                this.duan.projectName = this.getProjectName(tasksId);
                 this.modal.show();
             });
         }
@@ -95,6 +94,10 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
             this.close();
             this.modalSave.emit(null);
          });
+        console.log('sucess');
+        this._tasksServiceProxy.updateProjectProgress(this.duan.id).subscribe(() => {
+            this.notify.info(this.l('UpdateProjectProgress'));
+        });
     }
 
     prepareData(): CreateOrEditTasksDto {
@@ -144,13 +147,13 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
           this.listProject = result.items;
         });
       }
-      getProjectId(projectName: string): number {
-        const project = this.listProject.find(p => p.projects.projectName == projectName);
-        return project.projects.id;
-      }
-      getProjectName(projectId: number): string {
-        const project = this.listProject.find(p => p.projects.id == projectId);
-        return project.projects.projectName;
-      }
+    //   getProjectId(projectName: string): number {
+    //     const project = this.listProject.find(p => p.projects.projectName == projectName);
+    //     return project.projects.id;
+    //   }
+    //   getProjectName(projectId: number): string {
+    //     const project = this.listProject.find(p => p.projects.id == projectId);
+    //     return project.projects.projectName;
+    //   }
 }
 

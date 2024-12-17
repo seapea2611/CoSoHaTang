@@ -6,7 +6,6 @@ import { EmployeesComponent } from './employees/employees.component';
 import { ContractorsComponent } from './contractors/contractors.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { TasksComponent } from './tasks/tasks.component';
-import { TasksComponent } from './tasks/tasks.component';
 
 
 @NgModule({

@@ -68,11 +68,6 @@
                         <validation-messages [formCtrl]="fullName"></validation-messages>
                     </div>
 
-                    <div class="form-group">
-                        <label for="progress">Progress</label>
-                        <textarea [placeholder]="l('Progress')" name="progress" id="progress" class="form-control" [(ngModel)]="projects.progress"></textarea>
-                    </div>
-
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>

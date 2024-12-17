@@ -91,6 +91,7 @@ export class CreateOrEditProjectsModalComponent extends AppComponentBase impleme
         this.projects.startDate = this.datarenge[0] ? moment(this.datarenge[0]).toDate() as any : undefined;
         this.projects.estimatedEndDate = this.datarenge[1] ? moment(this.datarenge[1]).toDate() as any : undefined;
         this.projects.responsibleEmployeeID = this.getEmployeeId(this.nhanvien.fullName);
+        this.projects.progress = "Chuẩn bị dự án";
         const result = this.copyObject(this.projects) as CreateOrEditProjectsDto;
         return result;
     }
