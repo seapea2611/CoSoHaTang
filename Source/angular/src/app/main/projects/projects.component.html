@@ -13,30 +13,48 @@
 
                     <div class="col-md-6 search-filter">
                         <div class="filter-left">
-                            <input class="form-control form-control-sm m-input m-input--air m-input--pill" [(ngModel)]="filterText" name="filtertext" [placeholder]="l('Projects')" type="text" (keyup.enter)="getProjects()">
-                            <a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" (click)="getProjects()">
+                            <input 
+                                class="form-control form-control-sm m-input m-input--air m-input--pill" 
+                                [(ngModel)]="filterText" 
+                                name="filtertext" 
+                                [placeholder]="l('Projects')" 
+                                type="text" 
+                                (keyup.enter)="getProjects()"
+                            >
+                            <a 
+                                href="javascript:;" 
+                                class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" 
+                                (click)="getProjects()"
+                            >
                                 <i class="fa flaticon-search"></i>
                             </a>
-                            <a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill" (click)="clearFilter()">
-                                <i class="fa flaticon-refresh"></i>
+
+                            <a 
+                            href="javascript:;" 
+                            class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill ml-2" 
+                            (click)="clearFilter()"
+                            >
+                            <i class="fa flaticon-refresh"></i>
                             </a>
                         </div>
                     </div>
 
-                    
+
                 </div>
+
                 <div class="m-portlet__head-tools">
-                    <ul class="m-portlet__nav">
-                        <li class="m-portlet__nav-item" *ngIf="isGranted('Pages.Projects.Create')">
-                            <a href="javascript:;" (click)="createProjects()" class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--pill">
-                                <span>
-                                    <i class="flaticon-add-circular-button"></i>
-                                    <span>{{l('BtnCreate')}}</span>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
+                    <div *ngIf="isGranted('Pages.Projects.Create')">
+                        <a href="javascript:;" 
+                           (click)="createProjects()" 
+                           class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--pill green-button">
+                            <span>
+                                <i class="flaticon-add-circular-button"></i>
+                                <span>{{l('Add new Project')}}</span>
+                            </span>
+                        </a>
+                    </div>
                 </div>
+                
             </div>
 
 
@@ -44,7 +62,7 @@
                 <div class="row align-items-center">
                     
                         <div class="table-responsive table-scroll-horizontal-custom table-not-scroll">
-                            <table class="table  table-bordered table-custom">
+                            <table class="table table-bordered table-custom table-with-bg">
                                 <thead class="thead-2">
                                     <tr>
                                         <th style="min-width: 50px;" class="text-center">STT</th>
@@ -63,23 +81,23 @@
                                 <tbody>
                                     <tr *ngFor="let item of primengTableHelper.records; let i = index">
 
-                                        <td class="text-center">
+                                        <td class="text-center cell-bg">
                                             {{  i + 1 }}
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center cell-bg">
                                             {{item.projects.projectID}}
                                         </td>
-                                        <td class="text-center ">
+                                        <td class="text-center cell-bg">
                                             <a
                                                     href="javascript:;"
                                                     [routerLink]="['/app/main/projects/projects/', item.projects.id]"
                                                     routerLinkActive="active">{{item.projects.projectName}}
                                                 </a>
                                         </td>
-                                        <td class="text-center ">
+                                        <td class="text-center cell-bg">
                                             {{ item.projects.purpose }}
                                         </td>
-                                        <td class="text-center ">
+                                        <td class="text-center cell-bg">
                                             {{ item.projects.startDate | date: 'dd/MM/yyyy' }}
                                         </td>
                                         <td>
@@ -105,7 +123,7 @@
                                         </td>                                    
                                     </tr>
                                 </tbody>
-                            </table>                   
+                            </table>            
                         </div>
 
                 </div>
@@ -115,4 +133,4 @@
 
     <createOrEditProjectsModal #createOrEditProjectsModal (modalSave)="getProjects()"></createOrEditProjectsModal>
 
-</div>
+</div> 
