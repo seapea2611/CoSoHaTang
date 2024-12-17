@@ -26,6 +26,14 @@ import { ContractorsComponent } from './contractors/contractors.component';
 import { CreateOrEditContractorsModalComponent } from './contractors/create-or-edit-contractors-modal.component'; import { ProjectsComponent } from './projects/projects.component';
 import { CreateOrEditProjectsModalComponent } from './projects/create-or-edit-projects-modal.component';
 
+import { DocumentTemplatesComponent } from './documentTemplates/documentTemplates.component';
+import { CreateOrEditDocumentTemplatesModalComponent } from './documentTemplates/create-or-edit-documentTemplates-modal.component';
+import { DocumentTemplatesServiceProxy, DocumentTemplatesDto } from '@shared/service-proxies/service-proxies';
+import { TasksServiceProxy } from '@shared/service-proxies/service-proxies';
+
+import { TasksComponent } from './tasks/tasks.component';
+import { CreateOrEditTasksModalComponent } from './tasks/create-or-edit-tasks-modal.component';
+
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
 @NgModule({
@@ -52,7 +60,11 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 ProjectsComponent,
                 CreateOrEditProjectsModalComponent,
                 ContractorsComponent,
-                CreateOrEditContractorsModalComponent
+                CreateOrEditContractorsModalComponent,
+                DocumentTemplatesComponent,
+                CreateOrEditDocumentTemplatesModalComponent,
+                TasksComponent,
+                CreateOrEditTasksModalComponent
         ],
         providers: [
                 { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },
@@ -61,7 +73,9 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
                 ResourcesServiceProxy,
                 ProjectsServiceProxy,
                 ContractorsServiceProxy,
-                EmployeesServiceProxy
+                EmployeesServiceProxy,
+                DocumentTemplatesServiceProxy,
+                TasksServiceProxy
         ]
 })
 export class MainModule { }

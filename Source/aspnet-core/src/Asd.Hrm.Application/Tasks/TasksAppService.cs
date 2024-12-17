@@ -46,14 +46,28 @@ namespace Asd.Hrm.Tasks
                 resources
             );
         }
-
-        public async Task<GetTasksForViewDto> GetTasksForView(int id)
+    public async Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId)
         {
-            var tasks = await _tasksRepository.GetAsync(id);
+            
+            var filteredTasks = _tasksRepository.GetAll()
+                                                .Where(task => task.ProjectID == projectId);
+            GetAllTasksInput input = new GetAllTasksInput();
+            var query = (from o in filteredTasks
+                         select new GetTasksForViewDto()
+                         {
+                             Tasks = ObjectMapper.Map<TasksDto>(o)
+                         });
 
-            var output = new GetTasksForViewDto { Tasks = ObjectMapper.Map<TasksDto>(tasks) };
+            var totalCount = await query.CountAsync();
 
-            return output;
+            var resources = await query
+                .PageBy(input)
+                .ToListAsync();
+
+            return new PagedResultDto<GetTasksForViewDto>(
+                totalCount,
+                resources
+            );
         }
 
         [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]

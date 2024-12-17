@@ -5,7 +5,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text m--font-accent">
-                            {{l('Employees')}}
+                            {{l('DocumentTemplates')}}
                         </h3>
                     </div>
                 </div>
@@ -17,14 +17,14 @@
                                 class="form-control form-control-sm m-input m-input--air m-input--pill" 
                                 [(ngModel)]="filterText" 
                                 name="filtertext" 
-                                [placeholder]="l('Employees')" 
+                                [placeholder]="l('DocumentTemplates')" 
                                 type="text" 
-                                (keyup.enter)="getEmployees()"
+                                (keyup.enter)="getDocumentTemplates()"
                             >
                             <a 
                                 href="javascript:;" 
                                 class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" 
-                                (click)="getEmployees()"
+                                (click)="getDocumentTemplates()"
                             >
                                 <i class="fa flaticon-search"></i>
                             </a>
@@ -43,13 +43,13 @@
                 </div>
 
                 <div class="m-portlet__head-tools">
-                    <div *ngIf="isGranted('Pages.Employees.Create')">
+                    <div *ngIf="isGranted('Pages.DocumentTemplates.Create')">
                         <a href="javascript:;" 
-                           (click)="createEmployees()" 
+                           (click)="createDocumentTemplates()" 
                            class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--pill green-button">
                             <span>
                                 <i class="flaticon-add-circular-button"></i>
-                                <span>{{l('Add new Employees')}}</span>
+                                <span>{{l('Add new Document Templates')}}</span>
                             </span>
                         </a>
                     </div>
@@ -66,29 +66,33 @@
                                 <thead class="thead-2">
                                     <tr>
                                         <th style="min-width: 50px;" class="text-center">STT</th>
-                                        <th style="min-width: 75px;" class="text-center">{{l('EmployeeID')}}</th>
-                                        <th style="min-width: 100px;" class="text-center">{{l('FullName')}}</th>
-                                        <th style="min-width: 100px;" class="text-center">{{l('Phone')}}</th>
-                                        <th style="min-width: 100px;" class="text-center">{{l('Role')}}</th>
-                                        <th style="width: 80px"
-                                            [hidden]="!isGrantedAny('Pages.Employees.Edit', 'Pages.Employees.Delete')"
-                                            class="text-center">{{l('Actions')}}</th>
+                                        <th style="min-width: 75px;" class="text-center">{{l('TemplateName')}}</th>
+                                        <th style="min-width: 100px;" class="text-center">{{l('AttachedFileLink')}}</th>
+                                        <th style="min-width: 100px;" class="text-center">{{l('AttachedFileName')}}</th>
+                                        <th style="width: 80px" [hidden]="!isGrantedAny('Pages.DocumentTemplates.Edit', 'Pages.DocumentTemplates.Delete')" class="text-center">{{l('Actions')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of primengTableHelper.records; let i = index">
 
-                                        <td class="text-center cell-bg">{{ i + 1 }}</td>
-                                        <td class="text-center cell-bg">{{ item.employees.employeeID }}</td>
-                                        <td class="text-center cell-bg">{{ item.employees.fullName }}</td>
-                                        <td class="text-center cell-bg">{{ item.employees.phone }}</td>
-                                        <td class="cell-bg" style="width: 300px;">{{ item.employees.role }}</td>
-                                        <td class="text-center cell-bg" style="width: 80px" [hidden]="!isGrantedAny('Pages.Employees.Edit', 'Pages.Employees.Delete')">
+                                        <td class="text-center cell-bg">
+                                            {{  i + 1 }}
+                                        </td>
+                                        <td class="text-center cell-bg">
+                                            {{item.documentTemplates.templateName}}
+                                        </td>
+                                        <td class="text-center cell-bg">
+                                            {{item.documentTemplates.attachedFileLink}}
+                                        </td>
+                                        <td class="text-center cell-bg">
+                                            {{ item.documentTemplates.attachedFileName }}
+                                        </td>
+                                        <td class="text-center cell-bg" style="width: 80px" [hidden]="!isGrantedAny('Pages.DocumentTemplates.Edit', 'Pages.DocumentTemplates.Delete')">
                                             <div style="display: inline-flex; align-items: center; justify-content: center;">
-                                                <a (click)="createOrEditEmployeesModal.show(item.employees.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Employees.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
+                                                <a (click)="createOrEditDocumentTemplatesModal.show(item.documentTemplates.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
                                                     <i class="la la-edit"></i>
                                                 </a>
-                                                <a (click)="deleteEmployees(item.employees)" href="javascript:;" *ngIf="permission.isGranted('Pages.Employees.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
+                                                <a (click)="deleteDocumentTemplates(item.documentTemplates)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
                                                     <i class="la la-trash"></i>
                                                 </a>
                                             </div>
@@ -103,6 +107,6 @@
         </div>
     </div>
 
-    <createOrEditEmployeesModal #createOrEditEmployeesModal (modalSave)="getEmployees()"></createOrEditEmployeesModal>
+    <createOrEditDocumentTemplatesModal #createOrEditDocumentTemplatesModal (modalSave)="getDocumentTemplates()"></createOrEditDocumentTemplatesModal>
 
 </div> 
