@@ -17,11 +17,7 @@ RUN yarn
 COPY . .
 
 # Copy appconfig.docker.json over appconfig.json
-RUN mv ./src/assets/appconfig.docker.json ./src/assets/appconfig.json
-RUN rm ./src/assets/appconfig.production.json
-RUN mv ./src/app/app.component.spec.docker.ts ./src/app/app.component.spec.ts
-RUN mv ./src/app/admin/roles/roles.component.spec.docker.ts ./src/app/admin/roles/roles.component.spec.ts
-RUN mv ./nswag/service.config.docker.nswag ./nswag/service.config.nswag
+COPY ./src/assets/appconfig.docker.json ./src/assets/appconfig.json
 
 # Expose the port Angular will use
 EXPOSE 4200
