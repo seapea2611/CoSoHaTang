@@ -100,27 +100,28 @@
                                         <td class="text-center cell-bg">
                                             {{ item.projects.startDate | date: 'dd/MM/yyyy' }}
                                         </td>
-                                        <td>
+                                        <td class="text-center cell-bg">
                                             {{item.projects.estimatedEndDate | date: 'dd/MM/yyyy'}}
                                         </td>
-                                        <td>
+                                        <td class="text-center cell-bg">
                                             {{item.projects.budget}}
                                         </td>
-                                        <td>
+                                        <td class="text-center cell-bg">
                                             {{getEmployeeName(item.projects.responsibleEmployeeID)}}
                                         </td>
-                                        <td>
+                                        <td class="text-center cell-bg">
                                             {{item.projects.progress}}
                                         </td>
-                                        <td style="width: 80px" class="text-center" [hidden]="!isGrantedAny('Pages.Projects.Edit', 'Pages.Projects.Delete')">
-                                            <a (click)="createOrEditProjectsModal.show(item.projects.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Projects.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
-                                                <i class="la la-edit"></i>
-                                            </a>
-    
-                                            <a (click)="deleteProjects(item.projects)" href="javascript:;" *ngIf="permission.isGranted('Pages.Projects.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
-                                                <i class="la la-trash"></i>
-                                            </a>
-                                        </td>                                    
+                                        <td class="text-center cell-bg" style="width: 80px" [hidden]="!isGrantedAny('Pages.Projects.Edit', 'Pages.Projects.Delete')">
+                                            <div style="display: inline-flex; align-items: center; justify-content: center;">
+                                                <a (click)="createOrEditProjectsModal.show(item.projects.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Projects.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
+                                                    <i class="la la-edit"></i>
+                                                </a>
+                                                <a (click)="deleteProjects(item.projects)" href="javascript:;" *ngIf="permission.isGranted('Pages.Projects.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
+                                                    <i class="la la-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>                                     
                                     </tr>
                                 </tbody>
                             </table>            
