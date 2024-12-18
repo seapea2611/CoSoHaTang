@@ -13,31 +13,48 @@
 
                     <div class="col-md-6 search-filter">
                         <div class="filter-left">
-                            <input class="form-control form-control-sm m-input m-input--air m-input--pill" [(ngModel)]="filterText" name="filtertext" [placeholder]="l('DocumentTemplates')" type="text" (keyup.enter)="getDocumentTemplates()">
+                            <input 
+                                class="form-control form-control-sm m-input m-input--air m-input--pill" 
+                                [(ngModel)]="filterText" 
+                                name="filtertext" 
+                                [placeholder]="l('DocumentTemplates')" 
+                                type="text" 
+                                (keyup.enter)="getDocumentTemplates()"
+                            >
+                            <a 
+                                href="javascript:;" 
+                                class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" 
+                                (click)="getDocumentTemplates()"
+                            >
+                                <i class="fa flaticon-search"></i>
+                            </a>
+
+                            <a 
+                            href="javascript:;" 
+                            class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill ml-2" 
+                            (click)="clearFilter()"
+                            >
+                            <i class="fa flaticon-refresh"></i>
+                            </a>
                         </div>
                     </div>
 
-                    <div class="col-md-6 pl-0">
-                        <a href="javascript:;" class="btn btn-accent m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--custom m-btn--pill m-btn--air" (click)="getDocumentTemplates()">
-                            <i class="fa flaticon-search"></i>
-                        </a>
-                        <a href="javascript:;" class="btn btn-danger m-btn m-btn--icon btn-sm m-btn--icon-only m-btn--pill" (click)="clearFilter()">
-                            <i class="fa flaticon-refresh"></i>
+
+                </div>
+
+                <div class="m-portlet__head-tools">
+                    <div *ngIf="isGranted('Pages.DocumentTemplates.Create')">
+                        <a href="javascript:;" 
+                           (click)="createDocumentTemplates()" 
+                           class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--pill green-button">
+                            <span>
+                                <i class="flaticon-add-circular-button"></i>
+                                <span>{{l('Add new Document Templates')}}</span>
+                            </span>
                         </a>
                     </div>
                 </div>
-                <div class="m-portlet__head-tools">
-                    <ul class="m-portlet__nav">
-                        <li class="m-portlet__nav-item" *ngIf="isGranted('Pages.DocumentTemplates.Create')">
-                            <a href="javascript:;" (click)="createDocumentTemplates()" class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--pill">
-                                <span>
-                                    <i class="flaticon-add-circular-button"></i>
-                                    <span>{{l('BtnCreate')}}</span>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                
             </div>
 
 
@@ -45,7 +62,7 @@
                 <div class="row align-items-center">
                     
                         <div class="table-responsive table-scroll-horizontal-custom table-not-scroll">
-                            <table class="table  table-bordered table-custom">
+                            <table class="table table-bordered table-custom table-with-bg">
                                 <thead class="thead-2">
                                     <tr>
                                         <th style="min-width: 50px;" class="text-center">STT</th>
@@ -58,29 +75,31 @@
                                 <tbody>
                                     <tr *ngFor="let item of primengTableHelper.records; let i = index">
 
-                                        <td class="text-center">
+                                        <td class="text-center cell-bg">
                                             {{  i + 1 }}
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center cell-bg">
                                             {{item.documentTemplates.templateName}}
                                         </td>
-                                        <td class="text-center ">
+                                        <td class="text-center cell-bg">
                                             {{item.documentTemplates.attachedFileLink}}
                                         </td>
-                                        <td class="text-center ">
+                                        <td class="text-center cell-bg">
                                             {{ item.documentTemplates.attachedFileName }}
                                         </td>
-                                        <td style="width: 80px" class="text-center" [hidden]="!isGrantedAny('Pages.DocumentTemplates.Edit', 'Pages.DocumentTemplates.Delete')">
-                                            <a (click)="createOrEditDocumentTemplatesModal.show(item.documentTemplates.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
-                                                <i class="la la-edit"></i>
-                                            </a>
-                                            <a (click)="deleteDocumentTemplates(item.documentTemplates)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
-                                                <i class="la la-trash"></i>
-                                            </a>
-                                        </td>                                    
+                                        <td class="text-center cell-bg" style="width: 80px" [hidden]="!isGrantedAny('Pages.DocumentTemplates.Edit', 'Pages.DocumentTemplates.Delete')">
+                                            <div style="display: inline-flex; align-items: center; justify-content: center;">
+                                                <a (click)="createOrEditDocumentTemplatesModal.show(item.documentTemplates.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
+                                                    <i class="la la-edit"></i>
+                                                </a>
+                                                <a (click)="deleteDocumentTemplates(item.documentTemplates)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
+                                                    <i class="la la-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>                                   
                                     </tr>
                                 </tbody>
-                            </table>                   
+                            </table>            
                         </div>
 
                 </div>
@@ -90,4 +109,4 @@
 
     <createOrEditDocumentTemplatesModal #createOrEditDocumentTemplatesModal (modalSave)="getDocumentTemplates()"></createOrEditDocumentTemplatesModal>
 
-</div>
+</div> 
