@@ -12,6 +12,12 @@ COPY src/Asd.Hrm.GraphQL/Asd.Hrm.GraphQL.csproj src/Asd.Hrm.GraphQL/
 RUN dotnet restore src/Asd.Hrm.Web.Host/Asd.Hrm.Web.Host.csproj
 
 COPY . .
+
+RUN mv src/Asd.Hrm.Web.Host/appsettings.docker.json src/Asd.Hrm.Web.Host/appsettings.json
+RUN mv src/Asd.Hrm.Web.Host/Properties/launchSettings.docker.json src/Asd.Hrm.Web.Host/Properties/launchSettings.json
+RUN mv src/Asd.Hrm.Application.Client/ApiClient/ApiUrlConfig.docker.cs src/Asd.Hrm.Application.Client/ApiClient/ApiUrlConfig.cs
+RUN mv src/Asd.Hrm.Web.Host/Startup/HrmWebHostModule.docker.cs src/Asd.Hrm.Web.Host/Startup/HrmWebHostModule.cs
+
 RUN dotnet build src/Asd.Hrm.Web.Host/Asd.Hrm.Web.Host.csproj -c Release -o /app/build
 
 FROM build AS publish

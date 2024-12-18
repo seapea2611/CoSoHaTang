@@ -8,7 +8,7 @@ docker run -d --name asdhrm-db \
   -v $(pwd)/HrmDb.bak:/var/opt/mssql/backups/HrmDb.bak \
   custom-mssql
 
-! Wait for "Attribute synchronization manager initialized", use docker container logs
+! Wait 30s
 
 docker exec -it asdhrm-db /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "123qwe@A" -Q "
 RESTORE DATABASE HrmDb FROM DISK = '/var/opt/mssql/backups/HrmDb.bak'

@@ -1,6 +1,6 @@
 ﻿{
-  "remoteServiceBaseUrl": "http://backend:80",
-  "appBaseUrl": "http://localhost:4200",
+  "remoteServiceBaseUrl": "http://192.168.60.2:8081",
+  "appBaseUrl": "http://192.168.60.2:4200",
   "localeMappings": {
     "angular": [
       {
