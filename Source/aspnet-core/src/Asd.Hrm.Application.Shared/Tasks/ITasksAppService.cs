@@ -20,5 +20,6 @@ namespace Asd.Hrm.Job
 
         Task Delete(EntityDto input);
         Task UpdateProjectProgress(int projectId);
+        Task<bool> CheckBeforeSave(int projectId, string stage);   
     }
 }

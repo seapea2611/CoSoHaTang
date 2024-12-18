@@ -83,6 +83,15 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
             });
         }
     }
+    checkBeforeSave(): void {
+        this._tasksServiceProxy.checkBeforeSave(this.duan.id, this.tasks.stage).subscribe(result => {
+            if (result == true) {
+                this.save();
+            } else {
+                this.notify.error('', 'Dự án chưa hoàn thành, không thể tạo công việc');
+            }
+        });
+    }
 
     save(): void {
         this.saving = true;

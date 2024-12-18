@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.Rest.Trunking.V1;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Asd.Hrm.Job
@@ -155,6 +156,24 @@ namespace Asd.Hrm.Job
 
             // Lưu thay đổi vào cơ sở dữ liệu
             await _projectRepository.UpdateAsync(project);
+        }
+
+        public async Task<bool> CheckBeforeSave(int projectId, string stage)
+        {
+            // Lấy tất cả các Task đã được theo dõi, bao gồm cả Task mới tạo
+            var tasks = await _tasksRepository.GetAll()
+                .Where(t => t.ProjectID == projectId)
+                .AsTracking() // Đảm bảo lấy cả dữ liệu chưa lưu
+                .ToListAsync();
+            if(tasks.Any(t => t.Stage == "Chuẩn bị dự án" && t.Status == "Đang thực hiện") && stage == "Thi công")
+            {
+                return false;
+            }
+            if (tasks.Any(t => t.Stage == "Thi công" && t.Status == "Đang thực hiện") && stage == "Nghiệm thu bàn giao")
+            {
+                return false;
+            }
+            return true;
         }
 
 
