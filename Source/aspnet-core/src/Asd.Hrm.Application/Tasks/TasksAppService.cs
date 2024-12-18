@@ -110,6 +110,7 @@ namespace Asd.Hrm.Job
 
         public async Task UpdateProjectProgress(int projectId)
         {
+            await Task.Delay(500);
             // Lấy tất cả các Task đã được theo dõi, bao gồm cả Task mới tạo
             var tasks = await _tasksRepository.GetAll()
                 .Where(t => t.ProjectID == projectId)
