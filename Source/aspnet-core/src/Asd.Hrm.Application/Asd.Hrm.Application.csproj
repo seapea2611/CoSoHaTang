@@ -27,4 +27,10 @@
     <ProjectReference Include="..\Asd.Hrm.EntityFrameworkCore\Asd.Hrm.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Abp.ZeroCore">
+      <HintPath>..\..\AspNetZeroRadTool\Abp.ZeroCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

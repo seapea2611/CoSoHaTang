@@ -10,18 +10,21 @@ using Abp.Web.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Abp.Domain.Repositories;
-using Asd.Hrm.Authorization.Users.Dto; // Make sure you have this using directive
+using Asd.Hrm.Authorization.Users.Dto;
+using Abp.Domain.Uow;
+using System.Globalization;
+using Asd.Hrm.Sessions.Dto;
+using Castle.MicroKernel.Internal;
 
 namespace Asd.Hrm.My
 {
-    // Interface definition (only once and inside MyConfigurationAppService.cs)
-    public interface IMyConfigurationAppService : IApplicationService
+    public interface IProjectConfigurationAppService : IApplicationService
     {
-        Task<MyConfigurationDto> GetMyConfiguration();
+        Task<ProjectConfigurationDto> GetProjectConfiguration();
     }
 
     [AbpAuthorize]
-    public class MyConfigurationAppService : ApplicationService, IMyConfigurationAppService
+    public class ProjectConfigurationAppService : ApplicationService, IProjectConfigurationAppService
     {
         private readonly ISettingManager _settingManager;
         private readonly IClock _clock;
@@ -30,7 +33,7 @@ namespace Asd.Hrm.My
         private readonly UserManager _userManager;
         private readonly IRepository<User, long> _userRepository;
 
-        public MyConfigurationAppService(
+        public ProjectConfigurationAppService(
             ISettingManager settingManager,
             IClock clock,
             ILocalizationManager localizationManager,
@@ -47,7 +50,7 @@ namespace Asd.Hrm.My
         }
 
         [DontWrapResult]
-        public async Task<MyConfigurationDto> GetMyConfiguration()
+        public async Task<ProjectConfigurationDto> GetProjectConfiguration()
         {
             // Example: Get some settings
             var recaptchaSiteKey = await _settingManager.GetSettingValueAsync("Recaptcha.SiteKey");
@@ -65,27 +68,27 @@ namespace Asd.Hrm.My
                 userLoginInfo = ObjectMapper.Map<UserLoginInfoDto>(user);
             }
 
-            // Get current language
-            var currentLanguage = _localizationManager.CurrentLanguage;
+            // Get current language using CurrentCulture
+            CultureInfo currentCulture = CultureInfo.CurrentUICulture;
 
-            return new MyConfigurationDto
+            return new ProjectConfigurationDto
             {
                 RecaptchaSiteKey = recaptchaSiteKey,
                 SubscriptionExpireNotifyDayCount = int.Parse(subscriptionExpireNotifyDayCount),
-                ClockProvider = _clock.Provider.ToString(), // Or whatever format you need
-                CurrentLanguage = currentLanguage,
+                ClockProvider = _clock.Provider.ToString(),
+                CurrentLanguage = currentCulture,
                 CurrentUser = userLoginInfo
             };
         }
     }
 
     // DTO to hold the configuration data
-    public class MyConfigurationDto
+    public class ProjectConfigurationDto
     {
         public string RecaptchaSiteKey { get; set; }
         public int SubscriptionExpireNotifyDayCount { get; set; }
         public string ClockProvider { get; set; }
-        public object CurrentLanguage { get; set; }
+        public CultureInfo CurrentLanguage { get; set; }
         public UserLoginInfoDto CurrentUser { get; set; }
     }
 }
