@@ -18,13 +18,13 @@
 
   <ItemGroup>
     <PackageReference Include="Abp.EntityFrameworkCore.EFPlus" Version="6.4.0" />
+    <PackageReference Include="Abp.ZeroCore" Version="6.6.0" />
     <PackageReference Include="NPOI" Version="2.5.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Asd.Hrm.Application.Shared\Asd.Hrm.Application.Shared.csproj" />
     <ProjectReference Include="..\Asd.Hrm.Core\Asd.Hrm.Core.csproj" />
-    <ProjectReference Include="..\Asd.Hrm.EntityFrameworkCore\Asd.Hrm.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

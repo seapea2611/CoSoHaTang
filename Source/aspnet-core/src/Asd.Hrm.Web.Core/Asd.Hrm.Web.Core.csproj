@@ -23,8 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Abp.AspNetCore.SignalR" Version="6.4.0" />
+    <PackageReference Include="Abp.AspNetCore.SignalR" Version="6.5.0" />
     <PackageReference Include="Abp.AspNetZeroCore.Web" Version="3.0.0" />
+    <PackageReference Include="Abp.ZeroCore" Version="6.6.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.24" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.1.4" />
@@ -36,7 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="Abp.ZeroCore.IdentityServer4.vNext" Version="6.4.0" />
-    <PackageReference Include="Abp.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Abp.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Abp.HangFire.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Abp.RedisCache" Version="6.4.0" />
   </ItemGroup>
