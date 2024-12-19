@@ -17,9 +17,10 @@ RUN yarn
 COPY . .
 
 # Copy appconfig.docker.json over appconfig.json
-RUN cp ./src/assets/appconfig.docker.json ./src/assets/appconfig.json
-RUN cp ./src/assets/appconfig.docker.json ./src/assets/appconfig.production.json
-RUN cp ./package.docker.json ./package.json
+RUN mv ./src/assets/appconfig.docker.json ./src/assets/appconfig.json
+RUN mv ./src/assets/appconfig.docker.json ./src/assets/appconfig.production.json
+RUN mv ./package.docker.json ./package.json
+RUN mv ./src/AppPreBootstrap.docker.ts ./src/AppPreBootstrap.ts
 
 # Build the Angular application for production
 RUN yarn run build:prod

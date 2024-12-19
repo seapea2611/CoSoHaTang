@@ -1,40 +1,21 @@
 #!/bin/bash
 
-# Stop and remove any existing containers
-docker stop asdhrm-db asdhrm-backend asdhrm-frontend asdhrm-nginx
-docker rm asdhrm-db asdhrm-backend asdhrm-frontend asdhrm-nginx
+docker rm -f asdhrm-nginx asdhrm-frontend asdhrm-backend asdhrm-db
 
 # Build images
 docker build -t asdhrm-db ./mssql
-docker build -t asdhrm-backend ./aspnet-core
+docker build --no-cache -t asdhrm-backend ./aspnet-core
 docker build -t asdhrm-frontend ./angular
 docker build -t asdhrm-nginx ./nginx
 
 # Deploy database
-docker run -d --name asdhrm-db \
-  -e "ACCEPT_EULA=Y" \
-  -e "SA_PASSWORD=123qwe@A" \
-  -p 1433:1433 \
-  --network asdhrm \
-  -v asdhrm-db:/var/opt/mssql \
-  asdhrm-db
+./mssql/deploy.sh
 
 # Deploy backend
-docker run -d --name asdhrm-backend \
-  -e "ConnectionStrings__Default=Server=asdhrm-db;Database=HrmDb;User Id=sa;Password=123qwe@A;" \
-  -e "ASPNETCORE_ENVIRONMENT=Development" \
-  --network asdhrm \
-  asdhrm-backend
+./aspnet-core/deploy.sh
 
 # Deploy frontend
-docker run -d --name asdhrm-frontend \
-  --network asdhrm \
-  asdhrm-frontend
+./angular/deploy.sh
 
 # Deploy Nginx
-docker run -d --name asdhrm-nginx \
-  --network asdhrm \
-  -p 80:80 \
-  asdhrm-nginx
-
-echo "Deployment complete!"
+./nginx/deploy.sh

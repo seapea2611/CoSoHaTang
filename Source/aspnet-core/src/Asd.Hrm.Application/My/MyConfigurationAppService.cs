@@ -9,9 +9,17 @@ using Asd.Hrm.Authorization.Users;
 using Abp.Web.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using Abp.Domain.Repositories;
+using Asd.Hrm.Authorization.Users.Dto; // Make sure you have this using directive
 
 namespace Asd.Hrm.My
 {
+    // Interface definition (only once and inside MyConfigurationAppService.cs)
+    public interface IMyConfigurationAppService : IApplicationService
+    {
+        Task<MyConfigurationDto> GetMyConfiguration();
+    }
+
     [AbpAuthorize]
     public class MyConfigurationAppService : ApplicationService, IMyConfigurationAppService
     {
@@ -20,27 +28,30 @@ namespace Asd.Hrm.My
         private readonly ILocalizationManager _localizationManager;
         private readonly IAbpSession _abpSession;
         private readonly UserManager _userManager;
+        private readonly IRepository<User, long> _userRepository;
 
         public MyConfigurationAppService(
             ISettingManager settingManager,
             IClock clock,
             ILocalizationManager localizationManager,
             IAbpSession abpSession,
-            UserManager userManager)
+            UserManager userManager,
+            IRepository<User, long> userRepository)
         {
             _settingManager = settingManager;
             _clock = clock;
             _localizationManager = localizationManager;
             _abpSession = abpSession;
             _userManager = userManager;
+            _userRepository = userRepository;
         }
 
         [DontWrapResult]
         public async Task<MyConfigurationDto> GetMyConfiguration()
         {
             // Example: Get some settings
-            var recaptchaSiteKey = await _settingManager.GetSettingValueAsync(nameof(AppSettingNames.RecaptchaSiteKey));
-            var subscriptionExpireNotifyDayCount = await _settingManager.GetSettingValueAsync(nameof(AppSettingNames.SubscriptionExpireNotifyDayCount));
+            var recaptchaSiteKey = await _settingManager.GetSettingValueAsync("Recaptcha.SiteKey");
+            var subscriptionExpireNotifyDayCount = await _settingManager.GetSettingValueAsync("App.TenantManagement.SubscriptionExpireNotifyDayCount");
 
             // Get the current user's ID (if needed)
             var currentUserId = _abpSession.UserId;
@@ -49,7 +60,8 @@ namespace Asd.Hrm.My
             UserLoginInfoDto userLoginInfo = null;
             if (currentUserId != null)
             {
-                var user = await _userManager.GetUserByIdAsync(currentUserId.Value);
+                //var user = await _userManager.GetUserByIdAsync(currentUserId.Value);
+                var user = await _userRepository.FirstOrDefaultAsync(currentUserId.Value);
                 userLoginInfo = ObjectMapper.Map<UserLoginInfoDto>(user);
             }
 

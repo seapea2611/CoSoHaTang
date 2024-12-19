@@ -1,4 +1,4 @@
-﻿import { CompilerOptions, NgModuleRef, Type } from '@angular/core';
+import { CompilerOptions, NgModuleRef, Type } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppAuthService } from '@app/shared/common/auth/app-auth.service';
 import { AppConsts } from '@shared/AppConsts';
@@ -13,6 +13,7 @@ import { merge as _merge } from 'lodash-es';
 import { DateTime, Settings } from 'luxon';
 import { AccountServiceProxy, IsTenantAvailableInput, IsTenantAvailableOutput, TenantAvailabilityState } from '@shared/service-proxies/service-proxies';
 import { Injector } from '@angular/core';
+import { MyConfigurationService } from '@shared/service-proxies/my-configuration.service'; // Import your custom service
 
 export class AppPreBootstrap {
     static run(
@@ -47,7 +48,7 @@ export class AppPreBootstrap {
                         queryStringObj.impersonationToken,
                         queryStringObj.tenantId,
                         () => {
-                            AppPreBootstrap.getUserConfiguration(callback);
+                            AppPreBootstrap.getUserConfiguration(injector, callback); // Pass the injector
                         }
                     );
                 } else {
@@ -55,7 +56,7 @@ export class AppPreBootstrap {
                         queryStringObj.impersonationToken,
                         queryStringObj.tenantId,
                         () => {
-                            AppPreBootstrap.getUserConfiguration(callback);
+                            AppPreBootstrap.getUserConfiguration(injector, callback); // Pass the injector
                         }
                     );
                 }
@@ -64,11 +65,11 @@ export class AppPreBootstrap {
                     queryStringObj.switchAccountToken,
                     queryStringObj.tenantId,
                     () => {
-                        AppPreBootstrap.getUserConfiguration(callback);
+                        AppPreBootstrap.getUserConfiguration(injector, callback); // Pass the injector
                     }
                 );
             } else {
-                AppPreBootstrap.getUserConfiguration(callback);
+                AppPreBootstrap.getUserConfiguration(injector, callback); // Pass the injector
             }
         });
     }
@@ -268,46 +269,39 @@ export class AppPreBootstrap {
         );
     }
 
-    private static getUserConfiguration(callback: () => void): any {
+    private static getUserConfiguration(injector: Injector, callback: () => void): any {
         const token = abp.auth.getToken();
-
         let requestHeaders = AppPreBootstrap.getRequetHeadersWithDefaultValues();
-
+    
         if (token) {
             requestHeaders['Authorization'] = 'Bearer ' + token;
         }
-
-        return XmlHttpRequestHelper.ajax(
-            'GET',
-            AppConsts.remoteServiceBaseUrl + '/AbpUserConfiguration/GetAll',
-            requestHeaders,
-            null,
-            (response) => {
-                let result = response.result;
-
-                _merge(abp, result);
-
-                abp.clock.provider = this.getCurrentClockProvider(
-                    result.clock.provider
-                );
-
-                AppPreBootstrap.configureLuxon();
-
-                abp.event.trigger('abp.dynamicScriptsInitialized');
-
-                AppConsts.recaptchaSiteKey = abp.setting.get(
-                    'Recaptcha.SiteKey'
-                );
-                AppConsts.subscriptionExpireNootifyDayCount = parseInt(
-                    abp.setting.get(
-                        'App.TenantManagement.SubscriptionExpireNotifyDayCount'
-                    )
-                );
-
-                DynamicResourcesHelper.loadResources(callback);
-            }
-        );
+    
+        const myConfigService = injector.get(MyConfigurationService);
+    
+        myConfigService.getMyConfiguration().subscribe((result) => {
+            _merge(abp, {
+                clock: {
+                    provider: this.getCurrentClockProvider(result.clockProvider)
+                },
+                localization: {
+                    currentLanguage: result.currentLanguage
+                },
+                session: {
+                    user: result.currentUser
+                }
+                // Add other mappings as needed
+            });
+    
+            AppConsts.recaptchaSiteKey = result.recaptchaSiteKey;
+            AppConsts.subscriptionExpireNootifyDayCount = result.subscriptionExpireNotifyDayCount;
+    
+            AppPreBootstrap.configureLuxon();
+            abp.event.trigger('abp.dynamicScriptsInitialized');
+            DynamicResourcesHelper.loadResources(callback);
+        });
     }
+    
 
     private static configureLuxon() {
         let luxonLocale = new LocaleMappingService().map(
