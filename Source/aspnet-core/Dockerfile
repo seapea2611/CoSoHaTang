@@ -9,18 +9,23 @@ COPY src/Asd.Hrm.Core.Shared/Asd.Hrm.Core.Shared.csproj src/Asd.Hrm.Core.Shared/
 COPY src/Asd.Hrm.Core/Asd.Hrm.Core.csproj src/Asd.Hrm.Core/
 COPY src/Asd.Hrm.EntityFrameworkCore/Asd.Hrm.EntityFrameworkCore.csproj src/Asd.Hrm.EntityFrameworkCore/
 COPY src/Asd.Hrm.GraphQL/Asd.Hrm.GraphQL.csproj src/Asd.Hrm.GraphQL/
+
 RUN dotnet restore src/Asd.Hrm.Web.Host/Asd.Hrm.Web.Host.csproj
 
 COPY . .
+
 RUN dotnet build src/Asd.Hrm.Web.Host/Asd.Hrm.Web.Host.csproj -c Release -o /app/build
 
 FROM build AS publish
 WORKDIR /source
+
 RUN dotnet publish src/Asd.Hrm.Web.Host/Asd.Hrm.Web.Host.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 EXPOSE 80
 WORKDIR /app
+
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "Asd.Hrm.Web.Host.dll"]
 
