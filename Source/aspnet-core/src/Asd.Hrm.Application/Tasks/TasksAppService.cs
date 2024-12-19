@@ -3,8 +3,11 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Asd.Hrm.Authorization;
+using Asd.Hrm.DocumentTemplates;
+using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
 using Asd.Hrm.Job.Dtos;
 using Asd.Hrm.Project;
+using Asd.Hrm.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NPOI.SS.Formula.Functions;
 using System;
@@ -22,11 +25,16 @@ namespace Asd.Hrm.Job
     {
         private readonly IRepository<Tasks> _tasksRepository;
         private readonly IRepository<Asd.Hrm.Project.Projects> _projectRepository;
+        private readonly IRepository<Documents> _documentRepository;
+        private readonly IRepository<TaskDocuments> _taskdocumentRepository;
 
-        public TasksAppService(IRepository<Tasks> tasksRepository, IRepository<Asd.Hrm.Project.Projects> projectRepository)
+
+        public TasksAppService(IRepository<Tasks> tasksRepository, IRepository<Asd.Hrm.Project.Projects> projectRepository, IRepository<Documents> documentRepository, IRepository<TaskDocuments> tasksdocumentRepository)
         {
             _tasksRepository = tasksRepository;
             _projectRepository = projectRepository;
+            _documentRepository = documentRepository;
+            _taskdocumentRepository = tasksdocumentRepository;
         }
 
         public async Task<PagedResultDto<GetTasksForViewDto>> GetAll(GetAllTasksInput input)
@@ -109,6 +117,34 @@ namespace Asd.Hrm.Job
             }
         }
 
+       
+        [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
+        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input)
+        {
+            try
+            {
+                var Tasks = ObjectMapper.Map<Tasks>(input);
+                await _tasksRepository.InsertAsync(Tasks);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
+        public async Task Update(CreateOrEditTasksDto input)
+        {
+            var Tasks = await _tasksRepository.FirstOrDefaultAsync((int)input.Id);
+            ObjectMapper.Map(input, Tasks);
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Tasks_Delete)]
+        public async Task Delete(EntityDto input)
+        {
+            await _tasksRepository.DeleteAsync(input.Id);
+        }
+
         public async Task UpdateProjectProgress(int projectId)
         {
             await Task.Delay(500);
@@ -165,7 +201,7 @@ namespace Asd.Hrm.Job
                 .Where(t => t.ProjectID == projectId)
                 .AsTracking() // Đảm bảo lấy cả dữ liệu chưa lưu
                 .ToListAsync();
-            if(tasks.Any(t => t.Stage == "Chuẩn bị dự án" && t.Status == "Đang thực hiện") && stage == "Thi công")
+            if (tasks.Any(t => t.Stage == "Chuẩn bị dự án" && t.Status == "Đang thực hiện") && stage == "Thi công")
             {
                 return false;
             }
@@ -174,34 +210,6 @@ namespace Asd.Hrm.Job
                 return false;
             }
             return true;
-        }
-
-
-        [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
-        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input)
-        {
-            try
-            {
-                var Tasks = ObjectMapper.Map<Tasks>(input);
-                await _tasksRepository.InsertAsync(Tasks);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-        [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
-        public async Task Update(CreateOrEditTasksDto input)
-        {
-            var Tasks = await _tasksRepository.FirstOrDefaultAsync((int)input.Id);
-            ObjectMapper.Map(input, Tasks);
-        }
-
-        [AbpAuthorize(AppPermissions.Pages_Tasks_Delete)]
-        public async Task Delete(EntityDto input)
-        {
-            await _tasksRepository.DeleteAsync(input.Id);
         }
     }
 }
