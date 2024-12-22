@@ -133,5 +133,10 @@
         public const string Pages_Tasks_Create = "Pages.Tasks.Create";
         public const string Pages_Tasks_Edit = "Pages.Tasks.Edit";
         public const string Pages_Tasks_Delete = "Pages.Tasks.Delete";
+
+        public const string Pages_TaskResources = "Pages.TaskResources";
+        public const string Pages_TaskResources_Create = "Pages.TaskResources.Create";
+        public const string Pages_TaskResources_Edit = "Pages.TaskResources.Edit";
+        public const string Pages_TaskResources_Delete = "Pages.TaskResources.Delete";
     }
 }

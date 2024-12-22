@@ -17,6 +17,7 @@ using Asd.Hrm.Contractor;
 using Asd.Hrm.Employee;
 using Asd.Hrm.Project;
 using Asd.Hrm.Tasks;
+using Asd.Hrm.TaskResource;
 
 namespace Asd.Hrm.EntityFrameworkCore
 {
@@ -55,6 +56,8 @@ namespace Asd.Hrm.EntityFrameworkCore
 
         public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<Asd.Hrm.Job.Tasks> Tasks { get; set; }
+
+        public virtual DbSet<TaskResources> TaskResources { get; set; }
 
         public HrmDbContext(DbContextOptions<HrmDbContext> options)
             : base(options)
