@@ -19,5 +19,7 @@ namespace Asd.Hrm.Projects
         Task CreateOrEdit(CreateOrEditProjectsDto input);
 
         Task Delete(EntityDto input);
+        Task<int> GetProjectId(string name);
+        Task<string> GetProjectName(int id);
     }
 }

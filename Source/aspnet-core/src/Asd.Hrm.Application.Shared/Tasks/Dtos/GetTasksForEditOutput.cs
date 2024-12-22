@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Asd.Hrm.Tasks.Dtos
+namespace Asd.Hrm.Job.Dtos
 {
     public class GetTasksForEditOutput
     {

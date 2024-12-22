@@ -12,6 +12,7 @@ using Abp.Linq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Asd.Hrm.Projects;
 using Asd.Hrm.Projects.Dtos;
+using Asd.Hrm.Job;
 
 namespace Asd.Hrm.Project
 {
@@ -19,6 +20,7 @@ namespace Asd.Hrm.Project
     public class ProjectsAppService : HrmAppServiceBase, IProjectsAppService
     {
         private readonly IRepository<Projects> _projectsRepository;
+
 
         public ProjectsAppService(IRepository<Projects> projectsRepository)
         {
@@ -116,6 +118,27 @@ namespace Asd.Hrm.Project
         public async System.Threading.Tasks.Task Delete(EntityDto input)
         {
             await _projectsRepository.DeleteAsync(input.Id);
+        }
+
+        public async Task<int> GetProjectId(string name)
+        {
+
+            var filteredProjects = _projectsRepository.GetAll();
+            var projectIdQuery = from project in filteredProjects
+                                  where project.ProjectName == name
+                                  select project.Id;
+            int projectId = projectIdQuery.FirstOrDefault();
+            return projectId;
+        }
+
+        public async Task<string> GetProjectName(int id)
+        {
+            var filteredProjects = _projectsRepository.GetAll();
+            var projectIdQuery = from employee in filteredProjects
+                                 where employee.Id == id
+                                  select employee.ProjectName;
+            string projectName = projectIdQuery.FirstOrDefault();
+            return projectName;
         }
     }
 }

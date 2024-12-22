@@ -21,6 +21,7 @@ namespace Asd.Hrm.Employees
 
         Task Delete(EntityDto input);
         Task<int> GetEmployeeId(string name);
+        Task<string> GetEmployeeName(int id);
 
     }
 }

@@ -25,6 +25,7 @@ import { TasksComponent } from './tasks/tasks.component';
                     { path: 'contractors/contractors', component: ContractorsComponent, data: { permission: 'Pages.Contractors' } },
                     { path: 'projects/projects', component: ProjectsComponent, data: { permission: 'Pages.Projects' } },
                     { path: 'projects/projects/:id', component: TasksComponent, data: { permission: 'Pages.Tasks' } },
+                    { path: 'projects/projects/:id', component: TasksComponent, data: { permission: 'Pages.Tasks' } },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: 'dashboard' },
                 ]

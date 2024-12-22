@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Asd.Hrm.Tasks.TaskResource.Dtos
+namespace Asd.Hrm.Job.TaskResource.Dtos
 {
     public class TaskResourcesDto : Entity
     {

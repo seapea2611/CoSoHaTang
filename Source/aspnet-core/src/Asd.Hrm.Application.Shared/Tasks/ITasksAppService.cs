@@ -1,12 +1,14 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
-using Asd.Hrm.Tasks.Dtos;
+using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
+using Asd.Hrm.Job.Dtos;
+using Asd.Hrm.Tasks.TaskDocument.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Asd.Hrm.Tasks
+namespace Asd.Hrm.Job
 {
     public interface ITasksAppService : IApplicationService
     {
@@ -19,5 +21,7 @@ namespace Asd.Hrm.Tasks
         Task CreateOrEdit(CreateOrEditTasksDto input);
 
         Task Delete(EntityDto input);
+        Task UpdateProjectProgress(int projectId);
+        Task<bool> CheckBeforeSave(int projectId, string stage);
     }
 }

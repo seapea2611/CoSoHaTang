@@ -3,8 +3,12 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Asd.Hrm.Authorization;
+using Asd.Hrm.DocumentTemplates;
+using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
+using Asd.Hrm.Job.Dtos;
 using Asd.Hrm.Project;
-using Asd.Hrm.Tasks.Dtos;
+using Asd.Hrm.Tasks;
+using Asd.Hrm.Tasks.TaskDocument.Dtos;
 using Microsoft.EntityFrameworkCore;
 using NPOI.SS.Formula.Functions;
 using System;
@@ -12,17 +16,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.Rest.Trunking.V1;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace Asd.Hrm.Tasks
+namespace Asd.Hrm.Job
 {
     [AbpAuthorize(AppPermissions.Pages_Tasks)]
     public class TasksAppService : HrmAppServiceBase, ITasksAppService
     {
         private readonly IRepository<Tasks> _tasksRepository;
+        private readonly IRepository<Asd.Hrm.Project.Projects> _projectRepository;
+        private readonly IRepository<Documents> _documentRepository;
+        private readonly IRepository<TaskDocuments> _taskdocumentRepository;
 
-        public TasksAppService(IRepository<Tasks> tasksRepository)
+
+        public TasksAppService(IRepository<Tasks> tasksRepository, IRepository<Asd.Hrm.Project.Projects> projectRepository, IRepository<Documents> documentRepository, IRepository<TaskDocuments> taskdocumentRepository)
         {
             _tasksRepository = tasksRepository;
+            _projectRepository = projectRepository;
+            _documentRepository = documentRepository;
+            _taskdocumentRepository = taskdocumentRepository;
         }
 
         public async Task<PagedResultDto<GetTasksForViewDto>> GetAll(GetAllTasksInput input)
@@ -70,6 +83,7 @@ namespace Asd.Hrm.Tasks
             );
         }
 
+
         [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
         public async Task<GetTasksForEditOutput> GetTasksForEdit(EntityDto input)
         {
@@ -92,7 +106,7 @@ namespace Asd.Hrm.Tasks
             return output;
         }
 
-        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditTasksDto input)
+        public async Task CreateOrEdit(CreateOrEditTasksDto input)
         {
             if (input.Id == null)
             {
@@ -104,6 +118,7 @@ namespace Asd.Hrm.Tasks
             }
         }
 
+       
         [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
         public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input)
         {
@@ -119,16 +134,83 @@ namespace Asd.Hrm.Tasks
         }
 
         [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
-        public async System.Threading.Tasks.Task Update(CreateOrEditTasksDto input)
+        public async Task Update(CreateOrEditTasksDto input)
         {
             var Tasks = await _tasksRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, Tasks);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Tasks_Delete)]
-        public async System.Threading.Tasks.Task Delete(EntityDto input)
+        public async Task Delete(EntityDto input)
         {
             await _tasksRepository.DeleteAsync(input.Id);
+        }
+
+        public async Task UpdateProjectProgress(int projectId)
+        {
+            await Task.Delay(500);
+            // Lấy tất cả các Task đã được theo dõi, bao gồm cả Task mới tạo
+            var tasks = await _tasksRepository.GetAll()
+                .Where(t => t.ProjectID == projectId)
+                .AsTracking() // Đảm bảo lấy cả dữ liệu chưa lưu
+                .ToListAsync();
+
+            // Lấy đối tượng Project
+            var project = await _projectRepository.FirstOrDefaultAsync(p => p.Id == projectId);
+
+            if (project == null)
+            {
+                throw new Exception("Project not found");
+            }
+
+            // Áp dụng các điều kiện cập nhật trạng thái Progress
+            if (tasks.Any(t => t.Stage == "Chuẩn bị dự án" && t.Status == "Đang thực hiện"))
+            {
+                project.Progress = "Chuẩn bị dự án";
+            }
+            else if (
+                tasks.Where(t => t.Stage == "Chuẩn bị dự án").All(t => t.Status == "Đã xong") &&
+                tasks.Any(t => t.Stage == "Thi công" && t.Status == "Đang thực hiện"))
+            {
+                project.Progress = "Thi công";
+            }
+            else if (
+                tasks.Where(t => t.Stage == "Chuẩn bị dự án" || t.Stage == "Thi công")
+                     .All(t => t.Status == "Đã xong") &&
+                tasks.Any(t => t.Stage == "Nghiệm thu bàn giao" && t.Status == "Đang thực hiện"))
+            {
+                project.Progress = "Nghiệm thu bàn giao";
+            }
+            else if (tasks.Where(t => t.Stage == "Nghiệm thu bàn giao").All(t => t.Status == "Đã xong"))
+            {
+                project.Progress = "Hoàn thành";
+            }
+            else
+            {
+                project.Progress = "Chờ chuyển giai đoạn";
+            }
+
+
+            // Lưu thay đổi vào cơ sở dữ liệu
+            await _projectRepository.UpdateAsync(project);
+        }
+
+        public async Task<bool> CheckBeforeSave(int projectId, string stage)
+        {
+            // Lấy tất cả các Task đã được theo dõi, bao gồm cả Task mới tạo
+            var tasks = await _tasksRepository.GetAll()
+                .Where(t => t.ProjectID == projectId)
+                .AsTracking() // Đảm bảo lấy cả dữ liệu chưa lưu
+                .ToListAsync();
+            if (tasks.Any(t => t.Stage == "Chuẩn bị dự án" && t.Status == "Đang thực hiện") && stage == "Thi công")
+            {
+                return false;
+            }
+            if (tasks.Any(t => t.Stage == "Thi công" && t.Status == "Đang thực hiện") && stage == "Nghiệm thu bàn giao")
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

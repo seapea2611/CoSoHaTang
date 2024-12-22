@@ -85,11 +85,14 @@ export class ResourcesComponent extends AppComponentBase {
             if (result.value) {
                 this._resourcesServiceProxy.delete(resources.id)
                     .subscribe(() => {
-                            this.reloadPage();
                             this.notify.success(this.l('SuccessfullyDeleted'));
+                            this.reloadPage();
+
                     });
             }
         });
+        this.reloadPage();
+
     }
 
     clearFilter() {

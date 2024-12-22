@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Asd.Hrm.EntityFrameworkCore\Asd.Hrm.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DocumentTemplates\Repository\" />
+  </ItemGroup>
+
 </Project>

@@ -18,7 +18,7 @@ import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module'
 
 import { ResourcesComponent } from './resources/resources.component';
 import { CreateOrEditResourcesModalComponent } from './resources/create-or-edit-resources-modal.component';
-import { ResourcesServiceProxy, ResourcesDto, EmployeesServiceProxy, EmployeesDto, ProjectsServiceProxy, ContractorsServiceProxy, ContractorsDto } from '@shared/service-proxies/service-proxies';
+import { ResourcesServiceProxy, ResourcesDto, EmployeesServiceProxy, EmployeesDto, ProjectsServiceProxy, ContractorsServiceProxy, ContractorsDto , TasksServiceProxy} from '@shared/service-proxies/service-proxies';
 
 import { EmployeesComponent } from './employees/employees.component';
 import { CreateOrEditEmployeesModalComponent } from './employees/create-or-edit-employees-modal.component';
@@ -29,11 +29,9 @@ import { CreateOrEditProjectsModalComponent } from './projects/create-or-edit-pr
 import { DocumentTemplatesComponent } from './documentTemplates/documentTemplates.component';
 import { CreateOrEditDocumentTemplatesModalComponent } from './documentTemplates/create-or-edit-documentTemplates-modal.component';
 import { DocumentTemplatesServiceProxy, DocumentTemplatesDto } from '@shared/service-proxies/service-proxies';
-import { TasksServiceProxy } from '@shared/service-proxies/service-proxies';
 
 import { TasksComponent } from './tasks/tasks.component';
 import { CreateOrEditTasksModalComponent } from './tasks/create-or-edit-tasks-modal.component';
-
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
 @NgModule({
