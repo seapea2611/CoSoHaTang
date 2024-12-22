@@ -8,6 +8,7 @@ using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
 using Asd.Hrm.Job.Dtos;
 using Asd.Hrm.Project;
 using Asd.Hrm.Tasks;
+using Asd.Hrm.Tasks.TaskDocument.Dtos;
 using Microsoft.EntityFrameworkCore;
 using NPOI.SS.Formula.Functions;
 using System;
@@ -29,12 +30,12 @@ namespace Asd.Hrm.Job
         private readonly IRepository<TaskDocuments> _taskdocumentRepository;
 
 
-        public TasksAppService(IRepository<Tasks> tasksRepository, IRepository<Asd.Hrm.Project.Projects> projectRepository, IRepository<Documents> documentRepository, IRepository<TaskDocuments> tasksdocumentRepository)
+        public TasksAppService(IRepository<Tasks> tasksRepository, IRepository<Asd.Hrm.Project.Projects> projectRepository, IRepository<Documents> documentRepository, IRepository<TaskDocuments> taskdocumentRepository)
         {
             _tasksRepository = tasksRepository;
             _projectRepository = projectRepository;
             _documentRepository = documentRepository;
-            _taskdocumentRepository = tasksdocumentRepository;
+            _taskdocumentRepository = taskdocumentRepository;
         }
 
         public async Task<PagedResultDto<GetTasksForViewDto>> GetAll(GetAllTasksInput input)
@@ -105,11 +106,11 @@ namespace Asd.Hrm.Job
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditTasksDto input)
+        public async Task CreateOrEdit(CreateOrEditTasksDto input, CreateOrEditDocumentsDto input2, CreateOrEditTasksDocumentDto input3)
         {
             if (input.Id == null)
             {
-                await Create(input);
+                await Create(input, input2, input3);
             }
             else
             {
@@ -119,7 +120,7 @@ namespace Asd.Hrm.Job
 
        
         [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
-        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input)
+        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input, CreateOrEditDocumentsDto input2, CreateOrEditTasksDocumentDto input3)
         {
             try
             {
