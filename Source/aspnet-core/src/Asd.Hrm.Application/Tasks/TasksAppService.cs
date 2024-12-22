@@ -106,11 +106,11 @@ namespace Asd.Hrm.Job
             return output;
         }
 
-        public async Task CreateOrEdit(CreateOrEditTasksDto input, CreateOrEditDocumentsDto input2, CreateOrEditTasksDocumentDto input3)
+        public async Task CreateOrEdit(CreateOrEditTasksDto input)
         {
             if (input.Id == null)
             {
-                await Create(input, input2, input3);
+                await Create(input);
             }
             else
             {
@@ -120,7 +120,7 @@ namespace Asd.Hrm.Job
 
        
         [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
-        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input, CreateOrEditDocumentsDto input2, CreateOrEditTasksDocumentDto input3)
+        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input)
         {
             try
             {
