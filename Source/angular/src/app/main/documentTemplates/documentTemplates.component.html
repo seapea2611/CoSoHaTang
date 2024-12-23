@@ -67,7 +67,6 @@
                                     <tr>
                                         <th style="min-width: 50px;" class="text-center">STT</th>
                                         <th style="min-width: 75px;" class="text-center">{{l('TemplateName')}}</th>
-                                        <th style="min-width: 100px;" class="text-center">{{l('AttachedFileLink')}}</th>
                                         <th style="min-width: 100px;" class="text-center">{{l('AttachedFileName')}}</th>
                                         <th style="width: 80px" [hidden]="!isGrantedAny('Pages.DocumentTemplates.Edit', 'Pages.DocumentTemplates.Delete')" class="text-center">{{l('Actions')}}</th>
                                     </tr>
@@ -82,11 +81,9 @@
                                             {{item.documentTemplates.templateName}}
                                         </td>
                                         <td class="text-center cell-bg">
-                                            {{item.documentTemplates.attachedFileLink}}
+                                            <a [href]="item.documentTemplates.attachedFileLink" target="_blank">{{ item.documentTemplates.attachedFileName }}</a>
                                         </td>
-                                        <td class="text-center cell-bg">
-                                            {{ item.documentTemplates.attachedFileName }}
-                                        </td>
+                                        
                                         <td class="text-center cell-bg" style="width: 80px" [hidden]="!isGrantedAny('Pages.DocumentTemplates.Edit', 'Pages.DocumentTemplates.Delete')">
                                             <div style="display: inline-flex; align-items: center; justify-content: center;">
                                                 <a (click)="createOrEditDocumentTemplatesModal.show(item.documentTemplates.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.DocumentTemplates.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">

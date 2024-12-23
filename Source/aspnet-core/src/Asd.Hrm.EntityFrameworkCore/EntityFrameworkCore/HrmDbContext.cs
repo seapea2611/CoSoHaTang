@@ -16,6 +16,7 @@ using Asd.Hrm.DocumentTemplates;
 using Asd.Hrm.Contractor;
 using Asd.Hrm.Employee;
 using Asd.Hrm.Project;
+using Asd.Hrm.Tasks;
 
 namespace Asd.Hrm.EntityFrameworkCore
 {
@@ -43,11 +44,15 @@ namespace Asd.Hrm.EntityFrameworkCore
 
         public virtual DbSet<Resources> Resources { get; set; }
         public virtual DbSet<Projects> Projects { get; set; }
+        public virtual DbSet<Documents> Documents { get; set; }
+
 
         public virtual DbSet<Asd.Hrm.DocumentTemplates.DocumentTemplates> DocumentTemplates { get; set; }
 
 
         public virtual DbSet<Contractors> Contractors { get; set; }
+        public virtual DbSet<TaskDocuments> TaskDocuments { get; set; }
+
         public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<Asd.Hrm.Job.Tasks> Tasks { get; set; }
 

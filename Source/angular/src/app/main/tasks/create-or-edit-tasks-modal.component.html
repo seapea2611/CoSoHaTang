@@ -1,7 +1,7 @@
 <div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form *ngIf="active" #tasksForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+            <form *ngIf="active" #tasksForm="ngForm" novalidate (ngSubmit)="checkBeforeSave()" autocomplete="off">
                 <div class="modal-header">
                     <h4 class="modal-title">
                         <span *ngIf="tasks.id"><b>{{l("EditTasks")}}</b></span>

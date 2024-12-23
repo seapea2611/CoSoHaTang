@@ -3,8 +3,12 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Asd.Hrm.Authorization;
+using Asd.Hrm.DocumentTemplates;
+using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
 using Asd.Hrm.Job.Dtos;
 using Asd.Hrm.Project;
+using Asd.Hrm.Tasks;
+using Asd.Hrm.Tasks.TaskDocument.Dtos;
 using Microsoft.EntityFrameworkCore;
 using NPOI.SS.Formula.Functions;
 using System;
@@ -12,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.Rest.Trunking.V1;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Asd.Hrm.Job
@@ -21,11 +26,16 @@ namespace Asd.Hrm.Job
     {
         private readonly IRepository<Tasks> _tasksRepository;
         private readonly IRepository<Asd.Hrm.Project.Projects> _projectRepository;
+        private readonly IRepository<Documents> _documentRepository;
+        private readonly IRepository<TaskDocuments> _taskdocumentRepository;
 
-        public TasksAppService(IRepository<Tasks> tasksRepository, IRepository<Asd.Hrm.Project.Projects> projectRepository)
+
+        public TasksAppService(IRepository<Tasks> tasksRepository, IRepository<Asd.Hrm.Project.Projects> projectRepository, IRepository<Documents> documentRepository, IRepository<TaskDocuments> taskdocumentRepository)
         {
             _tasksRepository = tasksRepository;
             _projectRepository = projectRepository;
+            _documentRepository = documentRepository;
+            _taskdocumentRepository = taskdocumentRepository;
         }
 
         public async Task<PagedResultDto<GetTasksForViewDto>> GetAll(GetAllTasksInput input)
@@ -108,6 +118,34 @@ namespace Asd.Hrm.Job
             }
         }
 
+       
+        [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
+        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input)
+        {
+            try
+            {
+                var Tasks = ObjectMapper.Map<Tasks>(input);
+                await _tasksRepository.InsertAsync(Tasks);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
+        public async Task Update(CreateOrEditTasksDto input)
+        {
+            var Tasks = await _tasksRepository.FirstOrDefaultAsync((int)input.Id);
+            ObjectMapper.Map(input, Tasks);
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Tasks_Delete)]
+        public async Task Delete(EntityDto input)
+        {
+            await _tasksRepository.DeleteAsync(input.Id);
+        }
+
         public async Task UpdateProjectProgress(int projectId)
         {
             await Task.Delay(500);
@@ -157,32 +195,22 @@ namespace Asd.Hrm.Job
             await _projectRepository.UpdateAsync(project);
         }
 
-
-        [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
-        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input)
+        public async Task<bool> CheckBeforeSave(int projectId, string stage)
         {
-            try
+            // Lấy tất cả các Task đã được theo dõi, bao gồm cả Task mới tạo
+            var tasks = await _tasksRepository.GetAll()
+                .Where(t => t.ProjectID == projectId)
+                .AsTracking() // Đảm bảo lấy cả dữ liệu chưa lưu
+                .ToListAsync();
+            if (tasks.Any(t => t.Stage == "Chuẩn bị dự án" && t.Status == "Đang thực hiện") && stage == "Thi công")
             {
-                var Tasks = ObjectMapper.Map<Tasks>(input);
-                await _tasksRepository.InsertAsync(Tasks);
+                return false;
             }
-            catch (Exception ex)
+            if (tasks.Any(t => t.Stage == "Thi công" && t.Status == "Đang thực hiện") && stage == "Nghiệm thu bàn giao")
             {
-                throw;
+                return false;
             }
-        }
-
-        [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
-        public async Task Update(CreateOrEditTasksDto input)
-        {
-            var Tasks = await _tasksRepository.FirstOrDefaultAsync((int)input.Id);
-            ObjectMapper.Map(input, Tasks);
-        }
-
-        [AbpAuthorize(AppPermissions.Pages_Tasks_Delete)]
-        public async Task Delete(EntityDto input)
-        {
-            await _tasksRepository.DeleteAsync(input.Id);
+            return true;
         }
     }
 }
