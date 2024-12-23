@@ -17,7 +17,8 @@ using Asd.Hrm.Contractor;
 using Asd.Hrm.Employee;
 using Asd.Hrm.Project;
 using Asd.Hrm.Tasks;
-
+using Asd.Hrm.TasksModel;
+using Asd.Hrm.ProjectContractor;
 namespace Asd.Hrm.EntityFrameworkCore
 {
     public class HrmDbContext : AbpZeroDbContext<Tenant, Role, User, HrmDbContext>, IAbpPersistedGrantDbContext
@@ -52,7 +53,7 @@ namespace Asd.Hrm.EntityFrameworkCore
 
         public virtual DbSet<Contractors> Contractors { get; set; }
         public virtual DbSet<TaskDocuments> TaskDocuments { get; set; }
-
+        public virtual DbSet<ProjectContractors> ProjectContractors { get; set; }
         public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<Asd.Hrm.Job.Tasks> Tasks { get; set; }
 

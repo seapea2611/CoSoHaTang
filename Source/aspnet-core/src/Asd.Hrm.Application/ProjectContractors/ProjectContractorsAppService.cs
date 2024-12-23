@@ -18,20 +18,17 @@ namespace Asd.Hrm.ProjectContractors
     [AbpAuthorize(AppPermissions.Pages_ProjectContractors)]
     public class ProjectContractorsAppService : HrmAppServiceBase, IProjectContractorsAppService
     {
-        private readonly IRepository<Asd.Hrm.ProjectContractor.ProjectContractors> _resourcesRepository;
+        private readonly IRepository<Asd.Hrm.ProjectContractor.ProjectContractors> _projectContractorsRepository;
 
-        public ProjectContractorsAppService(IRepository<Asd.Hrm.ProjectContractor.ProjectContractors> resourcesRepository)
+        public ProjectContractorsAppService(IRepository<Asd.Hrm.ProjectContractor.ProjectContractors> projectContractorsRepository)
         {
-            _resourcesRepository = resourcesRepository;
+            _projectContractorsRepository = projectContractorsRepository;
         }
 
         public async Task<PagedResultDto<GetProjectContractorsForViewDto>> GetAll(GetAllProjectContractorsInput input)
         {
-            var filteredProjectContractors = _resourcesRepository.GetAll()
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.ProjectID.Contains(input.Filter) || e.ContractorID.Contains(input.Filter) || e.Role.Contains(input.Filter))
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.ProjectIDFilter), e => e.ProjectID.ToLower() == input.ProjectIDFilter.ToLower().Trim())
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.ContractorIDFilter), e => e.ContractorID.ToLower() == input.ContractorIDFilter.ToLower().Trim())
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.RoleFilter), e => e.Role.ToLower() == input.RoleFilter.ToLower().Trim());
+            var filteredProjectContractors = _projectContractorsRepository.GetAll()
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false);
 
             var query = (from o in filteredProjectContractors
                          select new GetProjectContractorsForViewDto()
@@ -41,19 +38,19 @@ namespace Asd.Hrm.ProjectContractors
 
             var totalCount = await query.CountAsync();
 
-            var resources = await query
+            var projectContractors = await query
                 .PageBy(input)
                 .ToListAsync();
 
             return new PagedResultDto<GetProjectContractorsForViewDto>(
                 totalCount,
-                resources
+                projectContractors
             );
         }
 
         public async Task<GetProjectContractorsForViewDto> GetProjectContractorsForView(int id)
         {
-            var ProjectContractors = await _resourcesRepository.GetAsync(id);
+            var ProjectContractors = await _projectContractorsRepository.GetAsync(id);
 
             var output = new GetProjectContractorsForViewDto { ProjectContractors = ObjectMapper.Map<ProjectContractorsDto>(ProjectContractors) };
 
@@ -63,12 +60,12 @@ namespace Asd.Hrm.ProjectContractors
         [AbpAuthorize(AppPermissions.Pages_ProjectContractors_Edit)]
         public async Task<GetProjectContractorsForEditOutput> GetProjectContractorsForEdit(EntityDto input)
         {
-            var ProjectContractors = await _resourcesRepository.FirstOrDefaultAsync(input.Id);
+            var ProjectContractors = await _projectContractorsRepository.FirstOrDefaultAsync(input.Id);
             var ProjectContractorsDto = new CreateOrEditProjectContractorsDto()
             {
-                ProjectId = ProjectContractors.ProjectId,
+                ProjectContractorsID = ProjectContractors.ProjectContractorsID,
                 ContractorID = ProjectContractors.ContractorID,
-                Role = ProjectContractors.Role,
+                ProjectID = ProjectContractors.ProjectID,
             };
 
             var output = new GetProjectContractorsForEditOutput() { ProjectContractors = ProjectContractorsDto };
@@ -92,8 +89,8 @@ namespace Asd.Hrm.ProjectContractors
         {
             try
             {
-                var resources = ObjectMapper.Map<Asd.Hrm.ProjectContractor.ProjectContractors>(input);
-                await _resourcesRepository.InsertAsync(resources);
+                var projectContractors = ObjectMapper.Map<Asd.Hrm.ProjectContractor.ProjectContractors>(input);
+                await _projectContractorsRepository.InsertAsync(projectContractors);
             }
             catch (Exception ex)
             {
@@ -104,14 +101,14 @@ namespace Asd.Hrm.ProjectContractors
         [AbpAuthorize(AppPermissions.Pages_ProjectContractors_Edit)]
         public async System.Threading.Tasks.Task Update(CreateOrEditProjectContractorsDto input)
         {
-            var resources = await _resourcesRepository.FirstOrDefaultAsync((int)input.Id);
-            ObjectMapper.Map(input, resources);
+            var projectContractors = await _projectContractorsRepository.FirstOrDefaultAsync((int)input.Id);
+            ObjectMapper.Map(input, projectContractors);
         }
 
         [AbpAuthorize(AppPermissions.Pages_ProjectContractors_Delete)]
         public async System.Threading.Tasks.Task Delete(EntityDto input)
         {
-            await _resourcesRepository.DeleteAsync(input.Id);
+            await _projectContractorsRepository.DeleteAsync(input.Id);
         }
     }
 }

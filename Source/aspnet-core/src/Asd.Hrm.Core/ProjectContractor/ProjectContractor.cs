@@ -6,14 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Asd.Hrm.Contractor
+namespace Asd.Hrm.ProjectContractor
 
 {
     [Table("ProjectContractors")]
-    public class Contractors : Entity
+    public class ProjectContractors : Entity
     {
+        public virtual int ProjectContractorsID { get; set; }
         public virtual int ProjectID { get; set; }
         public virtual int ContractorID { get; set; }
-        public virtual string Role { get; set; }
+
     }
 }

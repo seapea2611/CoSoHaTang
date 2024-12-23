@@ -54,7 +54,8 @@ using Asd.Hrm.Job.Dtos;
 using Asd.Hrm.Tasks.TaskDocument.Dtos;
 using Asd.Hrm.Tasks;
 using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
-
+using Asd.Hrm.ProjectContractor;
+using Asd.Hrm.ProjectContractors.Dtos;
 namespace Asd.Hrm
 {
     internal static class CustomDtoMapper
@@ -216,6 +217,11 @@ namespace Asd.Hrm
             configuration.CreateMap<CreateOrEditDocumentsDto, Documents>().ReverseMap();
             configuration.CreateMap<Documents, DocumentsDto>();
             configuration.CreateMap<Documents, DocumentsDto>().ReverseMap();
+
+            configuration.CreateMap<CreateOrEditProjectContractorsDto, Asd.Hrm.ProjectContractor.ProjectContractors>();
+            configuration.CreateMap<CreateOrEditProjectContractorsDto, Asd.Hrm.ProjectContractor.ProjectContractors>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.ProjectContractor.ProjectContractors, ProjectContractorsDto>();
+            configuration.CreateMap<Asd.Hrm.ProjectContractor.ProjectContractors, ProjectContractorsDto>().ReverseMap();
         }
     }
 }
