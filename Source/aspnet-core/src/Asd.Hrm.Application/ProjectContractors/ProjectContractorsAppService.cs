@@ -28,8 +28,8 @@ namespace Asd.Hrm.ProjectContractors
         public async Task<PagedResultDto<GetProjectContractorsForViewDto>> GetAll(GetAllProjectContractorsInput input)
         {
             var filteredProjectContractors = _projectContractorsRepository.GetAll()
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false);
-
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), e => false || e.Role.Contains(input.Filter) )
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.RoleFilter), e => e.Role.ToLower() == input.RoleFilter.ToLower().Trim());
             var query = (from o in filteredProjectContractors
                          select new GetProjectContractorsForViewDto()
                          {
@@ -63,9 +63,10 @@ namespace Asd.Hrm.ProjectContractors
             var ProjectContractors = await _projectContractorsRepository.FirstOrDefaultAsync(input.Id);
             var ProjectContractorsDto = new CreateOrEditProjectContractorsDto()
             {
-                ProjectContractorsID = ProjectContractors.ProjectContractorsID,
-                ContractorID = ProjectContractors.ContractorID,
+                Id = ProjectContractors.Id,
                 ProjectID = ProjectContractors.ProjectID,
+                ContractorID = ProjectContractors.ContractorID,
+                Role = ProjectContractors.Role,
             };
 
             var output = new GetProjectContractorsForEditOutput() { ProjectContractors = ProjectContractorsDto };

@@ -7,8 +7,8 @@ namespace Asd.Hrm.ProjectContractors.Dtos
 {
     public class ProjectContractorsDto : EntityDto
     {
-        public virtual int ProjectContractorsID { get; set; }
         public virtual int ProjectID { get; set; }
         public virtual int ContractorID { get; set; }
+        public virtual string Role { get; set; }
     }
 }
