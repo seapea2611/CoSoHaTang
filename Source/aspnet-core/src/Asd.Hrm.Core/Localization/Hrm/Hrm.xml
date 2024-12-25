@@ -1188,7 +1188,7 @@
 	  <text name="CreateNewTaskResources">Create Task Resources</text>
 	  <text name="MsgConfirmDeleteTaskResources">Do you want to delete this Task Resources?</text>
 	  <text name="TaskID">Task ID</text>
-	  <text name="ResourceID">Resource ID</text>
+	  <text name="ResourceIDinTaskResources">Resource ID</text>
 	  <text name="ResourceQuantity">Resource Quantity</text>
 	  <!--End TaskResources-->
   </texts>
