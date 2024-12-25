@@ -18,7 +18,9 @@ namespace Asd.Hrm.Job
 
         Task<GetTasksForEditOutput> GetTasksForEdit(EntityDto input);
 
+        //Task CreateOrEdit(CreateOrEditTasksDto input, CreateOrEditDocumentsDto input2, CreateOrEditTasksDocumentDto input3);
         Task CreateOrEdit(CreateOrEditTasksDto input);
+
 
         Task Delete(EntityDto input);
         Task UpdateProjectProgress(int projectId);

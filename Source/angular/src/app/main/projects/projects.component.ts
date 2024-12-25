@@ -13,6 +13,8 @@ import { Paginator } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import Swal from "sweetalert2";
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
     templateUrl: './projects.component.html',
@@ -31,8 +33,10 @@ export class ProjectsComponent extends AppComponentBase {
     UnitTypeFilter = '';
     SupplierFilter = '';
     data: any;
-   employees: any[] = [];
+    employees: any[] = [];
+    actualBudget: number;
 
+    private actualBudgetCache: Map<number, Observable<number>> = new Map<number, Observable<number>>();
 
     constructor(
         injector: Injector,
@@ -109,5 +113,16 @@ export class ProjectsComponent extends AppComponentBase {
         const employee = this.employees.find(e => e.employees.id == employeeId);
         return employee.employees.fullName;
       }
+     getActualBudget(id: number): Observable<number> {
+        if (this.actualBudgetCache.has(id)) {
+            return this.actualBudgetCache.get(id);
+        } else {
+            const budget$ = this._projectsServiceProxy.geBudget(id).pipe(
+                catchError(() => of(0)) // Handle errors and return 0 if there's an error
+            );
+            this.actualBudgetCache.set(id, budget$);
+            return budget$;
+        }
+    }
     
 }

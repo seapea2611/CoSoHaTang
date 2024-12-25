@@ -88,7 +88,7 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
             if (result == true) {
                 this.save();
             } else {
-                this.notify.error('', 'Dự án chưa hoàn thành, không thể tạo công việc');
+                this.notify.error('', 'Bước trước đó chưa hoàn thành, không thể tạo công việc');
             }
         });
     }

@@ -3075,6 +3075,338 @@ export class DemoUiComponentsServiceProxy {
 }
 
 @Injectable()
+export class DocumentsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getDocumentTemplatesForView(id: number | undefined): Observable<GetDocumentsForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Documents/GetDocumentTemplatesForView?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDocumentTemplatesForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDocumentTemplatesForView(<any>response_);
+                } catch (e) {
+                    return <Observable<GetDocumentsForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetDocumentsForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDocumentTemplatesForView(response: HttpResponseBase): Observable<GetDocumentsForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetDocumentsForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetDocumentsForViewDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditDocumentsDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Documents/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateOrEditDocumentsDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Documents/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    update(body: CreateOrEditDocumentsDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Documents/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Documents/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param link (optional) 
+     * @return Success
+     */
+    getDocumentsByLink(link: string | undefined): Observable<GetDocumentsForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/Documents/GetDocumentsByLink?";
+        if (link === null)
+            throw new Error("The parameter 'link' cannot be null.");
+        else if (link !== undefined)
+            url_ += "link=" + encodeURIComponent("" + link) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDocumentsByLink(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDocumentsByLink(<any>response_);
+                } catch (e) {
+                    return <Observable<GetDocumentsForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetDocumentsForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDocumentsByLink(response: HttpResponseBase): Observable<GetDocumentsForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetDocumentsForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetDocumentsForViewDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class DocumentTemplatesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -11040,6 +11372,62 @@ export class ProjectsServiceProxy {
         }
         return _observableOf<string>(<any>null);
     }
+
+    /**
+     * @param projectId (optional) 
+     * @return Success
+     */
+    geBudget(projectId: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/Projects/GeBudget?";
+        if (projectId === null)
+            throw new Error("The parameter 'projectId' cannot be null.");
+        else if (projectId !== undefined)
+            url_ += "projectId=" + encodeURIComponent("" + projectId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGeBudget(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGeBudget(<any>response_);
+                } catch (e) {
+                    return <Observable<number>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<number>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGeBudget(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(<any>null);
+    }
 }
 
 @Injectable()
@@ -12150,6 +12538,230 @@ export class SubscriptionServiceProxy {
 }
 
 @Injectable()
+export class TaskDocumentsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param taskId (optional) 
+     * @return Success
+     */
+    getTasksDocumentForView(taskId: number | undefined): Observable<PagedResultDtoOfGetTasksDocumentForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/TaskDocuments/GetTasksDocumentForView?";
+        if (taskId === null)
+            throw new Error("The parameter 'taskId' cannot be null.");
+        else if (taskId !== undefined)
+            url_ += "taskId=" + encodeURIComponent("" + taskId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTasksDocumentForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTasksDocumentForView(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfGetTasksDocumentForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfGetTasksDocumentForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTasksDocumentForView(response: HttpResponseBase): Observable<PagedResultDtoOfGetTasksDocumentForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetTasksDocumentForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfGetTasksDocumentForViewDto>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditTasksDocumentDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/TaskDocuments/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateOrEditTasksDocumentDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/TaskDocuments/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/TaskDocuments/Delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
 export class TasksServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -12396,119 +13008,6 @@ export class TasksServiceProxy {
     }
 
     /**
-     * @param projectId (optional) 
-     * @return Success
-     */
-    updateProjectProgress(projectId: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Tasks/UpdateProjectProgress?";
-        if (projectId === null)
-            throw new Error("The parameter 'projectId' cannot be null.");
-        else if (projectId !== undefined)
-            url_ += "projectId=" + encodeURIComponent("" + projectId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateProjectProgress(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdateProjectProgress(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processUpdateProjectProgress(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @param projectId (optional) 
-     * @param stage (optional) 
-     * @return Success
-     */
-    checkBeforeSave(projectId: number | undefined, stage: string | undefined): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/services/app/Tasks/CheckBeforeSave?";
-        if (projectId === null)
-            throw new Error("The parameter 'projectId' cannot be null.");
-        else if (projectId !== undefined)
-            url_ += "projectId=" + encodeURIComponent("" + projectId) + "&";
-        if (stage === null)
-            throw new Error("The parameter 'stage' cannot be null.");
-        else if (stage !== undefined)
-            url_ += "stage=" + encodeURIComponent("" + stage) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCheckBeforeSave(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCheckBeforeSave(<any>response_);
-                } catch (e) {
-                    return <Observable<boolean>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<boolean>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processCheckBeforeSave(response: HttpResponseBase): Observable<boolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<boolean>(<any>null);
-    }
-
-    /**
      * @param body (optional) 
      * @return Success
      */
@@ -12662,6 +13161,119 @@ export class TasksServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param projectId (optional) 
+     * @return Success
+     */
+    updateProjectProgress(projectId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Tasks/UpdateProjectProgress?";
+        if (projectId === null)
+            throw new Error("The parameter 'projectId' cannot be null.");
+        else if (projectId !== undefined)
+            url_ += "projectId=" + encodeURIComponent("" + projectId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateProjectProgress(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateProjectProgress(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateProjectProgress(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param projectId (optional) 
+     * @param stage (optional) 
+     * @return Success
+     */
+    checkBeforeSave(projectId: number | undefined, stage: string | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/Tasks/CheckBeforeSave?";
+        if (projectId === null)
+            throw new Error("The parameter 'projectId' cannot be null.");
+        else if (projectId !== undefined)
+            url_ += "projectId=" + encodeURIComponent("" + projectId) + "&";
+        if (stage === null)
+            throw new Error("The parameter 'stage' cannot be null.");
+        else if (stage !== undefined)
+            url_ += "stage=" + encodeURIComponent("" + stage) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckBeforeSave(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckBeforeSave(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCheckBeforeSave(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
     }
 }
 
@@ -18675,6 +19287,62 @@ export interface ICreateOrEditContractorsDto {
     id: number | undefined;
 }
 
+export class CreateOrEditDocumentsDto implements ICreateOrEditDocumentsDto {
+    documentName!: string | undefined;
+    confirmingEmployeeID!: number;
+    confirmationDate!: DateTime;
+    attachedFile!: string | undefined;
+    link!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditDocumentsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentName = _data["documentName"];
+            this.confirmingEmployeeID = _data["confirmingEmployeeID"];
+            this.confirmationDate = _data["confirmationDate"] ? DateTime.fromISO(_data["confirmationDate"].toString()) : <any>undefined;
+            this.attachedFile = _data["attachedFile"];
+            this.link = _data["link"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditDocumentsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditDocumentsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentName"] = this.documentName;
+        data["confirmingEmployeeID"] = this.confirmingEmployeeID;
+        data["confirmationDate"] = this.confirmationDate ? this.confirmationDate.toString() : <any>undefined;
+        data["attachedFile"] = this.attachedFile;
+        data["link"] = this.link;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditDocumentsDto {
+    documentName: string | undefined;
+    confirmingEmployeeID: number;
+    confirmationDate: DateTime;
+    attachedFile: string | undefined;
+    link: string | undefined;
+    id: number | undefined;
+}
+
 export class CreateOrEditDocumentTemplatesDto implements ICreateOrEditDocumentTemplatesDto {
     templateName!: string | undefined;
     attachedFileLink!: string | undefined;
@@ -18903,6 +19571,50 @@ export interface ICreateOrEditResourcesDto {
     id: number | undefined;
 }
 
+export class CreateOrEditTasksDocumentDto implements ICreateOrEditTasksDocumentDto {
+    taskID!: number;
+    documentID!: number;
+    id!: number | undefined;
+
+    constructor(data?: ICreateOrEditTasksDocumentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.taskID = _data["taskID"];
+            this.documentID = _data["documentID"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditTasksDocumentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditTasksDocumentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taskID"] = this.taskID;
+        data["documentID"] = this.documentID;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ICreateOrEditTasksDocumentDto {
+    taskID: number;
+    documentID: number;
+    id: number | undefined;
+}
+
 export class CreateOrEditTasksDto implements ICreateOrEditTasksDto {
     startDate!: DateTime;
     endDate!: DateTime;
@@ -18913,6 +19625,9 @@ export class CreateOrEditTasksDto implements ICreateOrEditTasksDto {
     stage!: string | undefined;
     status!: string | undefined;
     managerEmployeeID!: number;
+    unwanted!: number;
+    estimatedStartDate!: DateTime;
+    estimatedEndDate!: DateTime;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditTasksDto) {
@@ -18935,6 +19650,9 @@ export class CreateOrEditTasksDto implements ICreateOrEditTasksDto {
             this.stage = _data["stage"];
             this.status = _data["status"];
             this.managerEmployeeID = _data["managerEmployeeID"];
+            this.unwanted = _data["unwanted"];
+            this.estimatedStartDate = _data["estimatedStartDate"] ? DateTime.fromISO(_data["estimatedStartDate"].toString()) : <any>undefined;
+            this.estimatedEndDate = _data["estimatedEndDate"] ? DateTime.fromISO(_data["estimatedEndDate"].toString()) : <any>undefined;
             this.id = _data["id"];
         }
     }
@@ -18957,6 +19675,9 @@ export class CreateOrEditTasksDto implements ICreateOrEditTasksDto {
         data["stage"] = this.stage;
         data["status"] = this.status;
         data["managerEmployeeID"] = this.managerEmployeeID;
+        data["unwanted"] = this.unwanted;
+        data["estimatedStartDate"] = this.estimatedStartDate ? this.estimatedStartDate.toString() : <any>undefined;
+        data["estimatedEndDate"] = this.estimatedEndDate ? this.estimatedEndDate.toString() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -18972,6 +19693,9 @@ export interface ICreateOrEditTasksDto {
     stage: string | undefined;
     status: string | undefined;
     managerEmployeeID: number;
+    unwanted: number;
+    estimatedStartDate: DateTime;
+    estimatedEndDate: DateTime;
     id: number | undefined;
 }
 
@@ -19592,6 +20316,62 @@ export class DelegatedImpersonateInput implements IDelegatedImpersonateInput {
 
 export interface IDelegatedImpersonateInput {
     userDelegationId: number;
+}
+
+export class DocumentsDto implements IDocumentsDto {
+    documentName!: string | undefined;
+    confirmingEmployeeID!: number;
+    confirmationDate!: DateTime;
+    attachedFile!: string | undefined;
+    link!: string | undefined;
+    id!: number;
+
+    constructor(data?: IDocumentsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentName = _data["documentName"];
+            this.confirmingEmployeeID = _data["confirmingEmployeeID"];
+            this.confirmationDate = _data["confirmationDate"] ? DateTime.fromISO(_data["confirmationDate"].toString()) : <any>undefined;
+            this.attachedFile = _data["attachedFile"];
+            this.link = _data["link"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): DocumentsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DocumentsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentName"] = this.documentName;
+        data["confirmingEmployeeID"] = this.confirmingEmployeeID;
+        data["confirmationDate"] = this.confirmationDate ? this.confirmationDate.toString() : <any>undefined;
+        data["attachedFile"] = this.attachedFile;
+        data["link"] = this.link;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IDocumentsDto {
+    documentName: string | undefined;
+    confirmingEmployeeID: number;
+    confirmationDate: DateTime;
+    attachedFile: string | undefined;
+    link: string | undefined;
+    id: number;
 }
 
 export class DocumentTemplatesDto implements IDocumentTemplatesDto {
@@ -22348,6 +23128,42 @@ export interface IGetDefaultEditionNameOutput {
     name: string | undefined;
 }
 
+export class GetDocumentsForViewDto implements IGetDocumentsForViewDto {
+    documentTemplates!: DocumentsDto;
+
+    constructor(data?: IGetDocumentsForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.documentTemplates = _data["documentTemplates"] ? DocumentsDto.fromJS(_data["documentTemplates"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetDocumentsForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDocumentsForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["documentTemplates"] = this.documentTemplates ? this.documentTemplates.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetDocumentsForViewDto {
+    documentTemplates: DocumentsDto;
+}
+
 export class GetDocumentTemplatesForEditOutput implements IGetDocumentTemplatesForEditOutput {
     documentTemplates!: CreateOrEditDocumentTemplatesDto;
 
@@ -23566,6 +24382,42 @@ export interface IGetSalesSummaryOutput {
     expenses: number;
     growth: number;
     salesSummary: SalesSummaryData[] | undefined;
+}
+
+export class GetTasksDocumentForViewDto implements IGetTasksDocumentForViewDto {
+    tasksDocument!: TasksDocumentDto;
+
+    constructor(data?: IGetTasksDocumentForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tasksDocument = _data["tasksDocument"] ? TasksDocumentDto.fromJS(_data["tasksDocument"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetTasksDocumentForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetTasksDocumentForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tasksDocument"] = this.tasksDocument ? this.tasksDocument.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IGetTasksDocumentForViewDto {
+    tasksDocument: TasksDocumentDto;
 }
 
 export class GetTasksForEditOutput implements IGetTasksForEditOutput {
@@ -27111,6 +27963,54 @@ export interface IPagedResultDtoOfGetResourcesForViewDto {
     items: GetResourcesForViewDto[] | undefined;
 }
 
+export class PagedResultDtoOfGetTasksDocumentForViewDto implements IPagedResultDtoOfGetTasksDocumentForViewDto {
+    totalCount!: number;
+    items!: GetTasksDocumentForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetTasksDocumentForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetTasksDocumentForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetTasksDocumentForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetTasksDocumentForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfGetTasksDocumentForViewDto {
+    totalCount: number;
+    items: GetTasksDocumentForViewDto[] | undefined;
+}
+
 export class PagedResultDtoOfGetTasksForViewDto implements IPagedResultDtoOfGetTasksForViewDto {
     totalCount!: number;
     items!: GetTasksForViewDto[] | undefined;
@@ -29620,6 +30520,50 @@ export interface ISwitchToLinkedAccountOutput {
     tenancyName: string | undefined;
 }
 
+export class TasksDocumentDto implements ITasksDocumentDto {
+    taskID!: number;
+    documentID!: number;
+    id!: number;
+
+    constructor(data?: ITasksDocumentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.taskID = _data["taskID"];
+            this.documentID = _data["documentID"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): TasksDocumentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TasksDocumentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taskID"] = this.taskID;
+        data["documentID"] = this.documentID;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ITasksDocumentDto {
+    taskID: number;
+    documentID: number;
+    id: number;
+}
+
 export class TasksDto implements ITasksDto {
     startDate!: DateTime;
     endDate!: DateTime;
@@ -29630,6 +30574,9 @@ export class TasksDto implements ITasksDto {
     stage!: string | undefined;
     status!: string | undefined;
     managerEmployeeID!: number;
+    unwanted!: number;
+    estimatedStartDate!: DateTime;
+    estimatedEndDate!: DateTime;
     id!: number;
 
     constructor(data?: ITasksDto) {
@@ -29652,6 +30599,9 @@ export class TasksDto implements ITasksDto {
             this.stage = _data["stage"];
             this.status = _data["status"];
             this.managerEmployeeID = _data["managerEmployeeID"];
+            this.unwanted = _data["unwanted"];
+            this.estimatedStartDate = _data["estimatedStartDate"] ? DateTime.fromISO(_data["estimatedStartDate"].toString()) : <any>undefined;
+            this.estimatedEndDate = _data["estimatedEndDate"] ? DateTime.fromISO(_data["estimatedEndDate"].toString()) : <any>undefined;
             this.id = _data["id"];
         }
     }
@@ -29674,6 +30624,9 @@ export class TasksDto implements ITasksDto {
         data["stage"] = this.stage;
         data["status"] = this.status;
         data["managerEmployeeID"] = this.managerEmployeeID;
+        data["unwanted"] = this.unwanted;
+        data["estimatedStartDate"] = this.estimatedStartDate ? this.estimatedStartDate.toString() : <any>undefined;
+        data["estimatedEndDate"] = this.estimatedEndDate ? this.estimatedEndDate.toString() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -29689,6 +30642,9 @@ export interface ITasksDto {
     stage: string | undefined;
     status: string | undefined;
     managerEmployeeID: number;
+    unwanted: number;
+    estimatedStartDate: DateTime;
+    estimatedEndDate: DateTime;
     id: number;
 }
 
