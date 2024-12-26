@@ -16,5 +16,9 @@ namespace Asd.Hrm.Job.Dtos
         public virtual string Stage { set; get; }
         public virtual string Status { set; get; }
         public virtual int ManagerEmployeeID { get; set; }
+        public virtual int Unwanted { get; set; }
+        public virtual DateTime EstimatedStartDate { set; get; }
+        public virtual DateTime EstimatedEndDate { set; get; }
+
     }
 }

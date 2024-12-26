@@ -11,10 +11,12 @@ namespace Asd.Hrm.DocumentTemplates.TaiLieu
 {
     public interface IDocumentsAppService : IApplicationService
     {
-        Task<GetDocumentsForViewDto> GetDocumentTemplatesForView(int id);
+        Task<PagedResultDto<GetDocumentsForViewDto>> GetDocumentTemplatesForView(int id);
 
-        Task CreateOrEdit(CreateOrEditDocumentsDto input);
+        Task CreateOrEdit(CreateOrEditDocumentsDto input, int taskID);
 
         Task Delete(EntityDto input);
+        Task<GetDocumentsForViewDto> GetDocumentsByLink(string link);
+        
     }
 }

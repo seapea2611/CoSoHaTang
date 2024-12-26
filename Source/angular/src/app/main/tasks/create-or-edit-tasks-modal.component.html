@@ -31,6 +31,19 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="estimatedStartDate">Estimated Start Date - Estimated End Date</label>
+                        <input id="estimatedStartDate"
+                                    type="text"
+                                    #SampleDatePicker="ngModel"
+                                    name="estimatedStartDate"
+                                    class="form-control"
+                                    [(ngModel)]="datarenge"
+                                    [placeholder]="l('estimatedEndDate')"
+                                    bsDaterangepicker required>
+                        <validation-messages [formCtrl]="SampleDatePicker"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
                         <label for="startDate">Start Date - End Date</label>
                         <input id="startDate"
                                     type="text"
@@ -48,6 +61,11 @@
                         <select id="stage" class="form-control" [(ngModel)]="tasks.stage" name="stage" required>
                             <option *ngFor="let stage of listStage" [value]="stage.text">{{ stage.text }}</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unwanted">Unwanted</label>
+                        <input id="unwanted" type="checkbox" [(ngModel)]="tasks.unwanted" (ngModelChange)="onUnwantedChange($event)" name="unwanted">
                     </div>
 
                     <div class="form-group">

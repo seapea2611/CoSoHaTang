@@ -72,6 +72,7 @@
                                         <th style="min-width: 100px;" class="text-center">Start Date</th>
                                         <th style="min-width: 100px;" class="text-center">Estimated End Date</th>
                                         <th style="min-width: 100px;" class="text-center">Budget</th>
+                                        <th style="min-width: 100px;" class="text-center">Actual Budget</th>
                                         <th style="min-width: 150px;" class="text-center">Responsible Employee Name</th>
                                         <th style="min-width: 100px;" class="text-center">Progress</th>
                                        
@@ -105,6 +106,9 @@
                                         </td>
                                         <td class="text-center cell-bg">
                                             {{item.projects.budget}}
+                                        </td>
+                                        <td class="text-center cell-bg">
+                                            {{ getActualBudget(item.projects.id) | async }}
                                         </td>
                                         <td class="text-center cell-bg">
                                             {{getEmployeeName(item.projects.responsibleEmployeeID)}}

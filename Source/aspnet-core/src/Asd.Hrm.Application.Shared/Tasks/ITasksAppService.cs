@@ -15,10 +15,13 @@ namespace Asd.Hrm.Job
         Task<PagedResultDto<GetTasksForViewDto>> GetAll(GetAllTasksInput input);
 
         Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId);
+        Task<PagedResultDto<GetTasksForViewDto>> GetTasksByTaskID(int id);
 
         Task<GetTasksForEditOutput> GetTasksForEdit(EntityDto input);
 
+        //Task CreateOrEdit(CreateOrEditTasksDto input, CreateOrEditDocumentsDto input2, CreateOrEditTasksDocumentDto input3);
         Task CreateOrEdit(CreateOrEditTasksDto input);
+
 
         Task Delete(EntityDto input);
         Task UpdateProjectProgress(int projectId);
