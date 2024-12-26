@@ -148,6 +148,11 @@ namespace Asd.Hrm.Authorization
             tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Edit, L("EditTasks"), multiTenancySides: MultiTenancySides.Host);
             tasks.CreateChildPermission(AppPermissions.Pages_Tasks_Delete, L("DeleteTasks"), multiTenancySides: MultiTenancySides.Host);
 
+            var taskResources = pages.CreateChildPermission(AppPermissions.Pages_TaskResources, L("TaskResources"), multiTenancySides: MultiTenancySides.Tenant);
+            taskResources.CreateChildPermission(AppPermissions.Pages_TaskResources_Create, L("CreateNewTaskResources"), multiTenancySides: MultiTenancySides.Tenant);
+            taskResources.CreateChildPermission(AppPermissions.Pages_TaskResources_Edit, L("EditTaskResources"), multiTenancySides: MultiTenancySides.Tenant);
+            taskResources.CreateChildPermission(AppPermissions.Pages_TaskResources_Delete, L("DeleteTaskResources"), multiTenancySides: MultiTenancySides.Tenant);
+
             var projectContractor = pages.CreateChildPermission(AppPermissions.Pages_ProjectContractors, L("ProjectContractors"), multiTenancySides: MultiTenancySides.Host);
             projectContractor.CreateChildPermission(AppPermissions.Pages_ProjectContractors_Create, L("CreateProjectContractors"), multiTenancySides: MultiTenancySides.Host);
             projectContractor.CreateChildPermission(AppPermissions.Pages_ProjectContractors_Edit, L("EditProjectContractors"), multiTenancySides: MultiTenancySides.Host);

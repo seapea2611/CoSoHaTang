@@ -1181,6 +1181,16 @@
 	  <text name="EmployeeRole">Role</text>
 
 	  <!-- End Employees-->
+
+	  <!--Start TaskResources-->
+	  <text name="TaskResources">Task Resources</text>
+	  <text name="EditTaskResources">Edit Task Resources</text>
+	  <text name="CreateNewTaskResources">Create Task Resources</text>
+	  <text name="MsgConfirmDeleteTaskResources">Do you want to delete this Task Resources?</text>
+	  <text name="TaskID">Task ID</text>
+	  <text name="ResourceIDinTaskResources">Resource ID</text>
+	  <text name="ResourceQuantity">Resource Quantity</text>
+	  <!--End TaskResources-->
 	  
 	  <!--Start ProjectContractors-->
 	  <text name="ProjectContractors">ProjectContractors</text>
