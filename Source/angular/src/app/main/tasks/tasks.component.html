@@ -122,7 +122,7 @@
                                         </td>
                                         <td class="text-center cell-bg" style="width: 80px" [hidden]="!isGrantedAny('Pages.Tasks.Edit', 'Pages.Tasks.Delete')">
                                             <div style="display: inline-flex; align-items: center; justify-content: center;">
-                                                <a (click)="createOrEditTasksModal.show(item.tasks.id)" href="javascript:;" *ngIf="permission.isGranted('Pages.Tasks.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
+                                                <a (click)="createOrEditTasksModal.show(item.tasks.id, item.tasks.projectID)" href="javascript:;" *ngIf="permission.isGranted('Pages.Tasks.Edit')" class="m-portlet__nav-link btn m-btn m-btn--hover-accent w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Cập nhật">
                                                     <i class="la la-edit"></i>
                                                 </a>
                                                 <a (click)="deleteTasks(item.tasks)" href="javascript:;" *ngIf="permission.isGranted('Pages.Tasks.Delete')" class="m-portlet__nav-link btn m-btn m-btn--hover-danger w-h-icon-24 m-btn--icon m-btn--icon-only m-btn--pill" title=" Xóa">
