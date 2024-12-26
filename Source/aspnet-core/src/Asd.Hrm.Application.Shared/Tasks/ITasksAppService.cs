@@ -15,6 +15,7 @@ namespace Asd.Hrm.Job
         Task<PagedResultDto<GetTasksForViewDto>> GetAll(GetAllTasksInput input);
 
         Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId);
+        Task<PagedResultDto<GetTasksForViewDto>> GetTasksByTaskID(int id);
 
         Task<GetTasksForEditOutput> GetTasksForEdit(EntityDto input);
 

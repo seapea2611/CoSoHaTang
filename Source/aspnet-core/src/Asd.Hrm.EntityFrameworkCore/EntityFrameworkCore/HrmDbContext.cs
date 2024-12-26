@@ -19,7 +19,7 @@ using Asd.Hrm.Project;
 using Asd.Hrm.Tasks;
 using Asd.Hrm.TaskResource;
 
-using Asd.Hrm.TasksModel;
+
 using Asd.Hrm.ProjectContractor;
 namespace Asd.Hrm.EntityFrameworkCore
 {

@@ -170,5 +170,9 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
     //     const project = this.listProject.find(p => p.projects.id == projectId);
     //     return project.projects.projectName;
     //   }
+
+    onUnwantedChange(event: boolean): void {
+        this.tasks.unwanted = event ? 1 : 0;
+    }
 }
 

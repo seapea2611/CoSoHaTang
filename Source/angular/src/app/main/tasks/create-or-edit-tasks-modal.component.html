@@ -64,6 +64,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="unwanted">Unwanted</label>
+                        <input id="unwanted" type="checkbox" [(ngModel)]="tasks.unwanted" (ngModelChange)="onUnwantedChange($event)" name="unwanted">
+                    </div>
+
+                    <div class="form-group">
                         <label for="status">Status</label>
                         <select id="status" class="form-control" [(ngModel)]="tasks.status" name="status" required>
                             <option *ngFor="let status of listStatus" [value]="status.text">{{ status.text }}</option>
