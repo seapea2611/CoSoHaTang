@@ -5,6 +5,8 @@ using Asd.Hrm.Authorization;
 using Asd.Hrm.DocumentTemplates.Dtos;
 using Asd.Hrm.DocumentTemplates.TaiLieu;
 using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
+using Asd.Hrm.Project;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +71,23 @@ namespace Asd.Hrm.DocumentTemplates
         public async System.Threading.Tasks.Task Delete(EntityDto input)
         {
             await _documentsRepository.DeleteAsync(input.Id);
+        }
+
+        public async Task<GetDocumentsForViewDto> GetDocumentsByLink(string link)
+        {
+            var document = await _documentsRepository.FirstOrDefaultAsync(p => p.Link == link);
+            DocumentsDto a = new DocumentsDto();
+            a.Id = document.Id;
+            a.Link = link;
+            a.AttachedFile = document.AttachedFile;
+            a.DocumentName = document.DocumentName;
+            a.ConfirmationDate = document.ConfirmationDate;
+            a.ConfirmingEmployeeID = document.ConfirmingEmployeeID;
+
+            var output = new GetDocumentsForViewDto { DocumentTemplates = ObjectMapper.Map<DocumentsDto>(a) };
+
+
+            return output;
         }
     }
 }

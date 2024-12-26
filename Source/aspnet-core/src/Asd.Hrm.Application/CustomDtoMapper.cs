@@ -51,7 +51,14 @@ using Asd.Hrm.Employees.Dtos;
 using Asd.Hrm.Employee;
 using Asd.Hrm.Projects.Dtos;
 using Asd.Hrm.Job.Dtos;
+using Asd.Hrm.Tasks.TaskDocument.Dtos;
+using Asd.Hrm.Tasks;
+using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
+using Asd.Hrm.TaskResource;
+using Asd.Hrm.TaskResources.Dtos;
 
+using Asd.Hrm.ProjectContractor;
+using Asd.Hrm.ProjectContractors.Dtos;
 namespace Asd.Hrm
 {
     internal static class CustomDtoMapper
@@ -203,6 +210,26 @@ namespace Asd.Hrm
             configuration.CreateMap<CreateOrEditTasksDto, Asd.Hrm.Job.Tasks>().ReverseMap();
             configuration.CreateMap<Asd.Hrm.Job.Tasks, TasksDto>();
             configuration.CreateMap<Asd.Hrm.Job.Tasks, TasksDto>().ReverseMap();
+
+            configuration.CreateMap<CreateOrEditTasksDocumentDto,TaskDocuments>();
+            configuration.CreateMap<CreateOrEditTasksDocumentDto, TaskDocuments>().ReverseMap();
+            configuration.CreateMap<TaskDocuments, TasksDocumentDto>();
+            configuration.CreateMap<TaskDocuments, TasksDocumentDto>().ReverseMap();
+
+            configuration.CreateMap<CreateOrEditDocumentsDto, Documents>();
+            configuration.CreateMap<CreateOrEditDocumentsDto, Documents>().ReverseMap();
+            configuration.CreateMap<Documents, DocumentsDto>();
+            configuration.CreateMap<Documents, DocumentsDto>().ReverseMap();
+
+            configuration.CreateMap<CreateOrEditTaskResourcesDto, Asd.Hrm.TaskResource.TaskResources>();
+            configuration.CreateMap<CreateOrEditTaskResourcesDto, Asd.Hrm.TaskResource.TaskResources>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.TaskResource.TaskResources, TaskResourcesDto>();
+            configuration.CreateMap<Asd.Hrm.TaskResource.TaskResources, TaskResourcesDto>().ReverseMap();
+
+            configuration.CreateMap<CreateOrEditProjectContractorsDto, Asd.Hrm.ProjectContractor.ProjectContractors>();
+            configuration.CreateMap<CreateOrEditProjectContractorsDto, Asd.Hrm.ProjectContractor.ProjectContractors>().ReverseMap();
+            configuration.CreateMap<Asd.Hrm.ProjectContractor.ProjectContractors, ProjectContractorsDto>();
+            configuration.CreateMap<Asd.Hrm.ProjectContractor.ProjectContractors, ProjectContractorsDto>().ReverseMap();
         }
     }
 }

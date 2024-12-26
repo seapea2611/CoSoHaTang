@@ -8,6 +8,7 @@ using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
 using Asd.Hrm.Job.Dtos;
 using Asd.Hrm.Project;
 using Asd.Hrm.Tasks;
+using Asd.Hrm.Tasks.TaskDocument.Dtos;
 using Microsoft.EntityFrameworkCore;
 using NPOI.SS.Formula.Functions;
 using System;
@@ -29,12 +30,12 @@ namespace Asd.Hrm.Job
         private readonly IRepository<TaskDocuments> _taskdocumentRepository;
 
 
-        public TasksAppService(IRepository<Tasks> tasksRepository, IRepository<Asd.Hrm.Project.Projects> projectRepository, IRepository<Documents> documentRepository, IRepository<TaskDocuments> tasksdocumentRepository)
+        public TasksAppService(IRepository<Tasks> tasksRepository, IRepository<Asd.Hrm.Project.Projects> projectRepository, IRepository<Documents> documentRepository, IRepository<TaskDocuments> taskdocumentRepository)
         {
             _tasksRepository = tasksRepository;
             _projectRepository = projectRepository;
             _documentRepository = documentRepository;
-            _taskdocumentRepository = tasksdocumentRepository;
+            _taskdocumentRepository = taskdocumentRepository;
         }
 
         public async Task<PagedResultDto<GetTasksForViewDto>> GetAll(GetAllTasksInput input)
@@ -58,9 +59,9 @@ namespace Asd.Hrm.Job
                 resources
             );
         }
-    public async Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId)
+        public async Task<PagedResultDto<GetTasksForViewDto>> GetTasksForView(int projectId)
         {
-            
+
             var filteredTasks = _tasksRepository.GetAll()
                                                 .Where(task => task.ProjectID == projectId);
             GetAllTasksInput input = new GetAllTasksInput();
@@ -98,12 +99,91 @@ namespace Asd.Hrm.Job
                 ProjectID = Tasks.ProjectID,
                 Stage = Tasks.Stage,
                 Status = Tasks.Status,
-                ManagerEmployeeID = Tasks.ManagerEmployeeID
+                ManagerEmployeeID = Tasks.ManagerEmployeeID,
+                Unwanted = Tasks.Unwanted,
+                EstimatedStartDate = Tasks.EstimatedStartDate,
+                EstimatedEndDate = Tasks.EstimatedEndDate
             };
 
             var output = new GetTasksForEditOutput() { Tasks = TasksDto };
             return output;
         }
+
+        /*public async Task CreateOrEdit(CreateOrEditTasksDto input, CreateOrEditDocumentsDto input2, CreateOrEditTasksDocumentDto input3)
+        {
+            if (input.Id == null)
+            {
+                await Create(input, input2, input3);
+            }
+            else
+            {
+                await Update(input, input2, input3);
+            }
+        }
+
+
+        [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
+        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input, CreateOrEditDocumentsDto input2, CreateOrEditTasksDocumentDto input3)
+        {
+            try
+            {
+                var Tasks = ObjectMapper.Map<Tasks>(input);
+
+                var documents = ObjectMapper.Map<Documents>(input2);
+                await _tasksRepository.InsertAsync(Tasks);
+                await CurrentUnitOfWork.SaveChangesAsync();
+                await Task.Delay(250);
+
+                input3.TaskID = Tasks.Id;
+
+                if (input2.DocumentName != null)
+                {
+                    await _documentRepository.InsertAsync(documents);
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                    await Task.Delay(250);
+
+                    input3.DocumentID = documents.Id;
+
+                    var taskDocument = ObjectMapper.Map<TaskDocuments>(input3);
+                    await _taskdocumentRepository.InsertAsync(taskDocument);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
+        public async Task Update(CreateOrEditTasksDto input, CreateOrEditDocumentsDto input2, CreateOrEditTasksDocumentDto input3)
+        {
+            var Tasks = await _tasksRepository.FirstOrDefaultAsync((int)input.Id);
+            ObjectMapper.Map(input, Tasks);
+
+            var documents = ObjectMapper.Map<Documents>(input2);
+            input3.TaskID = (int)input.Id;
+            var existDocument = _documentRepository.GetAll().Where(document => document.Id == input2.Id);
+
+
+            if (!existDocument.Any())
+            {
+                if (input2.DocumentName != null)
+                {
+                    await _documentRepository.InsertAsync(documents);
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                    await Task.Delay(250);
+
+                    input3.DocumentID = documents.Id;
+                    var taskDocument = ObjectMapper.Map<TaskDocuments>(input3);
+                    await _taskdocumentRepository.InsertAsync(taskDocument);
+                }
+            }
+            else
+            {
+                var documentBefore = await _documentRepository.FirstOrDefaultAsync((int)input2.Id);
+                ObjectMapper.Map(input2, documentBefore);
+            }
+        }*/
 
         public async Task CreateOrEdit(CreateOrEditTasksDto input)
         {
@@ -117,7 +197,7 @@ namespace Asd.Hrm.Job
             }
         }
 
-       
+
         [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
         public async System.Threading.Tasks.Task Create(CreateOrEditTasksDto input)
         {
@@ -138,6 +218,7 @@ namespace Asd.Hrm.Job
             var Tasks = await _tasksRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, Tasks);
         }
+
 
         [AbpAuthorize(AppPermissions.Pages_Tasks_Delete)]
         public async Task Delete(EntityDto input)

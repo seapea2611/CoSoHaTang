@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Authorization;
+using Abp.Domain.Entities;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Asd.Hrm.Authorization;
@@ -17,29 +18,24 @@ using System.Threading.Tasks;
 
 namespace Asd.Hrm.Job
 {
-    [AbpAuthorize(AppPermissions.Pages_Tasks)]
-    public class TaskDocumentsAppService : HrmAppServiceBase, ITasksDocumentAppService
+    public class TaskDocumentsAppService  : HrmAppServiceBase, ITasksDocumentAppService
     {
-        private readonly IRepository<Tasks> _tasksRepository;
-        private readonly IRepository<Documents> _documentRepository;
         private readonly IRepository<TaskDocuments> _taskdocumentRepository;
 
-        public TaskDocumentsAppService(IRepository<Tasks> tasksRepository, IRepository<Documents> projectRepository, IRepository<TaskDocuments> a)
+        public TaskDocumentsAppService(IRepository<Tasks> tasksRepository, IRepository<Documents> projectRepository, IRepository<TaskDocuments> tasksdocumentRepository)
         {
-            _tasksRepository = tasksRepository;
-            _documentRepository = projectRepository;
-            _taskdocumentRepository = a;
+            _taskdocumentRepository = tasksdocumentRepository;
         }
-        public async Task<PagedResultDto<GetTasksForViewDto>> GetTasksDocumentForView(int taskId, int documentId)
+        public async Task<PagedResultDto<GetTasksDocumentForViewDto>> GetTasksDocumentForView(int taskId)
         {
 
-            var filteredTasks = _tasksRepository.GetAll()
-                                                .Where(task => task.Id == taskId);
-            GetAllTasksInput input = new GetAllTasksInput();
+            var filteredTasks = _taskdocumentRepository.GetAll()
+                                .Where(task => task.TaskID == taskId);
+            GetAllTasksDocumentInput input = new GetAllTasksDocumentInput();
             var query = (from o in filteredTasks
-                         select new GetTasksForViewDto()
+                         select new GetTasksDocumentForViewDto()
                          {
-                             Tasks = ObjectMapper.Map<TasksDto>(o)
+                             TasksDocument = ObjectMapper.Map<TasksDocumentDto>(o)
                          });
 
             var totalCount = await query.CountAsync();
@@ -48,7 +44,7 @@ namespace Asd.Hrm.Job
                 .PageBy(input)
                 .ToListAsync();
 
-            return new PagedResultDto<GetTasksForViewDto>(
+            return new PagedResultDto<GetTasksDocumentForViewDto>(
                 totalCount,
                 resources
             );
@@ -56,22 +52,15 @@ namespace Asd.Hrm.Job
 
         public async Task CreateOrEdit(CreateOrEditTasksDocumentDto input)
         {
-            if (input.Id == null)
-            {
                 await Create(input);
-            }
-            else
-            {
-                await Update(input);
-            }
         }
         [AbpAuthorize(AppPermissions.Pages_Tasks_Create)]
-        public async System.Threading.Tasks.Task Create(CreateOrEditTasksDocumentDto input)
+        public async Task Create(CreateOrEditTasksDocumentDto input)
         {
             try
             {
-                var Tasks = ObjectMapper.Map<Tasks>(input);
-                await _tasksRepository.InsertAsync(Tasks);
+                var Tasks = ObjectMapper.Map<TaskDocuments>(input);
+                await _taskdocumentRepository.InsertAsync(Tasks);
             }
             catch (Exception ex)
             {
@@ -79,17 +68,10 @@ namespace Asd.Hrm.Job
             }
         }
 
-        [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
-        public async Task Update(CreateOrEditTasksDocumentDto input)
-        {
-            var Tasks = await _tasksRepository.FirstOrDefaultAsync((int)input.Id);
-            ObjectMapper.Map(input, Tasks);
-        }
-
         [AbpAuthorize(AppPermissions.Pages_Tasks_Delete)]
-        public async Task Delete(EntityDto input)
+        public async Task Delete(Entity input)
         {
-            await _tasksRepository.DeleteAsync(input.Id);
+            await _taskdocumentRepository.DeleteAsync(input.Id);
         }
     }
 }

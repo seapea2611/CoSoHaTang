@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Asd.Hrm.Tasks.TaskDocument.Dtos
 {
-    public class TasksDocumentDto : Entity
+    public class TasksDocumentDto : EntityDto
     {
         public virtual int TaskID { get; set; }
         public virtual int DocumentID { get; set; }

@@ -1,4 +1,4 @@
-﻿var gulp = require("gulp");
+var gulp = require("gulp");
 var path = require('path');
 var merge = require("merge-stream");
 var globby = require('globby');
@@ -6,18 +6,12 @@ var concat = require('gulp-concat');
 var less = require('gulp-less');
 var uglify = require('gulp-uglify');
 var cleanCss = require('gulp-clean-css');
-var del = require('del');
 
 var bundleConfig = require(path.resolve(__dirname, 'bundles.json'));
 var production = false;
-var distDir = path.resolve(__dirname, 'dist');
 
 var styleEntries = {};
 var scriptEntries = {};
-
-function clean() {
-    return del([distDir]);
-}
 
 function processInputDefinition(input) {
     var result = [];
@@ -57,8 +51,8 @@ function getFileNameFromPath(path) {
     return path.substring(path.lastIndexOf('/') + 1);
 }
 
-function getPathWithoutFileNameFromPath(outputPath) {
-    return distDir; // Output all bundles to the dist directory
+function getPathWithoutFileNameFromPath(path) {
+    return path.substring(0, path.lastIndexOf('/'));
 }
 
 function createScriptBundles() {
@@ -119,7 +113,6 @@ function build(done) {
 
     production = true;
 
-    clean();
     fillScriptBundles();
     fillStyleBundles();
 
@@ -132,7 +125,7 @@ function build(done) {
 }
 
 function buildDev(done) {
-    clean();
+
     fillScriptBundles();
     fillStyleBundles();
 
@@ -148,4 +141,3 @@ function buildDev(done) {
 
 exports.build = build;
 exports.buildDev = buildDev;
-exports.clean = clean;

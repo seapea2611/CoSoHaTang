@@ -7,6 +7,6 @@ namespace Asd.Hrm.Tasks.TaskDocument.Dtos
 {
     public class GetTasksDocumentForViewDto
     {
-        public TasksDto Tasks { get; set; }
+        public TasksDocumentDto TasksDocument { get; set; }
     }
 }

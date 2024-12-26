@@ -21,5 +21,6 @@ namespace Asd.Hrm.Projects
         Task Delete(EntityDto input);
         Task<int> GetProjectId(string name);
         Task<string> GetProjectName(int id);
+        Task<decimal> GeBudget(int id);
     }
 }

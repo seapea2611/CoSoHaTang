@@ -1,6 +1,0 @@
-docker run -d --name asdhrm-backend \
-  -e "ConnectionStrings__Default=Server=db;Database=HrmDb;User Id=sa;Password=123qwe@A;" \
-  -e "ASPNETCORE_ENVIRONMENT=Development" \
-  --link asdhrm-db:db \
-  -p 8080:80 \
-  asdhrm-backend

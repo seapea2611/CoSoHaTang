@@ -16,5 +16,6 @@ namespace Asd.Hrm.DocumentTemplates.TaiLieu
         Task CreateOrEdit(CreateOrEditDocumentsDto input);
 
         Task Delete(EntityDto input);
+        Task<GetDocumentsForViewDto> GetDocumentsByLink(string link);
     }
 }

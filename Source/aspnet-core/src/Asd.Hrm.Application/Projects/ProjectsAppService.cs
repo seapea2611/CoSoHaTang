@@ -20,11 +20,13 @@ namespace Asd.Hrm.Project
     public class ProjectsAppService : HrmAppServiceBase, IProjectsAppService
     {
         private readonly IRepository<Projects> _projectsRepository;
+        private readonly IRepository<Asd.Hrm.Job.Tasks> _tasksRepository;
 
 
-        public ProjectsAppService(IRepository<Projects> projectsRepository)
+        public ProjectsAppService(IRepository<Projects> projectsRepository, IRepository<Job.Tasks> tasksRepository)
         {
             _projectsRepository = projectsRepository;
+            _tasksRepository = tasksRepository;
         }
 
         public async Task<PagedResultDto<GetProjectsForViewDto>> GetAll(GetAllProjectsInput input)
@@ -139,6 +141,19 @@ namespace Asd.Hrm.Project
                                   select employee.ProjectName;
             string projectName = projectIdQuery.FirstOrDefault();
             return projectName;
+        }
+
+        public async Task<decimal> GeBudget(int projectId)
+        {
+            decimal budget = 0;
+
+            var tasks = await _tasksRepository.GetAll()
+                .Where(t => t.ProjectID == projectId)
+                .AsTracking() 
+                .ToListAsync();
+            budget = tasks.Sum(t => t.ActualBudget);
+
+            return budget;
         }
     }
 }
