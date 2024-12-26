@@ -50,7 +50,7 @@
                            class="m-portlet__nav-link btn btn-accent m-btn m-btn--icon m-btn--pill green-button">
                             <span>
                                 <i class="flaticon-add-circular-button"></i>
-                                <span>{{l('Add new Project')}}</span>
+                                <span>{{l('Add new Task')}}</span>
                             </span>
                         </a>
                     </div>
@@ -76,6 +76,7 @@
                                         <th style="min-width: 100px;" class="text-center">Actual End Date</th>              
                                         <th style="min-width: 100px;" class="text-center">Project Name</th>
                                         <th style="min-width: 150px;" class="text-center">Stage</th>
+                                        <th style="min-width: 50px;" class="text-center">Unwanted</th>
                                         <th style="min-width: 100px;" class="text-center">Status</th>
                                         <th style="min-width: 100px;" class="text-center">Managed Employee</th>                                 
                                         <th style="width: 80px" [hidden]="!isGrantedAny('Pages.Tasks.Edit', 'Pages.Tasks.Delete')" class="text-center">{{l('Actions')}}</th>
@@ -113,6 +114,9 @@
                                         </td>
                                         <td  class="text-center cell-bg">
                                             {{item.tasks.stage}}
+                                        </td>
+                                        <td class="text-center cell-bg">
+                                            <input type="checkbox" [checked]="item.tasks.unwanted === 1" disabled>
                                         </td>
                                         <td  class="text-center cell-bg">
                                             {{item.tasks.status}}

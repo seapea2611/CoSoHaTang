@@ -16,6 +16,7 @@ namespace Asd.Hrm.DocumentTemplates
         public virtual DateTime ConfirmationDate { get; set; }
         public virtual Byte[] AttachedFile { get; set; }
         public virtual string Link { get; set; }
+        public virtual int TaskID { get; set; }
 
     }
 }

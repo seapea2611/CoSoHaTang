@@ -83,6 +83,30 @@ namespace Asd.Hrm.Job
             );
         }
 
+        public async Task<PagedResultDto<GetTasksForViewDto>> GetTasksByTaskID(int projectId)
+        {
+
+            var filteredTasks = _tasksRepository.GetAll()
+                                                .Where(task => task.Id == projectId);
+            GetAllTasksInput input = new GetAllTasksInput();
+            var query = (from o in filteredTasks
+                         select new GetTasksForViewDto()
+                         {
+                             Tasks = ObjectMapper.Map<TasksDto>(o)
+                         });
+
+            var totalCount = await query.CountAsync();
+
+            var resources = await query
+                .PageBy(input)
+                .ToListAsync();
+
+            return new PagedResultDto<GetTasksForViewDto>(
+                totalCount,
+                resources
+            );
+        }
+
 
         [AbpAuthorize(AppPermissions.Pages_Tasks_Edit)]
         public async Task<GetTasksForEditOutput> GetTasksForEdit(EntityDto input)
@@ -228,51 +252,58 @@ namespace Asd.Hrm.Job
 
         public async Task UpdateProjectProgress(int projectId)
         {
-            await Task.Delay(500);
-            // Lấy tất cả các Task đã được theo dõi, bao gồm cả Task mới tạo
-            var tasks = await _tasksRepository.GetAll()
-                .Where(t => t.ProjectID == projectId)
-                .AsTracking() // Đảm bảo lấy cả dữ liệu chưa lưu
-                .ToListAsync();
+            try
+            {
+                await Task.Delay(500);
+                // Lấy tất cả các Task đã được theo dõi, bao gồm cả Task mới tạo
+                var tasks = await _tasksRepository.GetAll()
+                    .Where(t => t.ProjectID == projectId)
+                    .AsTracking() // Đảm bảo lấy cả dữ liệu chưa lưu
+                    .ToListAsync();
 
-            // Lấy đối tượng Project
-            var project = await _projectRepository.FirstOrDefaultAsync(p => p.Id == projectId);
+                // Lấy đối tượng Project
+                var project = await _projectRepository.FirstOrDefaultAsync(p => p.Id == projectId);
 
-            if (project == null)
-            {
-                throw new Exception("Project not found");
-            }
+                if (project == null)
+                {
+                    throw new Exception("Project not found");
+                }
 
-            // Áp dụng các điều kiện cập nhật trạng thái Progress
-            if (tasks.Any(t => t.Stage == "Chuẩn bị dự án" && t.Status == "Đang thực hiện"))
-            {
-                project.Progress = "Chuẩn bị dự án";
-            }
-            else if (
-                tasks.Where(t => t.Stage == "Chuẩn bị dự án").All(t => t.Status == "Đã xong") &&
-                tasks.Any(t => t.Stage == "Thi công" && t.Status == "Đang thực hiện"))
-            {
-                project.Progress = "Thi công";
-            }
-            else if (
-                tasks.Where(t => t.Stage == "Chuẩn bị dự án" || t.Stage == "Thi công")
-                     .All(t => t.Status == "Đã xong") &&
-                tasks.Any(t => t.Stage == "Nghiệm thu bàn giao" && t.Status == "Đang thực hiện"))
-            {
-                project.Progress = "Nghiệm thu bàn giao";
-            }
-            else if (tasks.Where(t => t.Stage == "Nghiệm thu bàn giao").All(t => t.Status == "Đã xong"))
-            {
-                project.Progress = "Hoàn thành";
-            }
-            else
-            {
-                project.Progress = "Chờ chuyển giai đoạn";
-            }
+                // Áp dụng các điều kiện cập nhật trạng thái Progress
+                if (tasks.Any(t => t.Stage == "Chuẩn bị dự án" && t.Status == "Đang thực hiện"))
+                {
+                    project.Progress = "Chuẩn bị dự án";
+                }
+                else if (
+                    tasks.Where(t => t.Stage == "Chuẩn bị dự án").All(t => t.Status == "Đã xong") &&
+                    tasks.Any(t => t.Stage == "Thi công" && t.Status == "Đang thực hiện"))
+                {
+                    project.Progress = "Thi công";
+                }
+                else if (
+                    tasks.Where(t => t.Stage == "Chuẩn bị dự án" || t.Stage == "Thi công")
+                         .All(t => t.Status == "Đã xong") &&
+                    tasks.Any(t => t.Stage == "Nghiệm thu bàn giao" && t.Status == "Đang thực hiện"))
+                {
+                    project.Progress = "Nghiệm thu bàn giao";
+                }
+                else if (tasks.Where(t => t.Stage == "Nghiệm thu bàn giao").All(t => t.Status == "Đã xong"))
+                {
+                    project.Progress = "Hoàn thành";
+                }
+                else
+                {
+                    project.Progress = "Chờ chuyển giai đoạn";
+                }
+                await _projectRepository.UpdateAsync(project);
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
 
             // Lưu thay đổi vào cơ sở dữ liệu
-            await _projectRepository.UpdateAsync(project);
         }
 
         public async Task<bool> CheckBeforeSave(int projectId, string stage)

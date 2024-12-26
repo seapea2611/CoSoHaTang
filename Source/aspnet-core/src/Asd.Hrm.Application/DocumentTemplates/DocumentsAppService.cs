@@ -1,11 +1,14 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Abp.Linq.Extensions;
 using Asd.Hrm.Authorization;
 using Asd.Hrm.DocumentTemplates.Dtos;
 using Asd.Hrm.DocumentTemplates.TaiLieu;
 using Asd.Hrm.DocumentTemplates.TaiLieu.Dtos;
+using Asd.Hrm.Job.Dtos;
 using Asd.Hrm.Project;
+using Asd.Hrm.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,29 +28,46 @@ namespace Asd.Hrm.DocumentTemplates
             _documentsRepository = documentTemplatesRepository;
         }
 
-        public async Task<GetDocumentsForViewDto> GetDocumentTemplatesForView(int id)
+        public async Task<PagedResultDto<GetDocumentsForViewDto>> GetDocumentTemplatesForView(int id)
         {
-            var DocumentTemplates = await _documentsRepository.GetAsync(id);
+            var filter = _documentsRepository.GetAll()
+                                                .Where(task => task.TaskID == id);
+            GetAllDocumentsInput documentsInput = new GetAllDocumentsInput();
 
-            var output = new GetDocumentsForViewDto { DocumentTemplates = ObjectMapper.Map<DocumentsDto>(DocumentTemplates) };
+            var query = (from o in filter
+                         select new GetDocumentsForViewDto()
+                         {
+                             DocumentTemplates = ObjectMapper.Map<DocumentsDto>(o)
+                         });
 
-            return output;
+            var totalCount = await query.CountAsync();
+
+            var resources = await query
+                .PageBy(documentsInput)
+                .ToListAsync();
+
+            return new PagedResultDto<GetDocumentsForViewDto>(
+                totalCount,
+                resources
+            );
+
+
         }
 
-        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditDocumentsDto input)
+        public async System.Threading.Tasks.Task CreateOrEdit(CreateOrEditDocumentsDto input, int taskId)
         {
             if (input.Id == null)
             {
-                await Create(input);
+                await Create(input, taskId);
             }
             else
             {
-                await Update(input);
+                await Update(input, taskId);
             }
         }
 
         [AbpAuthorize(AppPermissions.Pages_DocumentTemplates_Create)]
-        public async System.Threading.Tasks.Task Create(CreateOrEditDocumentsDto input)
+        public async System.Threading.Tasks.Task Create(CreateOrEditDocumentsDto input, int t)
         {
             try
             {
@@ -61,7 +81,7 @@ namespace Asd.Hrm.DocumentTemplates
         }
 
         [AbpAuthorize(AppPermissions.Pages_DocumentTemplates_Edit)]
-        public async System.Threading.Tasks.Task Update(CreateOrEditDocumentsDto input)
+        public async System.Threading.Tasks.Task Update(CreateOrEditDocumentsDto input, int t)
         {
             var documentTemplates = await _documentsRepository.FirstOrDefaultAsync((int)input.Id);
             ObjectMapper.Map(input, documentTemplates);
@@ -83,6 +103,7 @@ namespace Asd.Hrm.DocumentTemplates
             a.DocumentName = document.DocumentName;
             a.ConfirmationDate = document.ConfirmationDate;
             a.ConfirmingEmployeeID = document.ConfirmingEmployeeID;
+            a.TaskID = document.TaskID;
 
             var output = new GetDocumentsForViewDto { DocumentTemplates = ObjectMapper.Map<DocumentsDto>(a) };
 
