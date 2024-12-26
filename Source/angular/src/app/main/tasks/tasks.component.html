@@ -68,10 +68,12 @@
                                     <tr>
                                         <th style="min-width: 50px;" class="text-center">STT</th>
                                         <th style="min-width: 75px;" class="text-center">Task Desciption</th>
-                                        <th style="min-width: 150px;" class="text-center">Estimated Budget</th>
+                                        <!-- <th style="min-width: 150px;" class="text-center">Estimated Budget</th> -->
                                         <th style="min-width: 70px;" class="text-center">Actual Budget</th>
-                                        <th style="min-width: 100px;" class="text-center">Start Date</th>
-                                        <th style="min-width: 100px;" class="text-center">End Date</th>
+                                        <th style="min-width: 100px;" class="text-center">Estimated Start Date</th>
+                                        <th style="min-width: 100px;" class="text-center">Estimated End Date</th>
+                                        <th style="min-width: 100px;" class="text-center"> Actual Start Date</th>
+                                        <th style="min-width: 100px;" class="text-center">Actual End Date</th>              
                                         <th style="min-width: 100px;" class="text-center">Project Name</th>
                                         <th style="min-width: 150px;" class="text-center">Stage</th>
                                         <th style="min-width: 100px;" class="text-center">Status</th>
@@ -88,12 +90,18 @@
                                         <td class="text-center cell-bg">
                                             {{item.tasks.taskDescription}}
                                         </td>
-                                        <td class="text-center cell-bg">                                            
+                                        <!-- <td class="text-center cell-bg">                                            
                                             {{item.tasks.estimatedBudget}}
-                                        </td>
+                                        </td> -->
                                         <td class="text-center cell-bg">
                                             {{ item.tasks.actualBudget }}
                                         </td>
+                                        <td class="text-center cell-bg" style="color: red;">
+                                            {{ item.tasks.estimatedStartDate | date: 'dd/MM/yyyy' }}
+                                        </td>
+                                        <td  class="text-center cell-bg" style="color: red;">
+                                            {{item.tasks.estimatedEndDate | date: 'dd/MM/yyyy'}}
+                                        </td >
                                         <td class="text-center cell-bg">
                                             {{ item.tasks.startDate | date: 'dd/MM/yyyy' }}
                                         </td>

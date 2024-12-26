@@ -34,6 +34,7 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
     seletedUnits = [];
     appUnitInput = new Subject<string>();
     datarenge: Date[] = [moment().startOf('day').toDate(), moment().endOf('day').toDate()];
+    datarange: Date[] = [moment().startOf('day').toDate(), moment().endOf('day').toDate()];
     listEmployeeName: any [] = [];
     listEmployee: any [] = [];
     listProject: any [] = [];
@@ -77,6 +78,8 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
                 this.tasks = result.tasks;
                 this.datarenge[0] = this.tasks.startDate.toJSDate();
                 this.datarenge[1] = this.tasks.endDate.toJSDate();
+                this.datarange[0] = this.tasks.estimatedStartDate.toJSDate();
+                this.datarange[1] = this.tasks.estimatedEndDate.toJSDate();
                 this.active = true;
                 this.suggestEmployee();
                 this.modal.show();
@@ -112,6 +115,8 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
     prepareData(): CreateOrEditTasksDto {
         this.tasks.startDate = this.datarenge[0] ? moment(this.datarenge[0]).toDate() as any : undefined;
         this.tasks.endDate = this.datarenge[1] ? moment(this.datarenge[1]).toDate() as any : undefined;
+        this.tasks.estimatedStartDate = this.datarange[0] ? moment(this.datarange[0]).toDate() as any : undefined;
+        this.tasks.estimatedEndDate = this.datarange[1] ? moment(this.datarange[1]).toDate() as any : undefined;
         this.tasks.managerEmployeeID = this.getEmployeeId(this.nhanvien.fullName);
         if(this.tasks.projectID == null) {
             this.tasks.projectID = this.duan.id;
@@ -123,6 +128,7 @@ export class CreateOrEditTasksModalComponent extends AppComponentBase implements
 
     close(): void {
         this.datarenge = [moment().startOf('day').toDate(), moment().endOf('day').toDate()];
+        this.datarange = [moment().startOf('day').toDate(), moment().endOf('day').toDate()];
         this.active = false;
         this.seletedUnits = [];
         this.modal.hide();
